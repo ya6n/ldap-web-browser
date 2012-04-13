@@ -1,0 +1,2 @@
+serviceClass: org.upond.miage.ldapbrowser.prototype.client.GreetingService
+path: 40C6391BF1294B8F6492B5BA667F5FD9.gwt.rpc

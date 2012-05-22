@@ -1,0 +1,236 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>fr.uparis10.miage.ldap</groupId>
+  <artifactId>ldap-browser</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>ldap-browser</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <targetJDK>1.6</targetJDK>
+  </properties>
+
+  <issueManagement>
+    <system>Redmine</system>
+    <url>http://miage08:3000</url>
+  </issueManagement>
+
+  <ciManagement>
+    <system>Hudson</system>
+    <url>http://http://miage08:8181</url>
+  </ciManagement>
+
+  <organization>
+    <name>Université Paris Ouest Nanterre La Défense</name>
+    <url>http://u-paris10.fr</url>
+  </organization>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.10</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-clean-plugin</artifactId>
+      <version>2.4.1</version>
+      <type>maven-plugin</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-scm-plugin</artifactId>
+      <version>1.4</version>
+      <type>maven-plugin</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jvnet.hudson.plugins</groupId>
+      <artifactId>redmine</artifactId>
+      <version>0.9</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+  <scm>
+    <url>https://code.google.com/p/ldap-web-browser/</url>
+    <connection>scm:git:https://code.google.com/p/ldap-web-browser</connection>
+  </scm>
+  <build>
+    <finalName>${project.artifactId}-${project.version}</finalName>
+    <sourceDirectory>src</sourceDirectory>
+    <testSourceDirectory>test</testSourceDirectory>
+    <scriptSourceDirectory>scripts</scriptSourceDirectory>
+    <outputDirectory>target/bin</outputDirectory>
+    <testOutputDirectory>target/test-classes</testOutputDirectory>
+    <resources>
+      <resource>
+        <directory>${basedir}/src</directory>
+        <includes>
+          <include>**/*.png</include>
+          <include>**/*.gif</include>
+          <include>**/*.jpeg</include>
+          <include>**/*.jpg</include>
+          <include>**/*.properties</include>
+          <include>**/*.xml</include>
+          <include>**/*.css</include>
+          <include>**/*.xsl</include>
+        </includes>
+        <excludes>
+          <exclude>src/**/*</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>2.4.1</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>reports</directory>
+              <includes>
+                <include>**/*.xml</include>
+                <include>**/*.html</include>
+              </includes>
+              <excludes>
+                <exclude>**/important.log</exclude>
+                <exclude>**/mvn-pmd-report.html</exclude>
+              </excludes>
+              <followSymlinks>false</followSymlinks>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+          <outputDirectory>${basedir}/target/bin</outputDirectory>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>2.7.1</version>
+        <configuration>
+          <failOnViolation>false</failOnViolation>
+          <verbose>true</verbose>
+          <aggregate>true</aggregate>
+          <format>net.sourceforge.pmd.renderers.XSLTRenderer</format>
+          <linkXRef>true</linkXRef>
+          <outputDirectory>${basedir}/reports</outputDirectory>
+          <targetDirectory>${basedir}/reports</targetDirectory>
+          <targetJdk>${targetJDK}</targetJdk>
+          <rulesets>
+            <ruleset>rulesets/basic.xml</ruleset>
+            <ruleset>rulesets/naming.xml</ruleset>
+            <ruleset>rulesets/unusedcode.xml</ruleset>
+            <ruleset>rulesets/design.xml</ruleset>
+            <ruleset>rulesets/imports.xml</ruleset>
+            <ruleset>rulesets/junit.xml</ruleset>
+            <ruleset>rulesets/strings.xml</ruleset>
+            <ruleset>rulesets/braces.xml</ruleset>
+            <ruleset>rulesets/codesize.xml</ruleset>
+            <ruleset>rulesets/coupling.xml</ruleset>
+            <ruleset>rulesets/strictexception.xml</ruleset>
+            <ruleset>rulesets/controversial.xml</ruleset>
+          </rulesets>
+        </configuration>
+        <executions>
+          <execution>
+            <id>pmd-html</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>pmd</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <source>${targetJDK}</source>
+          <target>${targetJDK}</target>
+          <includes>
+            <include>fr/**/*</include>
+            <include>test/**/*</include>
+          </includes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <includes>
+            <include>**/*.png</include>
+            <include>**/*.gif</include>
+            <include>**/*.class</include>
+            <include>**/*.jpeg</include>
+            <include>**/*.jpg</include>
+            <include>**/*.properties</include>
+            <include>**/*.xml</include>
+            <include>**/*.css</include>
+            <include>**/*.xsl</include>
+          </includes>
+          <archive>
+            <addMavenDescriptor />
+            <compress />
+            <forced />
+            <index />
+            <manifest>
+              <addClasspath />
+              <addDefaultImplementationEntries />
+              <addDefaultSpecificationEntries />
+              <addExtensions />
+              <classpathLayoutType />
+              <classpathMavenRepositoryLayout />
+              <classpathPrefix />
+              <customClasspathLayout />
+              <mainClass>fr.uparis10.miage.annoarius.edit.lanceur.Main</mainClass>
+              <packageName />
+            </manifest>
+            <manifestFile />
+            <pomPropertiesFile />
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <executions>
+          <execution>
+            <id>exec</id>
+            <phase>install</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <executable>/bin/sh</executable>
+          <workingDirectory>${basedir}</workingDirectory>
+          <arguments>
+            <argument>-c</argument>
+            <argument>
+              rm reports/pmd.html
+              mv reports/pmd.net.sourceforge.pmd.renderers.XSLTRenderer reports/mvn-pmd-report.html
+            </argument>
+          </arguments>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

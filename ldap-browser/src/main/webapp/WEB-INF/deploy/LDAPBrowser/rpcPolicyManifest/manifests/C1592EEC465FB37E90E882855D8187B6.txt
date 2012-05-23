@@ -1,0 +1,2 @@
+serviceClass: fr.uparis10.miage.ldap.client.GreetingService
+path: 75112E57275ED752E094BE4DA11788C8.gwt.rpc

@@ -3,11 +3,17 @@
  */
 package fr.uparis10.miage.ldap.client.screen;
 
-import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.Layout;
-import com.extjs.gxt.ui.client.widget.TabItem;
-import com.extjs.gxt.ui.client.widget.TabPanel;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
+import com.google.gwt.user.client.ui.Frame;
+import com.sencha.gxt.widget.core.client.ContentPanel;
+import com.sencha.gxt.widget.core.client.TabItemConfig;
+import com.sencha.gxt.widget.core.client.TabPanel;
+import com.sencha.gxt.widget.core.client.container.SimpleContainer;
+
+//import com.extjs.gxt.ui.client.widget.ContentPanel;
+//import com.extjs.gxt.ui.client.widget.Layout;
+//import com.extjs.gxt.ui.client.widget.TabItem;
+//import com.extjs.gxt.ui.client.widget.TabPanel;
+//import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 
 /**
  * @author iogorode
@@ -26,7 +32,7 @@ public class ApplicationContainer extends ContentPanel {
 	 */
 	public ApplicationContainer() {
 		setHeaderVisible(false);
-		setLayout(new FitLayout());
+		// setLayout(new FitLayout());
 
 		tabPanel = new TabPanel();
 
@@ -42,14 +48,6 @@ public class ApplicationContainer extends ContentPanel {
 	}
 
 	/**
-	 * @param layout
-	 */
-	public ApplicationContainer(Layout layout) {
-		this();
-		setLayout(layout);
-	}
-
-	/**
 	 * @return the tabPanel
 	 */
 	public TabPanel getTabPanel() {
@@ -57,12 +55,12 @@ public class ApplicationContainer extends ContentPanel {
 	}
 
 	private void addBienvenueTab() {
-		TabItem item = new TabItem();
-		item.setText("Bienvenue");
-		item.setClosable(false);
-		item.addText("Bienvenue dans LDAP Browser");
-		item.addStyleName("pad-text");
-		tabPanel.add(item);
-	}
+		TabItemConfig item = new TabItemConfig("Bienvenue", false);
 
+		SimpleContainer simpleContainer = new SimpleContainer();
+		simpleContainer.add(new Frame("Bienvenue.html"));
+		tabPanel.add(simpleContainer, item);
+		// new HTMLPanel("<center>Bienvenue dans LDAP Browser</center>"), item);
+
+	}
 }

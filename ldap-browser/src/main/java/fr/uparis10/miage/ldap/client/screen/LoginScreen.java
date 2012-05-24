@@ -16,14 +16,17 @@ package fr.uparis10.miage.ldap.client.screen;
 //import com.extjs.gxt.ui.client.widget.layout.VBoxLayout;
 //import com.extjs.gxt.ui.client.widget.layout.VBoxLayout.VBoxLayoutAlign;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.layout.client.Layout;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.sencha.gxt.core.client.Style.HorizontalAlignment;
-import com.sencha.gxt.core.client.util.Padding;
-import com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutPack;
-import com.sencha.gxt.widget.core.client.container.VBoxLayoutContainer.VBoxLayoutAlign;
-import com.sencha.gxt.widget.core.client.form.FormPanel;
+import com.sencha.gxt.widget.core.client.ContentPanel;
+import com.sencha.gxt.widget.core.client.FramedPanel;
+import com.sencha.gxt.widget.core.client.button.TextButton;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.form.FieldLabel;
+import com.sencha.gxt.widget.core.client.form.PasswordField;
 import com.sencha.gxt.widget.core.client.form.TextField;
 
 import fr.uparis10.miage.ldap.client.GreetingService;
@@ -34,51 +37,56 @@ import fr.uparis10.miage.ldap.client.LDAPBrowser;
  * @author iogorode
  * 
  */
-public class LoginScreen extends LayoutContainer {
+public class LoginScreen extends ContentPanel {
 
-	FormPanel loginForm;
+	FramedPanel loginForm;
 
 	TextField user;
-	TextField pass;
+	PasswordField pass;
 
-	Button btLogin;
-	Button btReset;
+	TextButton btLogin;
+	TextButton btReset;
 
 	public LoginScreen() {
 
-		loginForm = new FormPanel();
+		setHeaderVisible(false);
+		setBodyBorder(false);
+		setBorders(false);
+		setWidth(400);
+		setHeight(250);
 
-		loginForm.setHeading("Login Form");
+		VerticalLayoutContainer p = new VerticalLayoutContainer();
+		loginForm = new FramedPanel();
+		loginForm.setHeadingText("Login Form");
+
 		loginForm.setWidth(400);
+		loginForm.setHeight(200);
 
-		user = new TextField<String>();
-		user.setFieldLabel("Username");
+		user = new TextField();
 		user.setWidth(200);
 
-		pass = new TextField<String>();
-		pass.setFieldLabel("Password");
+		pass = new PasswordField();
 		pass.setWidth(200);
-		pass.setPassword(true);
 
-		loginForm.add(user);
-		loginForm.add(pass);
+		p.add(new FieldLabel(user, "Username"), new VerticalLayoutData(1, -1));
+		p.add(new FieldLabel(pass, "Password"), new VerticalLayoutData(1, -1));
 
-		btLogin = new Button("Login");
-		btReset = new Button("Reset");
+		btLogin = new TextButton("Login");
+		btReset = new TextButton("Reset");
 
-		btReset.addSelectionListener(new SelectionListener<ButtonEvent>() {
+		btReset.addSelectHandler(new SelectHandler() {
 
 			@Override
-			public void componentSelected(ButtonEvent ce) {
-				loginForm.reset();
+			public void onSelect(SelectEvent event) {
+				user.reset();
+				pass.reset();
 			}
-
 		});
 
-		btLogin.addSelectionListener(new SelectionListener<ButtonEvent>() {
+		btLogin.addSelectHandler(new SelectHandler() {
 
 			@Override
-			public void componentSelected(ButtonEvent ce) {
+			public void onSelect(SelectEvent event) {
 				GreetingServiceAsync greetingService = GWT
 						.create(GreetingService.class);
 				greetingService.greetServer(user.getValue(),
@@ -102,36 +110,12 @@ public class LoginScreen extends LayoutContainer {
 
 		});
 
-		loginForm.addButton(btLogin);
-		loginForm.addButton(btReset);
-		loginForm.setButtonAlign(HorizontalAlignment.CENTER);
-
-		loginForm.setFrame(true);
-		// setLayout(new CenterLayout());
-
-		VBoxLayout layout = new VBoxLayout();
-		layout.setPadding(new Padding(5));
-		layout.setVBoxLayoutAlign(VBoxLayoutAlign.CENTER);
-		layout.setPack(BoxLayoutPack.CENTER);
-
-		setLayout(layout);
-
+		loginForm.add(p);
 		add(loginForm);
 
-	}
+		loginForm.addButton(btLogin);
+		loginForm.addButton(btReset);
 
-	/**
-	 * @param layout
-	 */
-	public LoginScreen(Layout layout) {
-		this();
-		setLayout(layout);
-	}
-
-	@Override
-	public boolean layout(boolean force) {
-		loginForm.layout(force);
-		return super.layout(force);
 	}
 
 }

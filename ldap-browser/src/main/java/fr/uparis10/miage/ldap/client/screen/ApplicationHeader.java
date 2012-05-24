@@ -3,8 +3,7 @@
  */
 package fr.uparis10.miage.ldap.client.screen;
 
-import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.Layout;
+import com.sencha.gxt.widget.core.client.ContentPanel;
 
 /**
  * @author iogorode
@@ -18,13 +17,4 @@ public class ApplicationHeader extends ContentPanel {
 	public ApplicationHeader() {
 		setHeaderVisible(false);
 	}
-
-	/**
-	 * @param layout
-	 */
-	public ApplicationHeader(Layout layout) {
-		this();
-		setLayout(layout);
-	}
-
 }

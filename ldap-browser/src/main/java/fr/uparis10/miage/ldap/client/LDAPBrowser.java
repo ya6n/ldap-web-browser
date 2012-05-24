@@ -1,12 +1,11 @@
 package fr.uparis10.miage.ldap.client;
 
-import com.extjs.gxt.ui.client.widget.ContentPanel;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.sencha.gxt.widget.core.client.container.CenterLayoutContainer;
 
 import fr.uparis10.miage.ldap.client.screen.LoginScreen;
 import fr.uparis10.miage.ldap.client.screen.MainScreen;
@@ -24,23 +23,24 @@ public class LDAPBrowser implements EntryPoint {
 		RootPanel rootPanel = RootPanel.get();
 		rootPanel.clear();
 
-		final ContentPanel root = new ContentPanel(new FitLayout());
+		final CenterLayoutContainer root = new CenterLayoutContainer();
 
 		LoginScreen loginScreen = new LoginScreen();
 
-		root.setSize(Window.getClientWidth(), Window.getClientHeight());
+		root.setWidth(Window.getClientWidth());
+		root.setHeight(Window.getClientHeight());
 		root.setPosition(0, 0);
-		root.setStyleAttribute("margins", "0px");
-		root.setStyleAttribute("padding", "0px");
-		root.setHeaderVisible(false);
+		// root.setStyleAttribute("margins", "0px");
+		// root.setStyleAttribute("padding", "0px");
+		// root.setHeaderVisible(false);
 		root.setBorders(false);
-		root.setBodyBorder(false);
+		// root.setBodyBorder(false);
 		Window.setMargin("0px");
 		// rootPanel.setSize("100%", "100%");
 		root.add(loginScreen);
 		rootPanel.add(root);
 
-		root.layout(true);
+		// root.layout(true);
 
 		root.show();
 
@@ -48,8 +48,8 @@ public class LDAPBrowser implements EntryPoint {
 
 			@Override
 			public void onResize(ResizeEvent event) {
-				root.setSize(Window.getClientWidth(), Window.getClientHeight());
-				root.layout(true);
+				root.setWidth(Window.getClientWidth());
+				root.setHeight(Window.getClientHeight());
 
 			}
 		});
@@ -66,16 +66,14 @@ public class LDAPBrowser implements EntryPoint {
 		// rootPanel.setSize("100%", "100%");
 		rootPanel.add(mainScreen);
 
-		mainScreen.layout(true);
 		mainScreen.show();
 
 		Window.addResizeHandler(new ResizeHandler() {
 
 			@Override
 			public void onResize(ResizeEvent event) {
-				mainScreen.setSize(Window.getClientWidth(),
-						Window.getClientHeight());
-				mainScreen.layout(true);
+				mainScreen.setWidth(Window.getClientWidth());
+				mainScreen.setHeight(Window.getClientHeight());
 
 			}
 		});

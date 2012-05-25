@@ -39,13 +39,6 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.10</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.10</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugins</groupId>
@@ -74,15 +67,19 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>com.google.gwt</groupId>
-      <artifactId>gwt-user</artifactId>
-      <version>${gwtVersion}</version>
+      <groupId>com.sencha.gxt</groupId>
+      <artifactId>gxt</artifactId>
+      <version>3.0.0-rc2</version>
     </dependency>
     <dependency>
       <groupId>javax.validation</groupId>
       <artifactId>validation-api</artifactId>
       <version>1.0.0.GA</version>
-      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-user</artifactId>
+      <version>${gwtVersion}</version>
     </dependency>
     <dependency>
       <groupId>javax.validation</groupId>
@@ -92,10 +89,10 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-    <groupId>com.sencha.gxt</groupId>
-    <artifactId>gxt</artifactId>
-    <version>3.0.0-rc2</version>
-</dependency>
+      <groupId>commons-configuration</groupId>
+      <artifactId>commons-configuration</artifactId>
+      <version>1.8</version>
+    </dependency>
   </dependencies>
   <scm>
     <url>https://code.google.com/p/ldap-web-browser/</url>
@@ -239,9 +236,7 @@
           <workingDirectory>${basedir}</workingDirectory>
           <arguments>
             <argument>-c</argument>
-            <argument>
-              rm reports/pmd.html
-              mv reports/pmd.net.sourceforge.pmd.renderers.XSLTRenderer reports/mvn-pmd-report.htm
+            <argument>rm reports/pmd.html;mv reports/pmd.net.sourceforge.pmd.renderers.XSLTRenderer reports/mvn-pmd-report.htm
             </argument>
           </arguments>
         </configuration>

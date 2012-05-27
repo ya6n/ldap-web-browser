@@ -16,19 +16,19 @@
  *
  * Creation date: May 26, 2012
  */
-package fr.uparis10.miage.ldap.mng;
+package fr.uparis10.miage.ldap.server.mng;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.uparis10.miage.ldap.mng.GroupManager;
+import fr.uparis10.miage.ldap.server.mng.PeopleManager;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public class GroupManagerTest {
+public class PeopleManagerTest {
 
 	/**
 	 * @throws java.lang.Exception
@@ -46,7 +46,7 @@ public class GroupManagerTest {
 
 	@Test
 	public void test() {
-		GroupManager.getInstance().refresh();
+		PeopleManager.getInstance().refresh();
 		// TODO: faire des tests unitaires
 		// fail("Not yet implemented");
 	}

@@ -16,35 +16,33 @@
  *
  * Creation date: May 26, 2012
  */
-package fr.uparis10.miage.ldap.mng;
+package fr.uparis10.miage.ldap.server.mng;
 
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import fr.uparis10.miage.ldap.enums.EnumPersonAttr;
-import fr.uparis10.miage.ldap.obj.Person;
+import fr.uparis10.miage.ldap.shared.enums.EnumGroupAttr;
+import fr.uparis10.miage.ldap.shared.obj.Group;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public final class PeopleManager extends ACacheManager<EnumPersonAttr, String, Person> {
+public final class GroupManager extends ACacheManager<EnumGroupAttr, String, Group> {
 
-	private static final String _prefix = "ou=people,";
-	private static final String _filter = "objectClass=person";
+	private static final String _prefix = "ou=groups,";
+	private static final String _filter = "objectClass=organisationalUnit";
 
-	private static PeopleManager _inst = null;
+	private static GroupManager _inst = null;
 
-	private PeopleManager() {
+	private GroupManager() {
 		super();
 	}
 
-	public final static PeopleManager getInstance() {
+	public final static GroupManager getInstance() {
 		if (null == _inst) {
-			_inst = new PeopleManager();
+			_inst = new GroupManager();
 		}
 
 		return _inst;
@@ -76,8 +74,8 @@ public final class PeopleManager extends ACacheManager<EnumPersonAttr, String, P
 	 * @see fr.uparis10.miage.ldap.server.ACacheManager#createNewIndex()
 	 */
 	@Override
-	protected final Map<EnumPersonAttr, Map<String, List<Person>>> createNewIndex() {
-		return new EnumMap<EnumPersonAttr, Map<String, List<Person>>>(EnumPersonAttr.class);
+	protected final Map<EnumGroupAttr, Map<String, List<Group>>> createNewIndex() {
+		return new EnumMap<EnumGroupAttr, Map<String, List<Group>>>(EnumGroupAttr.class);
 	}
 
 	/*
@@ -86,8 +84,8 @@ public final class PeopleManager extends ACacheManager<EnumPersonAttr, String, P
 	 * @see fr.uparis10.miage.ldap.server.ACacheManager#createNewObject()
 	 */
 	@Override
-	protected final Person createNewObject() {
-		return new Person();
+	protected final Group createNewObject() {
+		return new Group();
 	}
 
 	/*
@@ -97,8 +95,8 @@ public final class PeopleManager extends ACacheManager<EnumPersonAttr, String, P
 	 * fr.uparis10.miage.ldap.server.ACacheManager#valueOfIndex(java.lang.String)
 	 */
 	@Override
-	protected final EnumPersonAttr valueOfIndex(final String parName) {
-		return EnumPersonAttr.valueOf(parName);
+	protected final EnumGroupAttr valueOfIndex(final String parName) {
+		return EnumGroupAttr.valueOf(parName);
 	}
 
 	/*

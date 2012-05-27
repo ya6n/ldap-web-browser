@@ -16,7 +16,7 @@
  *
  * Creation date: May 26, 2012
  */
-package fr.uparis10.miage.ldap.server;
+package fr.uparis10.miage.ldap.server.mng;
 
 import java.io.File;
 import java.io.FileInputStream;

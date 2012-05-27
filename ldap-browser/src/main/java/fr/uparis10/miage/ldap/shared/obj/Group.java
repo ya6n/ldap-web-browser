@@ -16,14 +16,28 @@
  *
  * Creation date: May 27, 2012
  */
-package fr.uparis10.miage.ldap.itf;
+package fr.uparis10.miage.ldap.shared.obj;
 
+import java.util.EnumMap;
+
+import fr.uparis10.miage.ldap.shared.enums.EnumGroupAttr;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public interface IIndexable {
-	public boolean isIndexed();
+public class Group extends EnumMap<EnumGroupAttr, String> {
+
+	/**
+	 * @param keyType
+	 */
+	public Group() {
+		super(EnumGroupAttr.class);
+	}
+
+	/**
+	 * Default Serial Version UID
+	 */
+	private static final long serialVersionUID = 1L;
 
 }

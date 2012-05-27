@@ -16,7 +16,7 @@
  *
  * Creation date: May 26, 2012
  */
-package fr.uparis10.miage.ldap.mng;
+package fr.uparis10.miage.ldap.server.mng;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -39,9 +39,8 @@ import javax.naming.directory.SearchResult;
 import javax.validation.constraints.NotNull;
 
 import fr.uparis10.miage.ldap.exc.DataNotLoadedException;
-import fr.uparis10.miage.ldap.itf.IIndexable;
-import fr.uparis10.miage.ldap.server.LdapCtxManager;
-import fr.uparis10.miage.utils.MapUtils;
+import fr.uparis10.miage.ldap.server.itf.IIndexable;
+import fr.uparis10.miage.ldap.server.utils.MapUtils;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>

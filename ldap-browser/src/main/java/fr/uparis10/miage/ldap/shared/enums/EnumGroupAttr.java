@@ -16,9 +16,9 @@
  *
  * Creation date: May 26, 2012
  */
-package fr.uparis10.miage.ldap.enums;
+package fr.uparis10.miage.ldap.shared.enums;
 
-import fr.uparis10.miage.ldap.itf.IIndexable;
+import fr.uparis10.miage.ldap.server.itf.IIndexable;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>

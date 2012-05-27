@@ -14,32 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Creation date: May 26, 2012
+ * Creation date: May 27, 2012
  */
-package fr.uparis10.miage.utils;
+package fr.uparis10.miage.ldap.server.itf;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
- *
+ * 
  */
-public final class JdbcUtils {
-	public final static void closeIFP(final Connection parConn) {
-		if (parConn == null) {
-			return;
-		}
-		try {
-	    if (parConn.isClosed()) {
-	    	return;
-	    }
-	    parConn.close();
-    } catch (final SQLException locExc) {
-    	Logger.getLogger(JdbcUtils.class.getName()).log(Level.WARNING, "Can't close the LDAP JDBC connection!", locExc);
-    }
-	}
+public interface IIndexable {
+	public boolean isIndexed();
 
 }

@@ -14,30 +14,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Creation date: May 27, 2012
+ * Creation date: May 26, 2012
  */
-package fr.uparis10.miage.ldap.obj;
+package fr.uparis10.miage.ldap.server.mng;
 
-import java.util.EnumMap;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-import fr.uparis10.miage.ldap.enums.EnumPersonAttr;
+import fr.uparis10.miage.ldap.server.mng.GroupManager;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
- *
+ * 
  */
-public class Person extends EnumMap<EnumPersonAttr, String>{
+public class GroupManagerTest {
 
 	/**
-   * @param keyType
-   */
-  public Person() {
-	  super(EnumPersonAttr.class);
-  }
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+	}
 
 	/**
-   * Default Serial Version UID
-   */
-  private static final long serialVersionUID = 1L;
+	 * @throws java.lang.Exception
+	 */
+	@After
+	public void tearDown() throws Exception {
+	}
 
+	@Test
+	public void test() {
+		GroupManager.getInstance().refresh();
+		// TODO: faire des tests unitaires
+		// fail("Not yet implemented");
+	}
 }

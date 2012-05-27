@@ -14,14 +14,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Creation date: May 26, 2012
+ * Creation date: May 27, 2012
  */
-package fr.uparis10.miage.ldap.data;
+package fr.uparis10.miage.ldap.shared.obj;
+
+import java.util.EnumMap;
+
+import fr.uparis10.miage.ldap.shared.enums.EnumPersonAttr;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  *
  */
-public class PersonData {
+public class Person extends EnumMap<EnumPersonAttr, String>{
+
+	/**
+   * @param keyType
+   */
+  public Person() {
+	  super(EnumPersonAttr.class);
+  }
+
+	/**
+   * Default Serial Version UID
+   */
+  private static final long serialVersionUID = 1L;
 
 }

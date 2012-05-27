@@ -14,33 +14,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Creation date: May 27, 2012
+ * Creation date: May 26, 2012
  */
-package fr.uparis10.miage.ldap.exc;
+package fr.uparis10.miage.ldap.server.mng;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
- *
+ * 
  */
-public class DataNotLoadedException extends Exception {
-	/**
-   * Default Serial Version UID 
-   */
-  private static final long serialVersionUID = 1L;
+public class OrgUnitManagerTest {
 
-	public DataNotLoadedException() {
-		super();
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
 	}
-	
-	public DataNotLoadedException(final String parMsg) {
-		super(parMsg);
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@After
+	public void tearDown() throws Exception {
 	}
-	
-	public DataNotLoadedException(final Throwable parOtherExc) {
-		super(parOtherExc);
-	}
-	
-	public DataNotLoadedException(final String parMsg, final Throwable parOtherExc) {
-		super(parMsg, parOtherExc);
+
+	@Test
+	public void test() {
+		OrgUnitManager.getInstance().refresh();
+		// TODO: faire des tests unitaires
+		// fail("Not yet implemented");
 	}
 }

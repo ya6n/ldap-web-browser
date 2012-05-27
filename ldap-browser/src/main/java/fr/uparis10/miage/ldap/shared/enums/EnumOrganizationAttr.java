@@ -21,46 +21,72 @@ package fr.uparis10.miage.ldap.shared.enums;
 import fr.uparis10.miage.ldap.server.itf.IIndexable;
 
 /**
+ * Note : No need to index the attributes of this class - there will be only 1 object in the whole LDAP tree.
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public enum EnumGroupAttr implements IIndexable {
+public enum EnumOrganizationAttr implements IIndexable {
 	// Generic
 	objectClass,
-	
-	// Inherited from  "groupOfNames" class:
-	member,
-	cn(true),
-	businessCategory(true),
+
+	// Inherited from "organization" class:
+	o,
+	userPassword,
+	searchGuide,
 	seeAlso,
-	owner(true),
-	ou(true),
-	o(true),
+	businessCategory,
+	x121Address,
+	registeredAddress,
+	destinationIndicator,
+	preferredDeliveryMethod,
+	telexNumber,
+	teletexTerminalIdentifier ,
+	telephoneNumber,
+	internationaliSDNNumber,
+	facsimileTelephoneNumber,
+	street,
+	postOfficeBox,
+	postalCode,
+	postalAddress,
+	physicalDeliveryOfficeName,
+	st,
+	l,
 	description,
-
-	// Inherited from "supannGroupe" class:
-	supannGroupeDateFin,
-	supannGroupeAdminDN(true),
-	supannGroupeLecteurDN(true),
-	supannRefId(true);
-
+	
+	// Inherited from "supannOrg" class:
+	supannEtablissement,
+	
+	// Inherited from "supannEntite" class:
+	supannCodeEntite(true),
+	supannTypeEntite(true),
+	supannCodeEntiteParent(true),
+	supannRefId(true),
+	
+	// Inherited from "eduOrg" class:
+	cn,
+	eduOrgHomePageURI,
+	eduOrgIdentityAuthNPolicyURI,
+	eduOrgLegalName,
+	eduOrgSuperiorURI,
+	eduOrgWhitePagesURI;
+	
 	@SuppressWarnings("rawtypes")
 	private final Class _type;
 	private final boolean _isIndexed;
 
-	private EnumGroupAttr() {
+	private EnumOrganizationAttr() {
 		this(String.class, false);
 	}
 
-	private EnumGroupAttr(@SuppressWarnings("rawtypes") final Class parType) {
+	private EnumOrganizationAttr(@SuppressWarnings("rawtypes") final Class parType) {
 		this(parType, false);
 	}
 
-	private EnumGroupAttr(final boolean parDoIndex) {
+	private EnumOrganizationAttr(final boolean parDoIndex) {
 		this(String.class, parDoIndex);
 	}
 
-	private EnumGroupAttr(@SuppressWarnings("rawtypes") final Class parType, final boolean parDoIndex) {
+	private EnumOrganizationAttr(@SuppressWarnings("rawtypes") final Class parType, final boolean parDoIndex) {
 		_type = parType;
 		_isIndexed = parDoIndex;
 	}

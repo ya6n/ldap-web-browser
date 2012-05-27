@@ -24,43 +24,57 @@ import fr.uparis10.miage.ldap.server.itf.IIndexable;
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public enum EnumGroupAttr implements IIndexable {
+public enum EnumOrgUnitAttr implements IIndexable {
 	// Generic
 	objectClass,
 	
-	// Inherited from  "groupOfNames" class:
-	member,
-	cn(true),
-	businessCategory(true),
-	seeAlso,
-	owner(true),
+	// Inherited from "organizationalUnit" class:
 	ou(true),
-	o(true),
-	description,
-
-	// Inherited from "supannGroupe" class:
-	supannGroupeDateFin,
-	supannGroupeAdminDN(true),
-	supannGroupeLecteurDN(true),
+	userPassword,
+	searchGuide(true),
+	seeAlso,
+	businessCategory(true),
+	x121Address(true),
+	registeredAddress(true),
+	destinationIndicator(true),
+	preferredDeliveryMethod(true),
+	telexNumber(true),
+	teletexTerminalIdentifier(true),
+	telephoneNumber(true),
+	internationaliSDNNumber(true),
+	facsimileTelephoneNumber(true),
+	street(true),
+	postOfficeBox(true),
+	postalCode(true),
+	postalAddress(true),
+	physicalDeliveryOfficeName(true),
+	st,
+	l,
+	description(true),
+	
+	// Inherited from "supannEntite" class:
+	supannCodeEntite(true),
+	supannTypeEntite(true),
+	supannCodeEntiteParent(true),
 	supannRefId(true);
-
+	
 	@SuppressWarnings("rawtypes")
 	private final Class _type;
 	private final boolean _isIndexed;
 
-	private EnumGroupAttr() {
+	private EnumOrgUnitAttr() {
 		this(String.class, false);
 	}
 
-	private EnumGroupAttr(@SuppressWarnings("rawtypes") final Class parType) {
+	private EnumOrgUnitAttr(@SuppressWarnings("rawtypes") final Class parType) {
 		this(parType, false);
 	}
 
-	private EnumGroupAttr(final boolean parDoIndex) {
+	private EnumOrgUnitAttr(final boolean parDoIndex) {
 		this(String.class, parDoIndex);
 	}
 
-	private EnumGroupAttr(@SuppressWarnings("rawtypes") final Class parType, final boolean parDoIndex) {
+	private EnumOrgUnitAttr(@SuppressWarnings("rawtypes") final Class parType, final boolean parDoIndex) {
 		_type = parType;
 		_isIndexed = parDoIndex;
 	}

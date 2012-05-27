@@ -38,9 +38,9 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.validation.constraints.NotNull;
 
-import fr.uparis10.miage.ldap.exc.DataNotLoadedException;
 import fr.uparis10.miage.ldap.server.itf.IIndexable;
 import fr.uparis10.miage.ldap.server.utils.MapUtils;
+import fr.uparis10.miage.ldap.shared.exc.DataNotLoadedException;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
@@ -72,7 +72,7 @@ public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE ex
 		}
 	}
 
-	public final List<V_TYPE> search(@NotNull final I_TYPE parIndex, @NotNull final K_TYPE parKeyVal) throws DataNotLoadedException {
+	public final List<V_TYPE> indexedSearch(@NotNull final I_TYPE parIndex, @NotNull final K_TYPE parKeyVal) throws DataNotLoadedException {
 		if (!_isDataLoaded) {
 			throw new DataNotLoadedException();
 		}
@@ -90,7 +90,7 @@ public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE ex
 		}
 	}
 
-	public final List<V_TYPE> search(final K_TYPE parKeyVal) throws DataNotLoadedException {
+	public final List<V_TYPE> indexedSearch(final K_TYPE parKeyVal) throws DataNotLoadedException {
 		if (!_isDataLoaded) {
 			throw new DataNotLoadedException();
 		}
@@ -117,7 +117,13 @@ public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE ex
 	/**
 	 * ACHTUNG: Non-indexed search - very heavy
 	 */
-	public final List<V_TYPE> dummySearch(@NotNull final K_TYPE parKeyVal, final boolean parIsCaseSens) throws DataNotLoadedException {
+	public final List<V_TYPE> dummySearch(@NotNull final K_TYPE parKeyVal) throws DataNotLoadedException {
+		return dummySearch(parKeyVal, false, false);
+	}
+	/**
+	 * ACHTUNG: Non-indexed search - very heavy
+	 */
+	public final List<V_TYPE> dummySearch(@NotNull final K_TYPE parKeyVal, final boolean parExactMatch, final boolean parIsCaseSens) throws DataNotLoadedException {
 		if (!_isDataLoaded) {
 			throw new DataNotLoadedException();
 		}
@@ -128,7 +134,7 @@ public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE ex
 			for (final V_TYPE locObject : _valList) {
 				for (final K_TYPE locKeyVal : locObject.values()) {
 					final String locSearchInto = parIsCaseSens ? locKeyVal.toString() : locKeyVal.toString().toLowerCase();
-					if (locSearchInto.contains(locSearchFor)) {
+					if (parExactMatch ? locSearchInto.equals(locSearchFor) : locSearchInto.contains(locSearchFor)) {
 						locResList.add(locObject);
 						break;
 					}

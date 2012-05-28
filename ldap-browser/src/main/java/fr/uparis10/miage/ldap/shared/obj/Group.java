@@ -56,19 +56,23 @@ public class Group extends EnumMap<EnumGroupAttr, String> implements IHasPrimary
 		return locCN.compareTo(locOtherCN);
 	}
 
-	/* (non-Javadoc)
-   * @see fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey#getPrimaryKey()
-   */
-  @Override
-  public final EnumGroupAttr getPrimaryKey() {
-  	return EnumGroupAttr.cn;
-  }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey#getPrimaryKey()
+	 */
+	@Override
+	public final EnumGroupAttr getPrimaryKey() {
+		return EnumGroupAttr.cn;
+	}
 
-	/* (non-Javadoc)
-   * @see fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey#getPrimaryKeyValue()
-   */
-  @Override
-  public final String getPrimaryKeyValue() {
-  	return get(getPrimaryKey());
-  }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey#getPrimaryKeyValue()
+	 */
+	@Override
+	public final String getPrimaryKeyValue() {
+		return get(getPrimaryKey());
+	}
 }

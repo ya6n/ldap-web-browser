@@ -22,9 +22,9 @@ import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.validation.constraints.NotNull;
 
-import fr.uparis10.miage.ldap.server.itf.IDecoder;
-import fr.uparis10.miage.ldap.server.itf.IIndexable;
-import fr.uparis10.miage.ldap.server.utils.StringUtils;
+import fr.uparis10.miage.ldap.shared.itf.IDecoder;
+import fr.uparis10.miage.ldap.shared.itf.IIndexable;
+import fr.uparis10.miage.ldap.shared.utils.StringUtils;
 
 /**
  * Note : No need to index the attributes of this class - there will be only 1

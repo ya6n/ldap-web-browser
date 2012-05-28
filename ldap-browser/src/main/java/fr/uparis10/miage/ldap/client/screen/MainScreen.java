@@ -34,11 +34,16 @@ public class MainScreen extends BorderLayoutContainer {
 
 		ContentManager contMan = ContentManager.getInstance();
 
-		setNorthWidget(contMan.getHeader(), new BorderLayoutData(100));
+		BorderLayoutData layoutData = new BorderLayoutData(100);
+		layoutData.setCollapsible(true);
+		setNorthWidget(contMan.getHeader(), layoutData);
 		setCenterWidget(contMan.getContainer(), new BorderLayoutData());
-		setWestWidget(contMan.getLdapTreeScreen(), new BorderLayoutData(250));
-		setSouthWidget(contMan.getFooter(), new BorderLayoutData(100));
+		layoutData = new BorderLayoutData(250);
+		layoutData.setCollapsible(true);
+		setWestWidget(contMan.getLdapTreeScreen(), layoutData);
+		// layoutData = new BorderLayoutData(100);
+		// layoutData.setCollapsible(true);
+		// setSouthWidget(contMan.getFooter(), layoutData);
 
 	}
-
 }

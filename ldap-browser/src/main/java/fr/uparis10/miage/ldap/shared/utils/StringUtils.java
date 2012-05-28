@@ -16,13 +16,13 @@
  *
  * Creation date: May 28, 2012
  */
-package fr.uparis10.miage.ldap.server.utils;
+package fr.uparis10.miage.ldap.shared.utils;
 
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.validation.constraints.NotNull;
 
-import fr.uparis10.miage.ldap.server.itf.IDecoder;
+import fr.uparis10.miage.ldap.shared.itf.IDecoder;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>

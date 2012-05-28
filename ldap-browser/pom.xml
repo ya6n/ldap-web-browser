@@ -257,7 +257,7 @@
               <goal>compile</goal>
               <goal>test</goal>
               <goal>i18n</goal>
-              <goal>generateAsync</goal>
+              <!-- <goal>generateAsync</goal> -->
             </goals>
           </execution>
         </executions>
@@ -304,7 +304,7 @@
                     <artifactId>gwt-maven-plugin</artifactId>
                     <versionRange>[2.4.0,)</versionRange>
                     <goals>
-                      <goal>generateAsync</goal>
+                      <!-- <goal>generateAsync</goal>  -->
                       <goal>i18n</goal>
                     </goals>
                   </pluginExecutionFilter>

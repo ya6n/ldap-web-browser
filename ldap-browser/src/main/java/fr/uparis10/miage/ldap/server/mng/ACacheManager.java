@@ -38,9 +38,9 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.validation.constraints.NotNull;
 
-import fr.uparis10.miage.ldap.server.itf.IIndexable;
 import fr.uparis10.miage.ldap.server.utils.MapUtils;
 import fr.uparis10.miage.ldap.shared.exc.DataNotLoadedException;
+import fr.uparis10.miage.ldap.shared.itf.IIndexable;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>

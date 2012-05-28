@@ -20,10 +20,10 @@ package fr.uparis10.miage.ldap.shared.itf;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
- *
+ * 
  */
-public interface IHasPrimaryKey<K_TYPE,V_TYPE> {
+public interface IHasPrimaryKey<K_TYPE, V_TYPE> {
 	public K_TYPE getPrimaryKey();
-	
+
 	public V_TYPE getPrimaryKeyValue();
 }

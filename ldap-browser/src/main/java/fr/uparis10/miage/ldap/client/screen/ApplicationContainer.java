@@ -36,7 +36,7 @@ public class ApplicationContainer extends ContentPanel {
 
 		tabPanel = new TabPanel();
 
-		tabPanel.setResizeTabs(true);
+		tabPanel.setResizeTabs(false);
 		tabPanel.setAnimScroll(true);
 		tabPanel.setTabScroll(true);
 		tabPanel.setCloseContextMenu(true);
@@ -63,4 +63,14 @@ public class ApplicationContainer extends ContentPanel {
 		// new HTMLPanel("<center>Bienvenue dans LDAP Browser</center>"), item);
 
 	}
+
+	public void openScreen(Screen screen) {
+		TabItemConfig item = new TabItemConfig(screen.getTitle(), true);
+
+		SimpleContainer simpleContainer = new SimpleContainer();
+		simpleContainer.add(screen);
+		tabPanel.add(simpleContainer, item);
+		tabPanel.setActiveWidget(simpleContainer);
+	}
+
 }

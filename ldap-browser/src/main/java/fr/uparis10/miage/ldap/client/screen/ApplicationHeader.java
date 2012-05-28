@@ -3,18 +3,72 @@
  */
 package fr.uparis10.miage.ldap.client.screen;
 
+import com.google.gwt.user.client.ui.Image;
+import com.sencha.gxt.cell.core.client.ButtonCell.ButtonArrowAlign;
+import com.sencha.gxt.cell.core.client.ButtonCell.ButtonScale;
+import com.sencha.gxt.cell.core.client.ButtonCell.IconAlign;
 import com.sencha.gxt.widget.core.client.ContentPanel;
+import com.sencha.gxt.widget.core.client.button.TextButton;
+import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.SimpleContainer;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
+import fr.uparis10.miage.ldap.client.ContentManager;
+import fr.uparis10.miage.ldap.client.resources.icons.IconsStore;
 
 /**
  * @author iogorode
  * 
  */
-public class ApplicationHeader extends ContentPanel {
+public class ApplicationHeader extends BorderLayoutContainer {
+
+	private Image logo;
+
+	private ContentPanel info;
+
+	private ToolBar menu;
 
 	/**
 	 * 
 	 */
 	public ApplicationHeader() {
-		setHeaderVisible(false);
+
+		logo = new Image("images/logo-mos-car.png");
+		SimpleContainer logoContainer = new SimpleContainer();
+		logoContainer.add(logo);
+
+		info = new ContentPanel();
+		info.setHeaderVisible(false);
+		info.setBodyBorder(false);
+		info.setBorders(false);
+
+		menu = getMenu();
+
+		setWestWidget(logoContainer, new BorderLayoutData(250));
+		setCenterWidget(menu, new BorderLayoutData());
+		setEastWidget(info, new BorderLayoutData(250));
+
+	}
+
+	private ToolBar getMenu() {
+		ToolBar toolBar = new ToolBar();
+
+		TextButton btn = new TextButton("Simple Search", IconsStore.INSTANCE.searchImg());
+		btn.setScale(ButtonScale.LARGE);
+		btn.setIconAlign(IconAlign.TOP);
+		btn.setArrowAlign(ButtonArrowAlign.BOTTOM);
+
+		btn.addSelectHandler(new SelectHandler() {
+
+			@Override
+			public void onSelect(SelectEvent event) {
+				ContentManager.getInstance().getContainer().openScreen(new PeopleSearchScreen());
+			}
+		});
+		toolBar.add(btn);
+
+		return toolBar;
 	}
 }

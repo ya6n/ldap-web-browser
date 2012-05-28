@@ -31,8 +31,8 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import fr.uparis10.miage.ldap.junit.AssertUtils;
-import fr.uparis10.miage.ldap.server.itf.IIndexable;
 import fr.uparis10.miage.ldap.shared.exc.DataNotLoadedException;
+import fr.uparis10.miage.ldap.shared.itf.IIndexable;
 
 /**
  * This class will test:<br>

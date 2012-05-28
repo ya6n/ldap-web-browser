@@ -17,8 +17,8 @@ public class ContentManager {
 
 	private static ContentManager instance = null;
 
-	private final ContentPanel header;
-	private final ContentPanel container;
+	private final ApplicationHeader header;
+	private final ApplicationContainer container;
 	private final LdapTreeScreen ldapTreeScreen;
 	private final ContentPanel footer;
 
@@ -40,14 +40,14 @@ public class ContentManager {
 	/**
 	 * @return the header
 	 */
-	public ContentPanel getHeader() {
+	public ApplicationHeader getHeader() {
 		return header;
 	}
 
 	/**
 	 * @return the container
 	 */
-	public ContentPanel getContainer() {
+	public ApplicationContainer getContainer() {
 		return container;
 	}
 

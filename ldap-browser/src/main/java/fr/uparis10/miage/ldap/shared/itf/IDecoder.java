@@ -16,7 +16,7 @@
  *
  * Creation date: May 28, 2012
  */
-package fr.uparis10.miage.ldap.server.itf;
+package fr.uparis10.miage.ldap.shared.itf;
 
 import javax.validation.constraints.NotNull;
 

@@ -264,7 +264,7 @@
         </executions>
         <!-- Plugin configuration. There are many available options, see gwt-maven-plugin documentation at codehaus.org -->
         <configuration>
-          <runTarget>ldap-browser.html</runTarget>
+          <runTarget>LDAPBrowser.html</runTarget>
           <hostedWebapp>${webappDirectory}</hostedWebapp>
           <i18nMessagesBundle>fr.uparis10.miage.ldap.client.Messages</i18nMessagesBundle>
         </configuration>

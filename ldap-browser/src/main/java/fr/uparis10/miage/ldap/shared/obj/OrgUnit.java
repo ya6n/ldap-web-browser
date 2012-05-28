@@ -21,12 +21,13 @@ package fr.uparis10.miage.ldap.shared.obj;
 import java.util.EnumMap;
 
 import fr.uparis10.miage.ldap.shared.enums.EnumOrgUnitAttr;
+import fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  *
  */
-public class OrgUnit extends EnumMap<EnumOrgUnitAttr, String>{
+public class OrgUnit extends EnumMap<EnumOrgUnitAttr, String> implements IHasPrimaryKey<EnumOrgUnitAttr, String>,Comparable<OrgUnit>{
 
 	/**
    * @param keyType
@@ -40,4 +41,36 @@ public class OrgUnit extends EnumMap<EnumOrgUnitAttr, String>{
    */
   private static final long serialVersionUID = 1L;
 
+	/* (non-Javadoc)
+   * @see java.lang.Comparable#compareTo(java.lang.Object)
+   */
+  @Override
+  public final int compareTo(final OrgUnit parOther) {
+  	final String locOU = getPrimaryKeyValue();
+  	assert (null != locOU);
+  	final String locOtherOU = parOther.getPrimaryKeyValue();
+  	assert (null != locOtherOU);
+
+	  return locOU.compareTo(locOtherOU);
+  }
+  
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey#getPrimaryKey()
+	 */
+	@Override
+	public final EnumOrgUnitAttr getPrimaryKey() {
+		return EnumOrgUnitAttr.ou;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey#getPrimaryKeyValue()
+	 */
+	@Override
+	public final String getPrimaryKeyValue() {
+		return get(getPrimaryKey());
+	}
 }

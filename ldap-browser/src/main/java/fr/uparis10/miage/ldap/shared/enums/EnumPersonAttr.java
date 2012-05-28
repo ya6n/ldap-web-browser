@@ -18,18 +18,36 @@
  */
 package fr.uparis10.miage.ldap.shared.enums;
 
+import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
+import javax.validation.constraints.NotNull;
+
+import fr.uparis10.miage.ldap.server.itf.IDecoder;
 import fr.uparis10.miage.ldap.server.itf.IIndexable;
+import fr.uparis10.miage.ldap.server.utils.StringUtils;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public enum EnumPersonAttr implements IIndexable {
+public enum EnumPersonAttr implements IIndexable<String>, IDecoder<Object,String> {
 	// Generic
 	objectClass,
-	
+
 	// Inherited from "person" class:
-	sn(true), cn(true), userPassword, telephoneNumber(true), seeAlso, description(true),
+	sn(true),
+	cn(true),
+	userPassword {
+		@Override
+		public final String decodeValue(@NotNull final Object parObj) {
+			assert (parObj instanceof byte[]);
+			final String locDecStr = StringUtils.decodeByteArray((byte[]) parObj);
+			return locDecStr;
+		}
+	},
+	telephoneNumber(true),
+	seeAlso,
+	description(true),
 
 	// Inherited from "organizationalPerson" class:
 	title(true), x121Address(true), registeredAddress(true), destinationIndicator, preferredDeliveryMethod, telexNumber, teletexTerminalIdentifier, internationaliSDNNumber, facsimileTelephoneNumber(
@@ -83,4 +101,19 @@ public enum EnumPersonAttr implements IIndexable {
 		return _isIndexed;
 	}
 
+	/* (non-Javadoc)
+   * @see fr.uparis10.miage.ldap.server.itf.IIndexable#decodeAttribute(javax.naming.directory.Attribute)
+   */
+  @Override
+  public final String decodeAttribute(@NotNull final Attribute parInput) throws NamingException {
+  	return StringUtils.decodeAttribute(parInput, this);
+  }
+
+  /* (non-Javadoc)
+   * @see fr.uparis10.miage.ldap.server.itf.IDecoder#decodeValue(java.lang.Object)
+   */
+  @Override
+  public String decodeValue(@NotNull final Object parInput) {
+	  return parInput.toString();
+  }
 }

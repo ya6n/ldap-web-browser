@@ -14,20 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Creation date: May 27, 2012
+ * Creation date: May 28, 2012
  */
 package fr.uparis10.miage.ldap.server.itf;
 
-import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
 import javax.validation.constraints.NotNull;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public interface IIndexable<K_TYPE> {
-	public boolean isIndexed();
-
-	public K_TYPE decodeAttribute(@NotNull final Attribute parInput) throws NamingException;
+public interface IDecoder<I_TYPE, O_TYPE> {
+	public O_TYPE decodeValue(@NotNull final I_TYPE parInput);
 }

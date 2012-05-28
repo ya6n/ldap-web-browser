@@ -18,35 +18,31 @@
  */
 package fr.uparis10.miage.ldap.server.mng;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import fr.uparis10.miage.ldap.shared.enums.EnumPersonAttr;
-import fr.uparis10.miage.ldap.shared.exc.DataNotLoadedException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import javax.naming.NamingException;
+import javax.naming.directory.DirContext;
+
+import org.junit.Test;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public final class PeopleManagerTest {
-
-	@Before
-	public final void beforeTest() {
-		PeopleManager.getInstance().refresh();
-	}
+public final class LdapCtxManagerTest {
 
 	@Test(timeout = 10000L)
-	public final void testDummySearchById() throws DataNotLoadedException {
-		SearchTestUtils.testDummySearchById(PeopleManager.getInstance(), EnumPersonAttr.uid);
-	}
-
-	@Test(timeout = 10000L)
-	public final void testIndexedSearchWhiteBox() throws DataNotLoadedException {
-		SearchTestUtils.testIndexedSearchWhiteBox(PeopleManager.getInstance(), EnumPersonAttr.uid);
-	}
-
-	@Test(timeout = 10000L)
-	public final void testIndexedSearchBlackBox() throws DataNotLoadedException {
-		SearchTestUtils.testIndexedSearchBlackBox(PeopleManager.getInstance(), EnumPersonAttr.uid);
+	public final void testGetContextAndDn() throws FileNotFoundException, IOException, NamingException {
+		final DirContext locCtx = LdapCtxManager.getInstance().getContext();
+		final String locBaseDn = LdapCtxManager.getInstance().getBaseDN();
+		assertNotNull(locCtx);
+		assertNotNull(locBaseDn);
+		assertTrue(!locBaseDn.isEmpty());
+		final Object locBaseObj = locCtx.lookup(locBaseDn);
+		assertNotNull(locBaseObj);
 	}
 }

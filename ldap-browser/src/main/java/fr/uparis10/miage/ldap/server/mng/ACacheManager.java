@@ -46,7 +46,7 @@ import fr.uparis10.miage.ldap.shared.exc.DataNotLoadedException;
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE extends Map<I_TYPE, K_TYPE>> {
+public abstract class ACacheManager<I_TYPE extends IIndexable<K_TYPE>, K_TYPE, V_TYPE extends Map<I_TYPE, K_TYPE>> {
 	private final ReadWriteLock _dataLock = new ReentrantReadWriteLock();
 	private List<V_TYPE> _valList;
 	private boolean _isDataLoaded = false;
@@ -120,10 +120,12 @@ public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE ex
 	public final List<V_TYPE> dummySearch(@NotNull final K_TYPE parKeyVal) throws DataNotLoadedException {
 		return dummySearch(parKeyVal, false, false);
 	}
+
 	/**
 	 * ACHTUNG: Non-indexed search - very heavy
 	 */
-	public final List<V_TYPE> dummySearch(@NotNull final K_TYPE parKeyVal, final boolean parExactMatch, final boolean parIsCaseSens) throws DataNotLoadedException {
+	public final List<V_TYPE> dummySearch(@NotNull final K_TYPE parKeyVal, final boolean parExactMatch, final boolean parIsCaseSens)
+	    throws DataNotLoadedException {
 		if (!_isDataLoaded) {
 			throw new DataNotLoadedException();
 		}
@@ -147,6 +149,13 @@ public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE ex
 		} finally {
 			_dataLock.readLock().unlock();
 		}
+	}
+
+	/**
+	 * @return an unmodifiable list containing all the objects in the system
+	 */
+	public final List<V_TYPE> getAllObjList() {
+		return Collections.<V_TYPE> unmodifiableList(_valList);
 	}
 
 	/**
@@ -191,19 +200,13 @@ public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE ex
 			final I_TYPE locAttrEnum;
 			try {
 				locAttrEnum = valueOfIndex(locAttrName);
-			} catch(final RuntimeException locExc) {
+			} catch (final RuntimeException locExc) {
 				Logger.getLogger(ACacheManager.class.getName()).log(Level.SEVERE, "For attribute value [" + locAttrName + "]", locExc);
 				throw locExc;
 			}
 			assert (null != locAttrEnum);
-			assert (locAttr.size() > 0);
-			final StringBuilder locAttrVal = new StringBuilder();
-			locAttrVal.append(locAttr.get(0));
-			for (int locI = 1; locI < locAttr.size(); ++locI) {
-				locAttrVal.append(';').append(locAttr.get(locI));
-			}
-			// Not so nice, but it will work for the moment
-			locResMap.put(locAttrEnum, valueOfKey(locAttrVal.toString()));
+
+			locResMap.put(locAttrEnum, locAttrEnum.decodeAttribute(locAttr));
 		}
 
 		return locResMap;
@@ -242,6 +245,4 @@ public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE ex
 	protected abstract V_TYPE createNewObject();
 
 	protected abstract I_TYPE valueOfIndex(final String parName);
-
-	protected abstract K_TYPE valueOfKey(final String parName);
 }

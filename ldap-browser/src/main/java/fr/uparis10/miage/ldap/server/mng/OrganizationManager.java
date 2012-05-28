@@ -98,15 +98,4 @@ public final class OrganizationManager extends ACacheManager<EnumOrganizationAtt
 	protected final EnumOrganizationAttr valueOfIndex(final String parName) {
 		return EnumOrganizationAttr.valueOf(parName);
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * fr.uparis10.miage.ldap.server.ACacheManager#valueOfKey(java.lang.String)
-	 */
-	@Override
-	protected final String valueOfKey(final String parName) {
-		return parName;
-	}
 }

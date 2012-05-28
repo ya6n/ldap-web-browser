@@ -18,17 +18,23 @@
  */
 package fr.uparis10.miage.ldap.shared.enums;
 
+import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
+import javax.validation.constraints.NotNull;
+
+import fr.uparis10.miage.ldap.server.itf.IDecoder;
 import fr.uparis10.miage.ldap.server.itf.IIndexable;
+import fr.uparis10.miage.ldap.server.utils.StringUtils;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public enum EnumGroupAttr implements IIndexable {
+public enum EnumGroupAttr implements IIndexable<String>, IDecoder<Object, String> {
 	// Generic
 	objectClass,
-	
-	// Inherited from  "groupOfNames" class:
+
+	// Inherited from "groupOfNames" class:
 	member,
 	cn(true),
 	businessCategory(true),
@@ -75,4 +81,26 @@ public enum EnumGroupAttr implements IIndexable {
 		return _isIndexed;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.uparis10.miage.ldap.server.itf.IIndexable#decodeAttribute(javax.naming
+	 * .directory.Attribute)
+	 */
+	@Override
+	public final String decodeAttribute(@NotNull final Attribute parInput) throws NamingException {
+		return StringUtils.decodeAttribute(parInput, this);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.uparis10.miage.ldap.server.itf.IDecoder#decodeValue(java.lang.Object)
+	 */
+	@Override
+	public final String decodeValue(@NotNull final Object parInput) {
+		return parInput.toString();
+	}
 }

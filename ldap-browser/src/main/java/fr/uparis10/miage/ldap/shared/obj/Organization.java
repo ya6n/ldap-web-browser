@@ -21,23 +21,59 @@ package fr.uparis10.miage.ldap.shared.obj;
 import java.util.EnumMap;
 
 import fr.uparis10.miage.ldap.shared.enums.EnumOrganizationAttr;
+import fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
- *
+ * 
  */
-public class Organization extends EnumMap<EnumOrganizationAttr, String>{
+public class Organization extends EnumMap<EnumOrganizationAttr, String> implements IHasPrimaryKey<EnumOrganizationAttr, String>, Comparable<Organization> {
 
 	/**
-   * @param keyType
-   */
-  public Organization() {
-	  super(EnumOrganizationAttr.class);
-  }
+	 * @param keyType
+	 */
+	public Organization() {
+		super(EnumOrganizationAttr.class);
+	}
 
 	/**
-   * Default Serial Version UID
-   */
-  private static final long serialVersionUID = 1L;
+	 * Default Serial Version UID
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public final int compareTo(final Organization parOther) {
+		final String locCN = getPrimaryKeyValue();
+		assert (null != locCN);
+		final String locOtherCN = parOther.getPrimaryKeyValue();
+		assert (null != locOtherCN);
+
+		return locCN.compareTo(locOtherCN);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey#getPrimaryKey()
+	 */
+	@Override
+	public final EnumOrganizationAttr getPrimaryKey() {
+		return EnumOrganizationAttr.cn;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey#getPrimaryKeyValue()
+	 */
+	@Override
+	public final String getPrimaryKeyValue() {
+		return get(getPrimaryKey());
+	}
 
 }

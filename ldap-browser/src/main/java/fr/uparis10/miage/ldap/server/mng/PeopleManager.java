@@ -21,8 +21,6 @@ package fr.uparis10.miage.ldap.server.mng;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import fr.uparis10.miage.ldap.shared.enums.EnumPersonAttr;
 import fr.uparis10.miage.ldap.shared.obj.Person;
@@ -99,16 +97,5 @@ public final class PeopleManager extends ACacheManager<EnumPersonAttr, String, P
 	@Override
 	protected final EnumPersonAttr valueOfIndex(final String parName) {
 		return EnumPersonAttr.valueOf(parName);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * fr.uparis10.miage.ldap.server.ACacheManager#valueOfKey(java.lang.String)
-	 */
-	@Override
-	protected final String valueOfKey(final String parName) {
-		return parName;
 	}
 }

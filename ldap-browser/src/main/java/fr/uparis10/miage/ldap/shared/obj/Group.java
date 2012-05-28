@@ -21,12 +21,13 @@ package fr.uparis10.miage.ldap.shared.obj;
 import java.util.EnumMap;
 
 import fr.uparis10.miage.ldap.shared.enums.EnumGroupAttr;
+import fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public class Group extends EnumMap<EnumGroupAttr, String> {
+public class Group extends EnumMap<EnumGroupAttr, String> implements IHasPrimaryKey<EnumGroupAttr, String>, Comparable<Group> {
 
 	/**
 	 * @param keyType
@@ -40,4 +41,34 @@ public class Group extends EnumMap<EnumGroupAttr, String> {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public final int compareTo(final Group parOther) {
+		final String locCN = getPrimaryKeyValue();
+		assert (null != locCN);
+		final String locOtherCN = parOther.getPrimaryKeyValue();
+		assert (null != locOtherCN);
+
+		return locCN.compareTo(locOtherCN);
+	}
+
+	/* (non-Javadoc)
+   * @see fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey#getPrimaryKey()
+   */
+  @Override
+  public final EnumGroupAttr getPrimaryKey() {
+  	return EnumGroupAttr.cn;
+  }
+
+	/* (non-Javadoc)
+   * @see fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey#getPrimaryKeyValue()
+   */
+  @Override
+  public final String getPrimaryKeyValue() {
+  	return get(getPrimaryKey());
+  }
 }

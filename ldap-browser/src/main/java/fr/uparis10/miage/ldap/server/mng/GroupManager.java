@@ -32,7 +32,7 @@ import fr.uparis10.miage.ldap.shared.obj.Group;
 public final class GroupManager extends ACacheManager<EnumGroupAttr, String, Group> {
 
 	private static final String _prefix = "ou=groups,";
-	private static final String _filter = "objectClass=organisationalUnit";
+	private static final String _filter = "objectClass=groupOfNames";
 
 	private static GroupManager _inst = null;
 
@@ -97,16 +97,5 @@ public final class GroupManager extends ACacheManager<EnumGroupAttr, String, Gro
 	@Override
 	protected final EnumGroupAttr valueOfIndex(final String parName) {
 		return EnumGroupAttr.valueOf(parName);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * fr.uparis10.miage.ldap.server.ACacheManager#valueOfKey(java.lang.String)
-	 */
-	@Override
-	protected final String valueOfKey(final String parName) {
-		return parName;
 	}
 }

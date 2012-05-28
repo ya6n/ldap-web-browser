@@ -18,34 +18,36 @@
  */
 package fr.uparis10.miage.ldap.server.mng;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import fr.uparis10.miage.ldap.shared.enums.EnumOrgUnitAttr;
+import fr.uparis10.miage.ldap.shared.exc.DataNotLoadedException;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public class OrgUnitManagerTest {
+public final class OrgUnitManagerTest {
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@Before
-	public void setUp() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-	}
-
-	@Test
-	public void test() {
+	public final void beforeTest() {
 		OrgUnitManager.getInstance().refresh();
-		// TODO: faire des tests unitaires
-		// fail("Not yet implemented");
 	}
+
+	@Test(timeout = 10000L)
+	public final void testDummySearchById() throws DataNotLoadedException {
+		SearchTestUtils.testDummySearchById(OrgUnitManager.getInstance(), EnumOrgUnitAttr.ou);
+	}
+
+	@Test(timeout = 10000L)
+	public final void testIndexedSearchWhiteBox() throws DataNotLoadedException {
+		SearchTestUtils.testIndexedSearchWhiteBox(OrgUnitManager.getInstance(), EnumOrgUnitAttr.ou);
+	}
+
+	@Test(timeout = 10000L)
+	public final void testIndexedSearchBlackBox() throws DataNotLoadedException {
+		SearchTestUtils.testIndexedSearchBlackBox(OrgUnitManager.getInstance(), EnumOrgUnitAttr.ou);
+	}
+
 }

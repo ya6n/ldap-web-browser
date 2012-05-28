@@ -18,16 +18,22 @@
  */
 package fr.uparis10.miage.ldap.shared.enums;
 
+import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
+import javax.validation.constraints.NotNull;
+
+import fr.uparis10.miage.ldap.server.itf.IDecoder;
 import fr.uparis10.miage.ldap.server.itf.IIndexable;
+import fr.uparis10.miage.ldap.server.utils.StringUtils;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public enum EnumOrgUnitAttr implements IIndexable {
+public enum EnumOrgUnitAttr implements IIndexable<String>, IDecoder<Object, String> {
 	// Generic
 	objectClass,
-	
+
 	// Inherited from "organizationalUnit" class:
 	ou(true),
 	userPassword,
@@ -51,13 +57,13 @@ public enum EnumOrgUnitAttr implements IIndexable {
 	st,
 	l,
 	description(true),
-	
+
 	// Inherited from "supannEntite" class:
 	supannCodeEntite(true),
 	supannTypeEntite(true),
 	supannCodeEntiteParent(true),
 	supannRefId(true);
-	
+
 	@SuppressWarnings("rawtypes")
 	private final Class _type;
 	private final boolean _isIndexed;
@@ -89,4 +95,26 @@ public enum EnumOrgUnitAttr implements IIndexable {
 		return _isIndexed;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.uparis10.miage.ldap.server.itf.IIndexable#decodeAttribute(javax.naming
+	 * .directory.Attribute)
+	 */
+	@Override
+	public final String decodeAttribute(@NotNull final Attribute parInput) throws NamingException {
+		return StringUtils.decodeAttribute(parInput, this);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.uparis10.miage.ldap.server.itf.IDecoder#decodeValue(java.lang.Object)
+	 */
+	@Override
+	public final String decodeValue(@NotNull final Object parInput) {
+		return parInput.toString();
+	}
 }

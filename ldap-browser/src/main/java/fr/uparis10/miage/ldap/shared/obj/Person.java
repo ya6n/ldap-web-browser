@@ -21,12 +21,13 @@ package fr.uparis10.miage.ldap.shared.obj;
 import java.util.EnumMap;
 
 import fr.uparis10.miage.ldap.shared.enums.EnumPersonAttr;
+import fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  *
  */
-public class Person extends EnumMap<EnumPersonAttr, String>{
+public class Person extends EnumMap<EnumPersonAttr, String> implements IHasPrimaryKey<EnumPersonAttr,String>, Comparable<Person>{
 
 	/**
    * @param keyType
@@ -40,4 +41,36 @@ public class Person extends EnumMap<EnumPersonAttr, String>{
    */
   private static final long serialVersionUID = 1L;
 
+	/* (non-Javadoc)
+   * @see java.lang.Comparable#compareTo(java.lang.Object)
+   */
+  @Override
+  public final int compareTo(final Person parOther) {
+  	final String locUID = getPrimaryKeyValue();
+  	assert (null != locUID);
+  	final String locOtherUID = parOther.getPrimaryKeyValue();
+  	assert (null != locOtherUID);
+
+	  return locUID.compareTo(locOtherUID);
+  }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey#getPrimaryKey()
+	 */
+	@Override
+	public final EnumPersonAttr getPrimaryKey() {
+		return EnumPersonAttr.uid;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey#getPrimaryKeyValue()
+	 */
+	@Override
+	public final String getPrimaryKeyValue() {
+		return get(getPrimaryKey());
+	}
 }

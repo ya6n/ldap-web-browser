@@ -1,9 +1,10 @@
 #Sun May 27 21:42:51 CEST 2012
-eclipse.preferences.version=1
-encoding//src/main/java=UTF-8
+#Mon May 28 04:01:38 CEST 2012
+eclipse.preferences.version=1encoding//src/main/java=UTF-8
 encoding//src/main/java/fr/uparis10/miage/ldap/client/resources/messages/PeopleSearchScreenMessages.properties=UTF-8
 encoding//src/main/java/fr/uparis10/miage/ldap/client/resources/messages/PeopleSearchScreenMessages_fr.properties=UTF-8
 encoding//src/main/resources=UTF-8
+encoding//src/main/resources/fr/uparis10/miage/ldap/shared/enums/EnumPersonAttr_fr.properties=UTF-8
 encoding//src/test/java=UTF-8
 encoding//src/test/resources=UTF-8
 encoding/<project>=UTF-8

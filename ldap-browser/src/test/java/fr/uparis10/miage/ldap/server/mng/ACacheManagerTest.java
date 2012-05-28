@@ -18,7 +18,8 @@
  */
 package fr.uparis10.miage.ldap.server.mng;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
@@ -45,7 +46,7 @@ import fr.uparis10.miage.ldap.shared.itf.IIndexable;
  * 
  */
 @RunWith(Parameterized.class)
-public final class ACacheManagerTest<I_TYPE extends IIndexable<String>, V_TYPE extends Map<I_TYPE, String> & Comparable<V_TYPE>> {
+public final class ACacheManagerTest<I_TYPE extends IIndexable, V_TYPE extends Map<I_TYPE, String> & Comparable<V_TYPE>> {
 	final ACacheManager<I_TYPE, String, V_TYPE> _mng;
 
 	public ACacheManagerTest(final ACacheManager<I_TYPE, String, V_TYPE> parMng) {
@@ -88,7 +89,7 @@ public final class ACacheManagerTest<I_TYPE extends IIndexable<String>, V_TYPE e
 		final Map<I_TYPE, Map<String, List<V_TYPE>>> locIndex2 = _mng.createNewIndex();
 		assertNotNull(locIndex2);
 		assertTrue(locIndex2.isEmpty());
-		
+
 		assertTrue(locIndex1 != locIndex2);
 	}
 
@@ -98,7 +99,7 @@ public final class ACacheManagerTest<I_TYPE extends IIndexable<String>, V_TYPE e
 		assertNotNull(locObj1);
 		final V_TYPE locObj2 = _mng.createNewObject();
 		assertNotNull(locObj2);
-		
+
 		assertTrue(locObj1 != locObj2);
 	}
 
@@ -107,24 +108,24 @@ public final class ACacheManagerTest<I_TYPE extends IIndexable<String>, V_TYPE e
 		final List<V_TYPE> locAllObjList = _mng.getAllObjList();
 		assertNotNull(locAllObjList);
 		assertTrue(!locAllObjList.isEmpty());
-		
+
 		final List<V_TYPE> locSearchList = _mng.dummySearch("");
 		assertNotNull(locSearchList);
 		assertTrue(!locSearchList.isEmpty());
-		
+
 		AssertUtils.assertListsAreSame(locAllObjList, locSearchList);
 	}
-	
+
 	@Test(timeout = 10000L)
 	public final void testDummySearcWhiteBox() throws DataNotLoadedException {
 		final List<V_TYPE> locAllObjList = _mng.getAllObjList();
 		assertNotNull(locAllObjList);
 		assertTrue(!locAllObjList.isEmpty());
-		
+
 		final List<V_TYPE> locSearchList = _mng.dummySearch("", false, true);
 		assertNotNull(locSearchList);
 		assertTrue(!locSearchList.isEmpty());
-		
+
 		AssertUtils.assertListsAreSame(locAllObjList, locSearchList);
 	}
 }

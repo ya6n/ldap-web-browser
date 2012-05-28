@@ -16,23 +16,30 @@
  *
  * Creation date: May 28, 2012
  */
-package fr.uparis10.miage.ldap.shared.utils;
+package fr.uparis10.miage.ldap.server.utils;
 
+import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
 import javax.validation.constraints.NotNull;
+
+import fr.uparis10.miage.ldap.shared.itf.IDecoder;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public class StringUtils {
+public final class ServerStringUtils {
 
-	public final static String decodeByteArray(@NotNull final byte[] parArray) {
-		final StringBuilder locStrBld = new StringBuilder(parArray.length);
-		for (final byte locByte : parArray) {
-			locStrBld.append((char) locByte);
+	public final static <I_TYPE> String decodeAttribute(@NotNull final Attribute parAttr, @NotNull IDecoder<Object, String> parDecoder) throws NamingException {
+		assert (parAttr.size() > 0);
+		if (parAttr.size() == 1) {
+			return parDecoder.decodeValue(parAttr.get(0));
 		}
-
-		return locStrBld.toString();
+		final StringBuilder locAttrVal = new StringBuilder();
+		locAttrVal.append(parDecoder.decodeValue(parAttr.get(0)));
+		for (int locI = 1; locI < parAttr.size(); ++locI) {
+			locAttrVal.append(';').append(parDecoder.decodeValue(parAttr.get(locI)));
+		}
+		return locAttrVal.toString();
 	}
-
 }

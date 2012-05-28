@@ -22,6 +22,11 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
+import javax.validation.constraints.NotNull;
+
+import fr.uparis10.miage.ldap.server.utils.ServerStringUtils;
 import fr.uparis10.miage.ldap.shared.enums.EnumOrgUnitAttr;
 import fr.uparis10.miage.ldap.shared.obj.OrgUnit;
 
@@ -97,5 +102,17 @@ public final class OrgUnitManager extends ACacheManager<EnumOrgUnitAttr, String,
 	@Override
 	protected final EnumOrgUnitAttr valueOfIndex(final String parName) {
 		return EnumOrgUnitAttr.valueOf(parName);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.uparis10.miage.ldap.server.itf.IIndexable#decodeAttribute(javax.naming
+	 * .directory.Attribute)
+	 */
+	@Override
+	public final String decodeAttribute(@NotNull final Attribute parInput, @NotNull final EnumOrgUnitAttr parType) throws NamingException {
+		return ServerStringUtils.decodeAttribute(parInput, parType);
 	}
 }

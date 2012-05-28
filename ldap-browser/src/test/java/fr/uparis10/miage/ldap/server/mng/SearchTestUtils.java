@@ -34,7 +34,7 @@ import fr.uparis10.miage.ldap.shared.itf.IIndexable;
  * 
  */
 public final class SearchTestUtils {
-	public final static <I_TYPE extends IIndexable<String>, V_TYPE extends Map<I_TYPE, String> & Comparable<V_TYPE>>
+	public final static <I_TYPE extends IIndexable, V_TYPE extends Map<I_TYPE, String> & Comparable<V_TYPE>>
 	    void testDummySearchById(
 	        @NotNull final ACacheManager<I_TYPE, String, V_TYPE> parMng,
 	        @NotNull final I_TYPE parIndex) throws DataNotLoadedException {
@@ -51,7 +51,7 @@ public final class SearchTestUtils {
 		}
 	}
 
-	public final static <I_TYPE extends IIndexable<String>, V_TYPE extends Map<I_TYPE, String> & Comparable<V_TYPE>>
+	public final static <I_TYPE extends IIndexable, V_TYPE extends Map<I_TYPE, String> & Comparable<V_TYPE>>
 	    void testIndexedSearchWhiteBox(
 	        @NotNull final ACacheManager<I_TYPE, String, V_TYPE> parMng,
 	        @NotNull final I_TYPE parIndex) throws DataNotLoadedException {
@@ -68,7 +68,7 @@ public final class SearchTestUtils {
 		}
 	}
 
-	public final static <I_TYPE extends IIndexable<String>, V_TYPE extends Map<I_TYPE, String> & Comparable<V_TYPE>>
+	public final static <I_TYPE extends IIndexable, V_TYPE extends Map<I_TYPE, String> & Comparable<V_TYPE>>
 	    void testIndexedSearchBlackBox(
 	        @NotNull final ACacheManager<I_TYPE, String, V_TYPE> parMng,
 	        @NotNull final I_TYPE parIndex) throws DataNotLoadedException {

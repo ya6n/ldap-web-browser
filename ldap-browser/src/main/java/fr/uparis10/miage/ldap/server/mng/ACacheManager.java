@@ -46,7 +46,7 @@ import fr.uparis10.miage.ldap.shared.itf.IIndexable;
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public abstract class ACacheManager<I_TYPE extends IIndexable<K_TYPE>, K_TYPE, V_TYPE extends Map<I_TYPE, K_TYPE>> {
+public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE extends Map<I_TYPE, K_TYPE>> {
 	private final ReadWriteLock _dataLock = new ReentrantReadWriteLock();
 	private List<V_TYPE> _valList;
 	private boolean _isDataLoaded = false;
@@ -206,7 +206,7 @@ public abstract class ACacheManager<I_TYPE extends IIndexable<K_TYPE>, K_TYPE, V
 			}
 			assert (null != locAttrEnum);
 
-			locResMap.put(locAttrEnum, locAttrEnum.decodeAttribute(locAttr));
+			locResMap.put(locAttrEnum, decodeAttribute(locAttr, locAttrEnum));
 		}
 
 		return locResMap;
@@ -245,4 +245,6 @@ public abstract class ACacheManager<I_TYPE extends IIndexable<K_TYPE>, K_TYPE, V
 	protected abstract V_TYPE createNewObject();
 
 	protected abstract I_TYPE valueOfIndex(final String parName);
+
+	public abstract K_TYPE decodeAttribute(@NotNull final Attribute parInput, @NotNull final I_TYPE parType) throws NamingException;
 }

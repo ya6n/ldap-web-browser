@@ -18,16 +18,10 @@
  */
 package fr.uparis10.miage.ldap.shared.itf;
 
-import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.validation.constraints.NotNull;
-
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public interface IIndexable<K_TYPE> {
+public interface IIndexable {
 	public boolean isIndexed();
-
-	public K_TYPE decodeAttribute(@NotNull final Attribute parInput) throws NamingException;
 }

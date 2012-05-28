@@ -18,13 +18,10 @@
  */
 package fr.uparis10.miage.ldap.shared.enums;
 
-import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
 import javax.validation.constraints.NotNull;
 
 import fr.uparis10.miage.ldap.shared.itf.IDecoder;
 import fr.uparis10.miage.ldap.shared.itf.IIndexable;
-import fr.uparis10.miage.ldap.shared.utils.StringUtils;
 
 /**
  * Note : No need to index the attributes of this class - there will be only 1
@@ -33,7 +30,7 @@ import fr.uparis10.miage.ldap.shared.utils.StringUtils;
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public enum EnumOrganizationAttr implements IIndexable<String>, IDecoder<Object, String> {
+public enum EnumOrganizationAttr implements IIndexable, IDecoder<Object, String> {
 	// Generic
 	objectClass,
 
@@ -107,18 +104,6 @@ public enum EnumOrganizationAttr implements IIndexable<String>, IDecoder<Object,
 	@Override
 	public final boolean isIndexed() {
 		return _isIndexed;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * fr.uparis10.miage.ldap.server.itf.IIndexable#decodeAttribute(javax.naming
-	 * .directory.Attribute)
-	 */
-	@Override
-	public final String decodeAttribute(@NotNull final Attribute parInput) throws NamingException {
-		return StringUtils.decodeAttribute(parInput, this);
 	}
 
 	/*

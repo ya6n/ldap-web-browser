@@ -223,30 +223,6 @@
           </archive>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
-        <executions>
-          <execution>
-            <id>exec</id>
-            <phase>install</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <executable>/bin/sh</executable>
-          <workingDirectory>${basedir}</workingDirectory>
-          <arguments>
-            <argument>-c</argument>
-            <argument>
-              <![CDATA[rm reports/pmd.html;mv reports/pmd.net.sourceforge.pmd.renderers.XSLTRenderer reports/mvn-pmd-report.htm]]>
-            </argument>
-          </arguments>
-        </configuration>
-      </plugin>
       <!-- GWT Maven Plugin -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -287,6 +263,28 @@
           <webappDirectory>${webappDirectory}</webappDirectory>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <executions>
+          <execution>
+            <id>exec</id>
+            <phase>install</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <executable>${movePmdResult.exec}</executable>
+          <workingDirectory>${basedir}</workingDirectory>
+          <arguments>
+            <argument>${movePmdResult.arg1}</argument>
+            <argument>${movePmdResult.arg2}</argument>
+          </arguments>
+        </configuration>
+      </plugin>
     </plugins>
     <defaultGoal>install</defaultGoal>
     <pluginManagement>
@@ -305,7 +303,7 @@
                     <artifactId>gwt-maven-plugin</artifactId>
                     <versionRange>[2.4.0,)</versionRange>
                     <goals>
-                      <!-- <goal>generateAsync</goal>  -->
+                      <!-- <goal>generateAsync</goal> -->
                       <goal>i18n</goal>
                     </goals>
                   </pluginExecutionFilter>
@@ -337,4 +335,32 @@
       </plugins>
     </pluginManagement>
   </build>
+  <profiles>
+    <profile>
+      <id>Vindovoz</id>
+      <activation>
+        <os>
+          <family>Windows</family>
+        </os>
+      </activation>
+      <properties>
+        <movePmdResult.exec>cmd.exe</movePmdResult.exec>
+        <movePmdResult.arg1><![CDATA[/C]]></movePmdResult.arg1>
+        <movePmdResult.arg2><![CDATA[del reports\pmd.html && move reports\pmd.net.sourceforge.pmd.renderers.XSLTRenderer reports\mvn-pmd-report.htm]]></movePmdResult.arg2>
+      </properties>
+    </profile>
+    <profile>
+      <id>Unix</id>
+      <activation>
+        <os>
+          <family>Unix</family>
+        </os>
+      </activation>
+      <properties>
+        <movePmdResult.exec>/bin/sh</movePmdResult.exec>
+        <movePmdResult.arg1><![CDATA[-c]]></movePmdResult.arg1>
+        <movePmdResult.arg2><![CDATA[rm reports/pmd.html;mv reports/pmd.net.sourceforge.pmd.renderers.XSLTRenderer reports/mvn-pmd-report.htm]]></movePmdResult.arg2>
+      </properties>
+    </profile>
+  </profiles>
 </project>

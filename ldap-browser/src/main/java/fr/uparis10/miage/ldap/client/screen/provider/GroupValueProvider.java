@@ -38,6 +38,6 @@ public class GroupValueProvider implements ValueProvider<Group, String> {
 	}
 
 	public String getPath() {
-		return EnumGroupAttr.cn.toString();
+		return EnumGroupAttr.cn.name();
 	}
 }

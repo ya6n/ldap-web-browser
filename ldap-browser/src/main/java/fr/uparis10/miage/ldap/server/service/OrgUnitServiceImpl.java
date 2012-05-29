@@ -20,16 +20,21 @@ package fr.uparis10.miage.ldap.server.service;
 
 import java.util.List;
 
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
 import fr.uparis10.miage.ldap.client.service.OrgUnitService;
 import fr.uparis10.miage.ldap.shared.obj.OrgUnit;
 
 /**
  * @author gorodenco
- *
+ * 
  */
-public class OrgUnitServiceImpl implements OrgUnitService {
+@SuppressWarnings("serial")
+public class OrgUnitServiceImpl extends RemoteServiceServlet implements OrgUnitService {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see fr.uparis10.miage.ldap.client.service.OrgUnitService#getOrgUnitsAll()
 	 */
 	@Override

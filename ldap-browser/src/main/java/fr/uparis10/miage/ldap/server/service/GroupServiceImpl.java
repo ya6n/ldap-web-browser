@@ -20,16 +20,21 @@ package fr.uparis10.miage.ldap.server.service;
 
 import java.util.List;
 
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
 import fr.uparis10.miage.ldap.client.service.GroupService;
 import fr.uparis10.miage.ldap.shared.obj.Group;
 
 /**
  * @author gorodenco
- *
+ * 
  */
-public class GroupServiceImpl implements GroupService {
+@SuppressWarnings("serial")
+public class GroupServiceImpl extends RemoteServiceServlet implements GroupService {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see fr.uparis10.miage.ldap.client.service.GroupService#getGroupsAll()
 	 */
 	@Override

@@ -20,16 +20,21 @@ package fr.uparis10.miage.ldap.server.service;
 
 import java.util.List;
 
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
 import fr.uparis10.miage.ldap.client.service.PersonService;
 import fr.uparis10.miage.ldap.shared.obj.Person;
 
 /**
  * @author gorodenco
- *
+ * 
  */
-public class PersonServiceImpl implements PersonService {
+@SuppressWarnings("serial")
+public class PersonServiceImpl extends RemoteServiceServlet implements PersonService {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see fr.uparis10.miage.ldap.client.service.PersonService#getPersonsAll()
 	 */
 	@Override

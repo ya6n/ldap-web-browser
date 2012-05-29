@@ -20,17 +20,24 @@ package fr.uparis10.miage.ldap.server.service;
 
 import java.util.List;
 
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
 import fr.uparis10.miage.ldap.client.service.OrganizationService;
 import fr.uparis10.miage.ldap.shared.obj.Organization;
 
 /**
  * @author gorodenco
- *
+ * 
  */
-public class OrganizationServiceImpl implements OrganizationService {
+@SuppressWarnings("serial")
+public class OrganizationServiceImpl extends RemoteServiceServlet implements OrganizationService {
 
-	/* (non-Javadoc)
-	 * @see fr.uparis10.miage.ldap.client.service.OrganizationService#getOrganizationsAll()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.uparis10.miage.ldap.client.service.OrganizationService#getOrganizationsAll
+	 * ()
 	 */
 	@Override
 	public List<Organization> getOrganizationsAll() throws IllegalArgumentException {

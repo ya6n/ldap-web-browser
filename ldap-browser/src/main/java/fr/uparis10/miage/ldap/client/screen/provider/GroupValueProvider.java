@@ -29,15 +29,25 @@ import fr.uparis10.miage.ldap.shared.obj.Group;
  */
 public class GroupValueProvider implements ValueProvider<Group, String> {
 
+	private EnumGroupAttr key;
+
+	public GroupValueProvider(EnumGroupAttr key) {
+		this.key = key;
+	}
+
+	public GroupValueProvider() {
+		this(EnumGroupAttr.cn);
+	}
+
 	public String getValue(Group group) {
-		return group.getPrimaryKeyValue();
+		return group.get(key);
 	}
 
 	public void setValue(Group group, String value) {
-		group.put(group.getPrimaryKey(), value);
+		group.put(key, value);
 	}
 
 	public String getPath() {
-		return EnumGroupAttr.cn.name();
+		return key.name();
 	}
 }

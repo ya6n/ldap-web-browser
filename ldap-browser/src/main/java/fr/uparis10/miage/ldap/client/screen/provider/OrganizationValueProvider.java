@@ -29,15 +29,25 @@ import fr.uparis10.miage.ldap.shared.obj.Organization;
  */
 public class OrganizationValueProvider implements ValueProvider<Organization, String> {
 
+	private EnumOrganizationAttr key;
+
+	public OrganizationValueProvider() {
+		this(EnumOrganizationAttr.cn);
+	}
+
+	public OrganizationValueProvider(EnumOrganizationAttr key) {
+		this.key = key;
+	}
+
 	public String getValue(Organization organization) {
-		return organization.getPrimaryKeyValue();
+		return organization.get(key);
 	}
 
 	public void setValue(Organization organization, String value) {
-		organization.put(organization.getPrimaryKey(), value);
+		organization.put(key, value);
 	}
 
 	public String getPath() {
-		return EnumOrganizationAttr.cn.toString();
+		return key.name();
 	}
 }

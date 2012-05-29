@@ -20,6 +20,7 @@ package fr.uparis10.miage.ldap.client.screen.provider;
 
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 
+import fr.uparis10.miage.ldap.shared.enums.EnumPersonAttr;
 import fr.uparis10.miage.ldap.shared.obj.Person;
 
 /**
@@ -30,8 +31,7 @@ public class PersonModelKeyProvider implements ModelKeyProvider<Person> {
 
 	@Override
 	public String getKey(Person item) {
-
-		return item.getPrimaryKey().toString();
+		return item.get(EnumPersonAttr.uid);
 	}
 
 }

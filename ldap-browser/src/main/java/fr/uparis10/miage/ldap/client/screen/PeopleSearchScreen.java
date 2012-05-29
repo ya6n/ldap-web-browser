@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.IdentityValueProvider;
 import com.sencha.gxt.core.client.Style.SelectionMode;
 import com.sencha.gxt.core.client.ValueProvider;
@@ -38,9 +39,9 @@ import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer.Hor
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.form.CheckBox;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FieldSet;
-import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
 import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.grid.CheckBoxSelectionModel;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
@@ -53,6 +54,7 @@ import fr.uparis10.miage.ldap.client.screen.provider.GroupValueProvider;
 import fr.uparis10.miage.ldap.client.screen.provider.OrgUnitModelKeyProvider;
 import fr.uparis10.miage.ldap.client.screen.provider.OrgUnitValueProvider;
 import fr.uparis10.miage.ldap.shared.enums.EnumGroupAttr;
+import fr.uparis10.miage.ldap.shared.enums.EnumOrgUnitAttr;
 import fr.uparis10.miage.ldap.shared.obj.Group;
 import fr.uparis10.miage.ldap.shared.obj.OrgUnit;
 
@@ -70,15 +72,19 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		messages = (PeopleSearchScreenMessages) GWT.create(PeopleSearchScreenMessages.class);
 	}
 
-	TextField searchBox;
+	private TextField searchBox;
 
-	TextButton searchButton;
+	private TextButton searchButton;
 
-	Grid<Group> groupGrid;
+	private Grid<Group> groupGrid;
 
-	Grid<OrgUnit> orgUnitGrid;
+	private Grid<OrgUnit> orgUnitGrid;
 
-	String title;
+	private CheckBox opPerson;
+	private CheckBox opOrgUnit;
+	private CheckBox opGroup;
+
+	private String title;
 
 	public PeopleSearchScreen() {
 
@@ -122,15 +128,28 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 
 		// ajout de la liste de groupes
 		generateGroupGrid();
-		FieldLabel fl = new FieldLabel(groupGrid, messages.getGroupListLabel());
-		fl.setLabelAlign(LabelAlign.TOP);
-		hp.add(fl, new HorizontalLayoutData(0.33, 140, new Margins(0, 0, 0, 0)));
+		FieldSet sc = new FieldSet();
+		sc.setHeadingText(messages.getGroupListLabel());
+		sc.add(groupGrid);
+		groupGrid.setHeight(110);
+		// FieldLabel fl = new FieldLabel(groupGrid, messages.getGroupListLabel());
+		// fl.setLabelAlign(LabelAlign.TOP);
+		// sc.add(fl);
+		hp.add(sc, new HorizontalLayoutData(0.38, 150, new Margins(0, 0, 0, 0)));
+
+		// ajout des options de recherche
+		hp.add(generateOptions(), new HorizontalLayoutData(0.24, 150, new Margins(0, 10, 0, 10)));
 
 		// ajout de la liste d'unites d'organisation
 		generateOrgUnitGrid();
-		fl = new FieldLabel(orgUnitGrid, messages.getOrgUnitListLabel());
-		fl.setLabelAlign(LabelAlign.TOP);
-		hp.add(fl, new HorizontalLayoutData(0.33, 140, new Margins(0, 0, 0, 0)));
+		sc = new FieldSet();
+		sc.setHeadingText(messages.getOrgUnitListLabel());
+		orgUnitGrid.setHeight(110);
+		sc.add(orgUnitGrid);
+		// fl = new FieldLabel(orgUnitGrid, messages.getOrgUnitListLabel());
+		// fl.setLabelAlign(LabelAlign.TOP);
+		// sc.add(fl);
+		hp.add(sc, new HorizontalLayoutData(0.38, 150, new Margins(0, 0, 0, 0)));
 
 		advancedBox.add(hp, new VerticalLayoutData(1, 1));
 
@@ -174,17 +193,45 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		gridModel.add(grid);
 		gridModel.setHeadingText("Test Grid");
 		add(gridModel, new VerticalLayoutData(1, 300, new Margins(10, 0, 0, 0)));
+
 	}
 
 	private void generateOrgUnitGrid() {
 		List<ColumnConfig<OrgUnit, ?>> list = new ArrayList<ColumnConfig<OrgUnit, ?>>();
+		IdentityValueProvider<OrgUnit> identity = new IdentityValueProvider<OrgUnit>();
+		final CheckBoxSelectionModel<OrgUnit> checkBoxSM = new CheckBoxSelectionModel<OrgUnit>(identity);
 		ColumnConfig<OrgUnit, ?> colConfig = new ColumnConfig<OrgUnit, String>(new OrgUnitValueProvider(), 100, "OU");
+		ColumnConfig<OrgUnit, ?> colConfig2 = new ColumnConfig<OrgUnit, String>(new OrgUnitValueProvider(EnumOrgUnitAttr.description), 100, "Description");
+
+		list.add(checkBoxSM.getColumn());
 		list.add(colConfig);
+		list.add(colConfig2);
 		ColumnModel<OrgUnit> colModel = new ColumnModel<OrgUnit>(list);
 		orgUnitGrid = new Grid<OrgUnit>(new ListStore<OrgUnit>(new OrgUnitModelKeyProvider()), colModel);
-		CheckBoxSelectionModel<OrgUnit> checkBoxSM = new CheckBoxSelectionModel<OrgUnit>(new IdentityValueProvider<OrgUnit>());
-		checkBoxSM.setSelectionMode(SelectionMode.MULTI);
+		checkBoxSM.setSelectionMode(SelectionMode.SIMPLE);
+
 		orgUnitGrid.setSelectionModel(checkBoxSM);
+		checkBoxSM.setLocked(false);
+		orgUnitGrid.getView().setAutoExpandColumn(colConfig);
+		orgUnitGrid.setBorders(false);
+		orgUnitGrid.getView().setForceFit(true);
+		orgUnitGrid.getView().setStripeRows(true);
+		orgUnitGrid.getView().setColumnLines(true);
+
+		OrgUnit orgUnit = new OrgUnit();
+		orgUnit.put(EnumOrgUnitAttr.ou, "SEGMI");
+		orgUnit.put(EnumOrgUnitAttr.description, "UFR de sciences économiques, gestion, mathématiques, informatique");
+		orgUnitGrid.getStore().add(orgUnit);
+		orgUnit = new OrgUnit();
+		orgUnit.put(EnumOrgUnitAttr.ou, "MIAGE");
+		orgUnit.put(EnumOrgUnitAttr.description, "UFR des Sciences et Techniques des Activités Physiques et Sportives");
+		orgUnitGrid.getStore().add(orgUnit);
+		orgUnit = new OrgUnit();
+		orgUnit.put(EnumOrgUnitAttr.ou, "STAPS");
+		orgUnit.put(EnumOrgUnitAttr.description, "Méthodes informatiques appliquées à la gestion des entreprises");
+		orgUnitGrid.getStore().add(orgUnit);
+
+		checkBoxSM.selectAll();
 	}
 
 	private void generateGroupGrid() {
@@ -192,23 +239,7 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		IdentityValueProvider<Group> identity = new IdentityValueProvider<Group>();
 		final CheckBoxSelectionModel<Group> checkBoxSM = new CheckBoxSelectionModel<Group>(identity);
 		ColumnConfig<Group, ?> colConfig = new ColumnConfig<Group, String>(new GroupValueProvider(), 100, "CN");
-		ColumnConfig<Group, ?> colConfig2 = new ColumnConfig<Group, String>(new ValueProvider<Group, String>() {
-
-			@Override
-			public String getValue(Group object) {
-				return object.get(EnumGroupAttr.businessCategory);
-			}
-
-			@Override
-			public void setValue(Group object, String value) {
-				object.put(EnumGroupAttr.businessCategory, value);
-			}
-
-			@Override
-			public String getPath() {
-				return EnumGroupAttr.businessCategory.name();
-			}
-		}, 100, "Business Category");
+		ColumnConfig<Group, ?> colConfig2 = new ColumnConfig<Group, String>(new GroupValueProvider(EnumGroupAttr.businessCategory), 100, "Business Category");
 
 		list.add(checkBoxSM.getColumn());
 		list.add(colConfig);
@@ -238,7 +269,36 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		group.put(EnumGroupAttr.businessCategory, "3333");
 		groupGrid.getStore().add(group);
 
-		groupGrid.getView().refresh(true);
+	}
+
+	private Widget generateOptions() {
+		opPerson = new CheckBox();
+		opOrgUnit = new CheckBox();
+		opGroup = new CheckBox();
+
+		opPerson.setValue(true);
+		opOrgUnit.setValue(true);
+		opGroup.setValue(true);
+
+		opPerson.setBoxLabel(messages.getLookUpPeopleLabel());
+		opOrgUnit.setBoxLabel(messages.getLookUpOrgUnitLabel());
+		opGroup.setBoxLabel(messages.getLookUpGroupLabel());
+
+		FieldSet result = new FieldSet();
+		VerticalLayoutContainer vc = new VerticalLayoutContainer();
+		vc.add(opPerson);
+		vc.add(opOrgUnit);
+		vc.add(opGroup);
+		result.add(vc);
+
+		result.setHeadingText(messages.getLookUpOptionsTitle());
+
+		return result;
+	}
+
+	public void selectAll() {
+		groupGrid.getSelectionModel().selectAll();
+		orgUnitGrid.getSelectionModel().selectAll();
 	}
 
 	@Override

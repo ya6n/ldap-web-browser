@@ -20,6 +20,7 @@ package fr.uparis10.miage.ldap.client.screen.provider;
 
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 
+import fr.uparis10.miage.ldap.shared.enums.EnumGroupAttr;
 import fr.uparis10.miage.ldap.shared.obj.Group;
 
 /**
@@ -30,8 +31,7 @@ public class GroupModelKeyProvider implements ModelKeyProvider<Group> {
 
 	@Override
 	public String getKey(Group item) {
-
-		return item.getPrimaryKeyValue();
+		return item.get(EnumGroupAttr.cn);
 	}
 
 }

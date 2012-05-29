@@ -52,6 +52,7 @@ import fr.uparis10.miage.ldap.client.screen.provider.GroupModelKeyProvider;
 import fr.uparis10.miage.ldap.client.screen.provider.GroupValueProvider;
 import fr.uparis10.miage.ldap.client.screen.provider.OrgUnitModelKeyProvider;
 import fr.uparis10.miage.ldap.client.screen.provider.OrgUnitValueProvider;
+import fr.uparis10.miage.ldap.shared.enums.EnumGroupAttr;
 import fr.uparis10.miage.ldap.shared.obj.Group;
 import fr.uparis10.miage.ldap.shared.obj.OrgUnit;
 
@@ -177,7 +178,7 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 
 	private void generateOrgUnitGrid() {
 		List<ColumnConfig<OrgUnit, ?>> list = new ArrayList<ColumnConfig<OrgUnit, ?>>();
-		ColumnConfig<OrgUnit, ?> colConfig = new ColumnConfig<OrgUnit, String>(new OrgUnitValueProvider(), 100, "CN");
+		ColumnConfig<OrgUnit, ?> colConfig = new ColumnConfig<OrgUnit, String>(new OrgUnitValueProvider(), 100, "OU");
 		list.add(colConfig);
 		ColumnModel<OrgUnit> colModel = new ColumnModel<OrgUnit>(list);
 		orgUnitGrid = new Grid<OrgUnit>(new ListStore<OrgUnit>(new OrgUnitModelKeyProvider()), colModel);
@@ -188,13 +189,56 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 
 	private void generateGroupGrid() {
 		List<ColumnConfig<Group, ?>> list = new ArrayList<ColumnConfig<Group, ?>>();
-		ColumnConfig<Group, ?> colConfig = new ColumnConfig<Group, String>(new GroupValueProvider(), 100, "UID");
+		IdentityValueProvider<Group> identity = new IdentityValueProvider<Group>();
+		final CheckBoxSelectionModel<Group> checkBoxSM = new CheckBoxSelectionModel<Group>(identity);
+		ColumnConfig<Group, ?> colConfig = new ColumnConfig<Group, String>(new GroupValueProvider(), 100, "CN");
+		ColumnConfig<Group, ?> colConfig2 = new ColumnConfig<Group, String>(new ValueProvider<Group, String>() {
+
+			@Override
+			public String getValue(Group object) {
+				return object.get(EnumGroupAttr.businessCategory);
+			}
+
+			@Override
+			public void setValue(Group object, String value) {
+				object.put(EnumGroupAttr.businessCategory, value);
+			}
+
+			@Override
+			public String getPath() {
+				return EnumGroupAttr.businessCategory.name();
+			}
+		}, 100, "Business Category");
+
+		list.add(checkBoxSM.getColumn());
 		list.add(colConfig);
+		list.add(colConfig2);
 		ColumnModel<Group> colModel = new ColumnModel<Group>(list);
 		groupGrid = new Grid<Group>(new ListStore<Group>(new GroupModelKeyProvider()), colModel);
-		CheckBoxSelectionModel<Group> checkBoxSM = new CheckBoxSelectionModel<Group>(new IdentityValueProvider<Group>());
-		checkBoxSM.setSelectionMode(SelectionMode.MULTI);
+		checkBoxSM.setSelectionMode(SelectionMode.SIMPLE);
+
 		groupGrid.setSelectionModel(checkBoxSM);
+		checkBoxSM.setLocked(false);
+		groupGrid.getView().setAutoExpandColumn(colConfig);
+		groupGrid.setBorders(false);
+		groupGrid.getView().setForceFit(true);
+		groupGrid.getView().setStripeRows(true);
+		groupGrid.getView().setColumnLines(true);
+
+		Group group = new Group();
+		group.put(EnumGroupAttr.cn, "étudiant");
+		group.put(EnumGroupAttr.businessCategory, "1111");
+		groupGrid.getStore().add(group);
+		group = new Group();
+		group.put(EnumGroupAttr.cn, "enseignant");
+		group.put(EnumGroupAttr.businessCategory, "2222");
+		groupGrid.getStore().add(group);
+		group = new Group();
+		group.put(EnumGroupAttr.cn, "employé");
+		group.put(EnumGroupAttr.businessCategory, "3333");
+		groupGrid.getStore().add(group);
+
+		groupGrid.getView().refresh(true);
 	}
 
 	@Override

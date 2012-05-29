@@ -31,7 +31,7 @@ public class GroupModelKeyProvider implements ModelKeyProvider<Group> {
 	@Override
 	public String getKey(Group item) {
 
-		return item.getPrimaryKey().toString();
+		return item.getPrimaryKeyValue();
 	}
 
 }

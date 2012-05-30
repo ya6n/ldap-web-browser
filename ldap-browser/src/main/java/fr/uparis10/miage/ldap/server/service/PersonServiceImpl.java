@@ -45,8 +45,8 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	 */
 	@Override
 	public List<Person> getPersonsAll() throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		List<Person> listPerson = PeopleManager.getInstance().getAllObjList();
+		return listPerson == null ? new ArrayList<Person>() : listPerson;
 	}
 
 	/*

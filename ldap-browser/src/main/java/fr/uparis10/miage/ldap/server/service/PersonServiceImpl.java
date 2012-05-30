@@ -20,17 +20,12 @@ package fr.uparis10.miage.ldap.server.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import fr.uparis10.miage.ldap.client.service.PersonService;
-import fr.uparis10.miage.ldap.server.mng.GroupManager;
-import fr.uparis10.miage.ldap.server.mng.OrgUnitManager;
 import fr.uparis10.miage.ldap.server.mng.PeopleManager;
-import fr.uparis10.miage.ldap.shared.enums.EnumGroupAttr;
-import fr.uparis10.miage.ldap.shared.enums.EnumOrgUnitAttr;
 import fr.uparis10.miage.ldap.shared.enums.EnumPersonAttr;
 import fr.uparis10.miage.ldap.shared.exc.DataNotLoadedException;
 import fr.uparis10.miage.ldap.shared.obj.Person;

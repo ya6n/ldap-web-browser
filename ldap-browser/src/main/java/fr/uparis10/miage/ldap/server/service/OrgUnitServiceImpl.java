@@ -18,11 +18,13 @@
  */
 package fr.uparis10.miage.ldap.server.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import fr.uparis10.miage.ldap.client.service.OrgUnitService;
+import fr.uparis10.miage.ldap.server.mng.OrgUnitManager;
 import fr.uparis10.miage.ldap.shared.obj.OrgUnit;
 
 /**
@@ -39,8 +41,8 @@ public class OrgUnitServiceImpl extends RemoteServiceServlet implements OrgUnitS
 	 */
 	@Override
 	public List<OrgUnit> getOrgUnitsAll() throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		List<OrgUnit> listOrgUnit = OrgUnitManager.getInstance().getAllObjList();
+		return listOrgUnit == null ? new ArrayList<OrgUnit>() : listOrgUnit;
 	}
 
 }

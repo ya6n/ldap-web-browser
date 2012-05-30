@@ -93,9 +93,11 @@ public class LoginScreen extends ContentPanel {
 
 					    @Override
 					    public void onSuccess(Boolean result) {
-						    Window.alert(result.toString());
 						    if (result) {
 							    LDAPBrowser.onMainScreenLoad();
+						    }
+						    else {
+							    Window.alert(result.toString());
 						    }
 
 					    }

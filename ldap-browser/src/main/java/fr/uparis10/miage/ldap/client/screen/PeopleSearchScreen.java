@@ -23,15 +23,15 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.IdentityValueProvider;
 import com.sencha.gxt.core.client.Style.SelectionMode;
-import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.core.client.util.Padding;
+import com.sencha.gxt.core.shared.FastMap;
 import com.sencha.gxt.data.shared.ListStore;
-import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
@@ -53,10 +53,17 @@ import fr.uparis10.miage.ldap.client.screen.provider.GroupModelKeyProvider;
 import fr.uparis10.miage.ldap.client.screen.provider.GroupValueProvider;
 import fr.uparis10.miage.ldap.client.screen.provider.OrgUnitModelKeyProvider;
 import fr.uparis10.miage.ldap.client.screen.provider.OrgUnitValueProvider;
+import fr.uparis10.miage.ldap.client.screen.provider.PersonModelKeyProvider;
+import fr.uparis10.miage.ldap.client.screen.provider.PersonValueProvider;
+import fr.uparis10.miage.ldap.client.service.PersonService;
+import fr.uparis10.miage.ldap.client.service.PersonServiceAsync;
 import fr.uparis10.miage.ldap.shared.enums.EnumGroupAttr;
 import fr.uparis10.miage.ldap.shared.enums.EnumOrgUnitAttr;
+import fr.uparis10.miage.ldap.shared.enums.EnumPersonAttr;
 import fr.uparis10.miage.ldap.shared.obj.Group;
 import fr.uparis10.miage.ldap.shared.obj.OrgUnit;
+import fr.uparis10.miage.ldap.shared.obj.Person;
+import fr.uparis10.miage.ldap.shared.obj.SearchRequestModel;
 
 /**
  * @author gorodenco
@@ -76,6 +83,8 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 
 	private TextButton searchButton;
 
+	Grid<Person> personGrid;
+
 	private Grid<Group> groupGrid;
 
 	private Grid<OrgUnit> orgUnitGrid;
@@ -83,6 +92,8 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 	private CheckBox opPerson;
 	private CheckBox opOrgUnit;
 	private CheckBox opGroup;
+
+	FieldSet advancedBox;
 
 	private String title;
 
@@ -107,7 +118,64 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 
 			@Override
 			public void onSelect(SelectEvent event) {
-				// TODO Auto-generated method stub
+
+				PersonServiceAsync personService = GWT.create(PersonService.class);
+
+				String request = searchBox.getValue();
+
+				if (!advancedBox.isExpanded()
+				    || (groupGrid.getSelectionModel().getSelectedItems().size() == groupGrid.getStore().size()
+				        && orgUnitGrid.getSelectionModel().getSelectedItems().size() == orgUnitGrid.getStore().size() && opPerson.getValue() && opOrgUnit.getValue() && opGroup
+				          .getValue())) {
+					personService.searchPersons(request, new AsyncCallback<List<Person>>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
+						}
+
+						@Override
+						public void onSuccess(List<Person> result) {
+							personGrid.getStore().clear();
+							personGrid.getStore().addAll(result);
+						}
+					});
+				}
+				else
+				{
+					SearchRequestModel requestModel = new SearchRequestModel();
+
+					requestModel.setRequest(request);
+					requestModel.setLookUpPerson(opPerson.getValue());
+					requestModel.setLookUpOrgUnit(opOrgUnit.getValue());
+					requestModel.setLookUpGroup(opGroup.getValue());
+
+					Map<String, Boolean> groupOptions = new FastMap<Boolean>();
+					for (Group group : groupGrid.getStore().getAll()) {
+						groupOptions.put(group.get(EnumGroupAttr.cn), groupGrid.getSelectionModel().isSelected(group));
+					}
+					requestModel.setGroupOptions(groupOptions);
+
+					Map<String, Boolean> orgUniOptions = new FastMap<Boolean>();
+					for (OrgUnit orgUnit : orgUnitGrid.getStore().getAll()) {
+						orgUniOptions.put(orgUnit.get(EnumOrgUnitAttr.ou), orgUnitGrid.getSelectionModel().isSelected(orgUnit));
+					}
+					requestModel.setGroupOptions(orgUniOptions);
+
+					personService.searchPersons(requestModel, new AsyncCallback<List<Person>>() {
+
+						@Override
+						public void onFailure(Throwable caught) {
+							// TODO Auto-generated method stub
+						}
+
+						@Override
+						public void onSuccess(List<Person> result) {
+							personGrid.getStore().clear();
+							personGrid.getStore().addAll(result);
+						}
+					});
+				}
 
 			}
 		});
@@ -116,7 +184,7 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 
 		add(hp, new VerticalLayoutData(1, 50, new Margins(20, 0, 0, 0)));
 
-		FieldSet advancedBox = new FieldSet();
+		advancedBox = new FieldSet();
 
 		advancedBox.setHeadingText(messages.getAdvancedBoxTitle());
 		advancedBox.setTitle(messages.getAdvancedBoxTitle());
@@ -156,42 +224,28 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		add(advancedBox, new VerticalLayoutData(1, 200, new Margins(10, 0, 0, 0)));
 
 		// ajout du Grid de resultats
-		List<ColumnConfig<Map<String, String>, ?>> list = new ArrayList<ColumnConfig<Map<String, String>, ?>>();
+		List<ColumnConfig<Person, ?>> list = new ArrayList<ColumnConfig<Person, ?>>();
 
-		ColumnConfig<Map<String, String>, ?> colConfig = new ColumnConfig<Map<String, String>, String>(new ValueProvider<Map<String, String>, String>() {
-
-			@Override
-			public String getValue(Map<String, String> object) {
-				return object.get("value");
-			}
-
-			@Override
-			public void setValue(Map<String, String> object, String value) {
-				object.put("value", value);
-			}
-
-			@Override
-			public String getPath() {
-				return "value";
-			}
-		}, 100, "Test");
+		ColumnConfig<Person, ?> colConfig = new ColumnConfig<Person, String>(new PersonValueProvider(), 100, "UID");
+		ColumnConfig<Person, ?> colConfig2 = new ColumnConfig<Person, String>(new PersonValueProvider(EnumPersonAttr.displayName), 100, "Nom");
+		ColumnConfig<Person, ?> colConfig3 = new ColumnConfig<Person, String>(new PersonValueProvider(EnumPersonAttr.displayName.mail), 100, "E-Mail");
+		ColumnConfig<Person, ?> colConfig4 = new ColumnConfig<Person, String>(new PersonValueProvider(EnumPersonAttr.telephoneNumber), 100, "Téléphone");
+		ColumnConfig<Person, ?> colConfig5 = new ColumnConfig<Person, String>(new PersonValueProvider(EnumPersonAttr.postalAddress), 100, "Addresse");
 
 		ContentPanel gridModel = new ContentPanel();
-		ColumnModel<Map<String, String>> cm = new ColumnModel<Map<String, String>>(list);
+		ColumnModel<Person> cm = new ColumnModel<Person>(list);
 		list.add(colConfig);
-		Grid<Map<String, String>> grid = new Grid<Map<String, String>>(new ListStore<Map<String, String>>(new ModelKeyProvider<Map<String, String>>() {
-
-			@Override
-			public String getKey(Map<String, String> item) {
-				return item.get("value");
-			}
-		}), cm);
-		grid.getView().setForceFit(true);
-		grid.getView().setAutoFill(true);
-		grid.setWidth(400);
-		grid.setHeight(200);
-		gridModel.add(grid);
-		gridModel.setHeadingText("Test Grid");
+		list.add(colConfig2);
+		list.add(colConfig3);
+		list.add(colConfig4);
+		list.add(colConfig5);
+		personGrid = new Grid<Person>(new ListStore<Person>(new PersonModelKeyProvider()), cm);
+		personGrid.getView().setForceFit(true);
+		personGrid.getView().setAutoFill(true);
+		personGrid.setWidth(400);
+		personGrid.setHeight(200);
+		gridModel.add(personGrid);
+		gridModel.setHeadingText("Resultat de la Recherche");
 		add(gridModel, new VerticalLayoutData(1, 300, new Margins(10, 0, 0, 0)));
 
 	}

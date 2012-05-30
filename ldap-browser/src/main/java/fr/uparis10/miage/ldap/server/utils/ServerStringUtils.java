@@ -29,6 +29,11 @@ import fr.uparis10.miage.ldap.shared.itf.IDecoder;
  * 
  */
 public final class ServerStringUtils {
+	/**
+	 * No Instance!!
+	 */
+	private ServerStringUtils() {
+	}
 
 	public final static <I_TYPE> String decodeAttribute(@NotNull final Attribute parAttr, @NotNull IDecoder<Object, String> parDecoder) throws NamingException {
 		assert (parAttr.size() > 0);

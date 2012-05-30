@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Creation date: May 26, 2012
+ * Creation date: May 30, 2012
  */
 package fr.uparis10.miage.ldap.server.mng;
 
@@ -33,10 +33,8 @@ import javax.naming.directory.InitialDirContext;
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public final class LdapCtxManager {
-
-	private static LdapCtxManager _inst = null;
-
+public abstract class ALdapCtxManager {
+	protected final Properties _props;
 	private final String _baseDN;
 	private final DirContext _ctx;
 
@@ -47,15 +45,15 @@ public final class LdapCtxManager {
 	 * @throws FileNotFoundException
 	 * @throws NamingException
 	 */
-	private LdapCtxManager() throws FileNotFoundException, IOException, NamingException {
-		final Properties locProps = new Properties();
-		locProps.load(new FileInputStream(new File("ldap_server.properties")));
-		_baseDN = locProps.getProperty("basedn");
+	protected ALdapCtxManager() throws FileNotFoundException, IOException, NamingException {
+		_props = new Properties();
+		_props.load(new FileInputStream(new File(getConfigFile())));
+		_baseDN = _props.getProperty("basedn");
 
-		final String locHost = locProps.getProperty("host");
-		final String locPort = locProps.getProperty("port");
-		final String _user = locProps.getProperty("user");
-		final String _password = locProps.getProperty("password");
+		final String locHost = _props.getProperty("host");
+		final String locPort = _props.getProperty("port");
+		final String _user = _props.getProperty("user");
+		final String _password = _props.getProperty("password");
 		// --------------------------------------------------
 		// Set up the environment for creating the initial context
 		// --------------------------------------------------
@@ -74,20 +72,14 @@ public final class LdapCtxManager {
 
 		_ctx = new InitialDirContext(locEnvProps);
 	}
-
-	public final static LdapCtxManager getInstance() throws FileNotFoundException, IOException, NamingException {
-		if (null == _inst) {
-			_inst = new LdapCtxManager();
-		}
-
-		return _inst;
-	}
 	
 	public final DirContext getContext() {
 		return _ctx;
 	}
-	
+
 	public final String getBaseDN() {
 		return _baseDN;
 	}
+	
+	public abstract String getConfigFile();
 }

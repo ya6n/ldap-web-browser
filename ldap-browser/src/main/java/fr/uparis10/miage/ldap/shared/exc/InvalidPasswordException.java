@@ -14,31 +14,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Creation date: May 28, 2012
+ * Creation date: May 27, 2012
  */
-package fr.uparis10.miage.ldap.shared.utils;
-
-import javax.validation.constraints.NotNull;
+package fr.uparis10.miage.ldap.shared.exc;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
- * 
+ *
  */
-public class StringUtils {
-	
+public class InvalidPasswordException extends Exception {
 	/**
-	 * No Instance!!
-	 */
-	private StringUtils() {
+   * Default Serial Version UID 
+   */
+  private static final long serialVersionUID = 1L;
+
+	public InvalidPasswordException() {
+		super();
 	}
-
-	public final static String decodeByteArray(@NotNull final byte[] parArray) {
-		final StringBuilder locStrBld = new StringBuilder(parArray.length);
-		for (final byte locByte : parArray) {
-			locStrBld.append((char) locByte);
-		}
-
-		return locStrBld.toString();
+	
+	public InvalidPasswordException(final String parMsg) {
+		super(parMsg);
 	}
-
+	
+	public InvalidPasswordException(final Throwable parOtherExc) {
+		super(parOtherExc);
+	}
+	
+	public InvalidPasswordException(final String parMsg, final Throwable parOtherExc) {
+		super(parMsg, parOtherExc);
+	}
 }

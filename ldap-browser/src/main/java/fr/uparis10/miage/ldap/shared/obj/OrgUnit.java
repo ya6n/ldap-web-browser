@@ -18,42 +18,43 @@
  */
 package fr.uparis10.miage.ldap.shared.obj;
 
-import java.util.EnumMap;
+import java.util.HashMap;
 
 import fr.uparis10.miage.ldap.shared.enums.EnumOrgUnitAttr;
 import fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
- *
+ * 
  */
-public class OrgUnit extends EnumMap<EnumOrgUnitAttr, String> implements IHasPrimaryKey<EnumOrgUnitAttr, String>,Comparable<OrgUnit>{
+public class OrgUnit extends HashMap<EnumOrgUnitAttr, String> implements IHasPrimaryKey<EnumOrgUnitAttr, String>, Comparable<OrgUnit> {
 
 	/**
-   * @param keyType
-   */
-  public OrgUnit() {
-	  super(EnumOrgUnitAttr.class);
-  }
+	 * @param keyType
+	 */
+	public OrgUnit() {
+	}
 
 	/**
-   * Default Serial Version UID
-   */
-  private static final long serialVersionUID = 1L;
+	 * Default Serial Version UID
+	 */
+	private static final long serialVersionUID = 1L;
 
-	/* (non-Javadoc)
-   * @see java.lang.Comparable#compareTo(java.lang.Object)
-   */
-  @Override
-  public final int compareTo(final OrgUnit parOther) {
-  	final String locOU = getPrimaryKeyValue();
-  	assert (null != locOU);
-  	final String locOtherOU = parOther.getPrimaryKeyValue();
-  	assert (null != locOtherOU);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public final int compareTo(final OrgUnit parOther) {
+		final String locOU = getPrimaryKeyValue();
+		assert (null != locOU);
+		final String locOtherOU = parOther.getPrimaryKeyValue();
+		assert (null != locOtherOU);
 
-	  return locOU.compareTo(locOtherOU);
-  }
-  
+		return locOU.compareTo(locOtherOU);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

@@ -18,11 +18,13 @@
  */
 package fr.uparis10.miage.ldap.server.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import fr.uparis10.miage.ldap.client.service.GroupService;
+import fr.uparis10.miage.ldap.server.mng.GroupManager;
 import fr.uparis10.miage.ldap.shared.obj.Group;
 
 /**
@@ -39,8 +41,8 @@ public class GroupServiceImpl extends RemoteServiceServlet implements GroupServi
 	 */
 	@Override
 	public List<Group> getGroupsAll() throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		List<Group> listGroup = GroupManager.getInstance().getAllObjList();
+		return listGroup == null ? new ArrayList<Group>() : listGroup;
 	}
 
 }

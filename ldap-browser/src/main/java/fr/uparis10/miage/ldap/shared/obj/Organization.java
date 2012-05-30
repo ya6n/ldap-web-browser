@@ -18,7 +18,7 @@
  */
 package fr.uparis10.miage.ldap.shared.obj;
 
-import java.util.EnumMap;
+import java.util.HashMap;
 
 import fr.uparis10.miage.ldap.shared.enums.EnumOrganizationAttr;
 import fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey;
@@ -27,13 +27,12 @@ import fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey;
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public class Organization extends EnumMap<EnumOrganizationAttr, String> implements IHasPrimaryKey<EnumOrganizationAttr, String>, Comparable<Organization> {
+public class Organization extends HashMap<EnumOrganizationAttr, String> implements IHasPrimaryKey<EnumOrganizationAttr, String>, Comparable<Organization> {
 
 	/**
 	 * @param keyType
 	 */
 	public Organization() {
-		super(EnumOrganizationAttr.class);
 	}
 
 	/**

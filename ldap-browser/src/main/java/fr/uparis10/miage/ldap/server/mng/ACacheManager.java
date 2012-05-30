@@ -18,8 +18,6 @@
  */
 package fr.uparis10.miage.ldap.server.mng;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,15 +25,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.SearchControls;
-import javax.naming.directory.SearchResult;
 import javax.validation.constraints.NotNull;
 
 import fr.uparis10.miage.ldap.server.utils.MapUtils;
@@ -46,7 +36,8 @@ import fr.uparis10.miage.ldap.shared.itf.IIndexable;
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE extends Map<I_TYPE, K_TYPE>> {
+public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE extends Map<I_TYPE, K_TYPE>>
+    extends ABasicLdapManager<I_TYPE, K_TYPE, V_TYPE> {
 	private final ReadWriteLock _dataLock = new ReentrantReadWriteLock();
 	private List<V_TYPE> _valList;
 	private boolean _isDataLoaded = false;
@@ -159,60 +150,6 @@ public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE ex
 	}
 
 	/**
-	 * @return a fresh list from the container application (LDAP in this project)
-	 */
-	private final List<V_TYPE> getFreshList() {
-		try {
-			// Get the context used to communicate with the LDAP server throughout
-			final DirContext locCtx = LdapCtxManager.getInstance().getContext();
-			final String locDN = getDNPrefix() + LdapCtxManager.getInstance().getBaseDN();
-
-			final SearchControls locSearchCtrl = new SearchControls();
-			locSearchCtrl.setSearchScope(SearchControls.ONELEVEL_SCOPE);
-			final NamingEnumeration<SearchResult> locResultSet = locCtx.search(locDN, getGenericFilter(), locSearchCtrl);
-			final ArrayList<V_TYPE> locResMapList = new ArrayList<V_TYPE>();
-			while (locResultSet.hasMore()) {
-				// Get the next individual result
-				final SearchResult locResult = locResultSet.next();
-				final NamingEnumeration<? extends Attribute> locAttrSet = locResult.getAttributes().getAll();
-				final V_TYPE locAttrMap = createObjectForResult(locAttrSet);
-				locResMapList.add(locAttrMap);
-			}
-
-			locResMapList.trimToSize();
-			return locResMapList;
-		} catch (final NamingException locExc) {
-			throw new RuntimeException(locExc);
-		} catch (final FileNotFoundException locExc) {
-			throw new RuntimeException(locExc);
-		} catch (final IOException locExc) {
-			throw new RuntimeException(locExc);
-		}
-	}
-
-	private final V_TYPE createObjectForResult(final NamingEnumeration<? extends Attribute> parAttrSet) throws NamingException {
-		// Display all resulting attributes
-		final V_TYPE locResMap = createNewObject();
-		while (parAttrSet.hasMore()) {
-			final Attribute locAttr = parAttrSet.next();
-			final String locAttrName = locAttr.getID();
-			assert (null != locAttrName);
-			final I_TYPE locAttrEnum;
-			try {
-				locAttrEnum = valueOfIndex(locAttrName);
-			} catch (final RuntimeException locExc) {
-				Logger.getLogger(ACacheManager.class.getName()).log(Level.SEVERE, "For attribute value [" + locAttrName + "]", locExc);
-				throw locExc;
-			}
-			assert (null != locAttrEnum);
-
-			locResMap.put(locAttrEnum, decodeAttribute(locAttr, locAttrEnum));
-		}
-
-		return locResMap;
-	}
-
-	/**
 	 * Builds a index list based on a list of values.
 	 * 
 	 * @param parValList
@@ -236,15 +173,11 @@ public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE ex
 		return locResIxdMap;
 	}
 
-	protected abstract String getDNPrefix();
+	private final List<V_TYPE> getFreshList() {
+		return getFreshList(getGenericFilter());
+	}
 
 	protected abstract String getGenericFilter();
 
 	protected abstract Map<I_TYPE, Map<K_TYPE, List<V_TYPE>>> createNewIndex();
-
-	protected abstract V_TYPE createNewObject();
-
-	protected abstract I_TYPE valueOfIndex(final String parName);
-
-	public abstract K_TYPE decodeAttribute(@NotNull final Attribute parInput, @NotNull final I_TYPE parType) throws NamingException;
 }

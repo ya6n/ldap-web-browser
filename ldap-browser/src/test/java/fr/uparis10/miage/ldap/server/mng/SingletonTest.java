@@ -28,7 +28,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 import fr.uparis10.miage.ldap.junit.AssertUtils;
 import fr.uparis10.miage.ldap.server.mng.GroupManager;
-import fr.uparis10.miage.ldap.server.mng.LdapCtxManager;
+import fr.uparis10.miage.ldap.server.mng.DataLdapCtxManager;
 import fr.uparis10.miage.ldap.server.mng.OrgUnitManager;
 import fr.uparis10.miage.ldap.server.mng.OrganizationManager;
 import fr.uparis10.miage.ldap.server.mng.PeopleManager;
@@ -51,14 +51,16 @@ public class SingletonTest {
 	@Parameters
 	public final static List<Object[]> getSingletonClasses() {
 		return Arrays.<Object[]> asList(
-		    new Object[] { LdapCtxManager.class },
+		    new Object[] { AuthLdapCtxManager.class },
+		    new Object[] { DataLdapCtxManager.class },
 		    new Object[] { PeopleManager.class },
 		    new Object[] { GroupManager.class },
 		    new Object[] { OrgUnitManager.class },
-		    new Object[] { OrganizationManager.class });
+		    new Object[] { OrganizationManager.class },
+		    new Object[] { UserLoginManager.class });
 	}
 
-	@Test (timeout=10000L)
+	@Test(timeout = 10000L)
 	public final void testIsSingleton() {
 		AssertUtils.assertIsSingleton(_class);
 	}

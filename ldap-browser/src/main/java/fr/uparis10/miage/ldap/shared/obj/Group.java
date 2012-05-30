@@ -18,7 +18,7 @@
  */
 package fr.uparis10.miage.ldap.shared.obj;
 
-import java.util.EnumMap;
+import java.util.HashMap;
 
 import fr.uparis10.miage.ldap.shared.enums.EnumGroupAttr;
 import fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey;
@@ -27,13 +27,12 @@ import fr.uparis10.miage.ldap.shared.itf.IHasPrimaryKey;
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public class Group extends EnumMap<EnumGroupAttr, String> implements IHasPrimaryKey<EnumGroupAttr, String>, Comparable<Group> {
+public class Group extends HashMap<EnumGroupAttr, String> implements IHasPrimaryKey<EnumGroupAttr, String>, Comparable<Group> {
 
 	/**
 	 * @param keyType
 	 */
 	public Group() {
-		super(EnumGroupAttr.class);
 	}
 
 	/**

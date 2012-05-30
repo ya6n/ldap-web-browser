@@ -40,11 +40,11 @@ public interface PeopleSearchScreenMessages extends Messages {
 	@Key("screen.peopleSearch.advanced.title")
 	String getAdvancedBoxTitle();
 
-	@Key("screen.peopleSearch.advanced.group.label")
-	String getGroupListLabel();
+	@Key("screen.peopleSearch.advanced.group.title")
+	String getGroupListTitle();
 
-	@Key("screen.peopleSearch.advanced.orgUnits.label")
-	String getOrgUnitListLabel();
+	@Key("screen.peopleSearch.advanced.orgUnits.title")
+	String getOrgUnitListTitle();
 
 	@Key("screen.peopleSearch.advanced.lookUpOptions.title")
 	String getLookUpOptionsTitle();
@@ -57,4 +57,35 @@ public interface PeopleSearchScreenMessages extends Messages {
 
 	@Key("screen.peopleSearch.advanced.lookUpOptions.group.label")
 	String getLookUpGroupLabel();
+
+	@Key("screen.peopleSearch.advanced.group.id.label")
+	String getGroupListIdLabel();
+
+	@Key("screen.peopleSearch.advanced.group.businessCategory.label")
+	String getGroupListBussinessLabel();
+
+	@Key("screen.peopleSearch.advanced.orgUnits.id.label")
+	String getOrgUnitsIdLabel();
+
+	@Key("screen.peopleSearch.advanced.orgUnits.description.label")
+	String getOrgUnitsDescriptionLabel();
+
+	@Key("screen.peopleSearch.resultGrid.title")
+	String getResultGridTitle();
+
+	@Key("screen.peopleSearch.resultGrid.uid.label")
+	String getResultGridIdLabel();
+
+	@Key("screen.peopleSearch.resultGrid.displayName.label")
+	String getResultGridNameLabel();
+
+	@Key("screen.peopleSearch.resultGrid.mail.label")
+	String getResultGridMailLabel();
+
+	@Key("screen.peopleSearch.resultGrid.telephoneNumber.label")
+	String getResultGridTelephoneLabel();
+
+	@Key("screen.peopleSearch.resultGrid.postalAddress.label")
+	String getResultGridAddressLabel();
+
 }

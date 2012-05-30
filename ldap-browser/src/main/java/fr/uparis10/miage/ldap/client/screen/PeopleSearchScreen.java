@@ -48,7 +48,7 @@ import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
 
-import fr.uparis10.miage.ldap.client.resources.messages.PeopleSearchScreenMessages;
+import fr.uparis10.miage.ldap.client.messages.PeopleSearchScreenMessages;
 import fr.uparis10.miage.ldap.client.screen.provider.GroupModelKeyProvider;
 import fr.uparis10.miage.ldap.client.screen.provider.GroupValueProvider;
 import fr.uparis10.miage.ldap.client.screen.provider.OrgUnitModelKeyProvider;
@@ -83,7 +83,7 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 
 	private TextButton searchButton;
 
-	Grid<Person> personGrid;
+	private Grid<Person> personGrid;
 
 	private Grid<Group> groupGrid;
 
@@ -122,7 +122,10 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 				PersonServiceAsync personService = GWT.create(PersonService.class);
 
 				String request = searchBox.getValue();
+				if (request == null)
+					request = "";
 
+				final Grid<Person> resultGrid = personGrid;
 				if (!advancedBox.isExpanded()
 				    || (groupGrid.getSelectionModel().getSelectedItems().size() == groupGrid.getStore().size()
 				        && orgUnitGrid.getSelectionModel().getSelectedItems().size() == orgUnitGrid.getStore().size() && opPerson.getValue() && opOrgUnit.getValue() && opGroup
@@ -136,8 +139,9 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 
 						@Override
 						public void onSuccess(List<Person> result) {
-							personGrid.getStore().clear();
-							personGrid.getStore().addAll(result);
+							resultGrid.getStore().clear();
+							resultGrid.getStore().addAll(result);
+							resultGrid.getView().refresh(true);
 						}
 					});
 				}
@@ -197,7 +201,7 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		// ajout de la liste de groupes
 		generateGroupGrid();
 		FieldSet sc = new FieldSet();
-		sc.setHeadingText(messages.getGroupListLabel());
+		sc.setHeadingText(messages.getGroupListTitle());
 		sc.add(groupGrid);
 		groupGrid.setHeight(110);
 		// FieldLabel fl = new FieldLabel(groupGrid, messages.getGroupListLabel());
@@ -211,7 +215,7 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		// ajout de la liste d'unites d'organisation
 		generateOrgUnitGrid();
 		sc = new FieldSet();
-		sc.setHeadingText(messages.getOrgUnitListLabel());
+		sc.setHeadingText(messages.getOrgUnitListTitle());
 		orgUnitGrid.setHeight(110);
 		sc.add(orgUnitGrid);
 		// fl = new FieldLabel(orgUnitGrid, messages.getOrgUnitListLabel());
@@ -226,11 +230,14 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		// ajout du Grid de resultats
 		List<ColumnConfig<Person, ?>> list = new ArrayList<ColumnConfig<Person, ?>>();
 
-		ColumnConfig<Person, ?> colConfig = new ColumnConfig<Person, String>(new PersonValueProvider(), 100, "UID");
-		ColumnConfig<Person, ?> colConfig2 = new ColumnConfig<Person, String>(new PersonValueProvider(EnumPersonAttr.displayName), 100, "Nom");
-		ColumnConfig<Person, ?> colConfig3 = new ColumnConfig<Person, String>(new PersonValueProvider(EnumPersonAttr.displayName.mail), 100, "E-Mail");
-		ColumnConfig<Person, ?> colConfig4 = new ColumnConfig<Person, String>(new PersonValueProvider(EnumPersonAttr.telephoneNumber), 100, "Téléphone");
-		ColumnConfig<Person, ?> colConfig5 = new ColumnConfig<Person, String>(new PersonValueProvider(EnumPersonAttr.postalAddress), 100, "Addresse");
+		ColumnConfig<Person, ?> colConfig = new ColumnConfig<Person, String>(new PersonValueProvider(), 100, messages.getResultGridIdLabel());
+		ColumnConfig<Person, ?> colConfig2 = new ColumnConfig<Person, String>(new PersonValueProvider(EnumPersonAttr.displayName), 100,
+		    messages.getResultGridNameLabel());
+		ColumnConfig<Person, ?> colConfig3 = new ColumnConfig<Person, String>(new PersonValueProvider(EnumPersonAttr.mail), 100, messages.getResultGridMailLabel());
+		ColumnConfig<Person, ?> colConfig4 = new ColumnConfig<Person, String>(new PersonValueProvider(EnumPersonAttr.telephoneNumber), 100,
+		    messages.getResultGridTelephoneLabel());
+		ColumnConfig<Person, ?> colConfig5 = new ColumnConfig<Person, String>(new PersonValueProvider(EnumPersonAttr.postalAddress), 100,
+		    messages.getResultGridAddressLabel());
 
 		ContentPanel gridModel = new ContentPanel();
 		ColumnModel<Person> cm = new ColumnModel<Person>(list);
@@ -245,8 +252,12 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		personGrid.setWidth(400);
 		personGrid.setHeight(200);
 		gridModel.add(personGrid);
-		gridModel.setHeadingText("Resultat de la Recherche");
+		gridModel.setHeadingText(messages.getResultGridTitle());
 		add(gridModel, new VerticalLayoutData(1, 300, new Margins(10, 0, 0, 0)));
+
+		Person person = new Person();
+		person.put(EnumPersonAttr.uid, "igorode");
+		personGrid.getStore().add(person);
 
 	}
 

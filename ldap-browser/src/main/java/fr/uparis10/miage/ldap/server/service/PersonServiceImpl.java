@@ -24,6 +24,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import fr.uparis10.miage.ldap.client.service.PersonService;
 import fr.uparis10.miage.ldap.shared.obj.Person;
+import fr.uparis10.miage.ldap.shared.obj.SearchRequestModel;
 
 /**
  * @author gorodenco
@@ -39,6 +40,32 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	 */
 	@Override
 	public List<Person> getPersonsAll() throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.uparis10.miage.ldap.client.service.PersonService#searchPersons(java.
+	 * lang.String)
+	 */
+	@Override
+	public List<Person> searchPersons(String request) throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * fr.uparis10.miage.ldap.client.service.PersonService#searchPersons(fr.uparis10
+	 * .miage.ldap.shared.obj.SearchRequestModel)
+	 */
+	@Override
+	public List<Person> searchPersons(SearchRequestModel requestModel) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -39,7 +39,7 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 	@Override
 	public Boolean loginUser(String login, String pass) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }

@@ -18,9 +18,15 @@
  */
 package fr.uparis10.miage.ldap.server.service;
 
+import javax.servlet.http.HttpSession;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import fr.uparis10.miage.ldap.client.service.LoginService;
+import fr.uparis10.miage.ldap.server.mng.UserLoginManager;
+import fr.uparis10.miage.ldap.shared.exc.InvalidPasswordException;
+import fr.uparis10.miage.ldap.shared.exc.NoSuchUserException;
+import fr.uparis10.miage.ldap.shared.obj.Person;
 
 /**
  * @author iogorode
@@ -38,8 +44,16 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 	 */
 	@Override
 	public Boolean loginUser(String login, String pass) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+		UserLoginManager userLoginManager = UserLoginManager.getInstance();
+		try {
+			Person person = userLoginManager.login(login, pass);
+			HttpSession session = this.getThreadLocalRequest().getSession();
+			session.setAttribute("CurrentLoggedPerson", person);
+		} catch (NoSuchUserException e) {
+			return false;
+		} catch (InvalidPasswordException e) {
+			return false;
+		}
 		return true;
 	}
-
 }

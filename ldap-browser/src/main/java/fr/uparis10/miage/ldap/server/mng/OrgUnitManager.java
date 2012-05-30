@@ -45,6 +45,8 @@ public final class OrgUnitManager extends ACacheManager<EnumOrgUnitAttr, String,
 
 	private OrgUnitManager() {
 		super();
+		// TODO FIXME
+		refresh();
 	}
 
 	public final static OrgUnitManager getInstance() {

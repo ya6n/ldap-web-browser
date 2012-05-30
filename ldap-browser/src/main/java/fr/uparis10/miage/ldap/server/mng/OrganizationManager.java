@@ -45,6 +45,8 @@ public final class OrganizationManager extends ACacheManager<EnumOrganizationAtt
 
 	private OrganizationManager() {
 		super();
+		// TODO FIXME
+		refresh();
 	}
 
 	public final static OrganizationManager getInstance() {

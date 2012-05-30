@@ -29,15 +29,25 @@ import fr.uparis10.miage.ldap.shared.obj.OrgUnit;
  */
 public class OrgUnitValueProvider implements ValueProvider<OrgUnit, String> {
 
+	private EnumOrgUnitAttr key;
+
+	public OrgUnitValueProvider(EnumOrgUnitAttr key) {
+		this.key = key;
+	}
+
+	public OrgUnitValueProvider() {
+		this(EnumOrgUnitAttr.ou);
+	}
+
 	public String getValue(OrgUnit orgUnit) {
-		return orgUnit.getPrimaryKeyValue();
+		return orgUnit.get(key);
 	}
 
 	public void setValue(OrgUnit orgUnit, String value) {
-		orgUnit.put(orgUnit.getPrimaryKey(), value);
+		orgUnit.put(key, value);
 	}
 
 	public String getPath() {
-		return EnumOrgUnitAttr.ou.toString();
+		return key.name();
 	}
 }

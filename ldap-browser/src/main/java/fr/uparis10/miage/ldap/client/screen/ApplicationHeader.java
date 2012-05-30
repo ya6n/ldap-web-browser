@@ -64,7 +64,10 @@ public class ApplicationHeader extends BorderLayoutContainer {
 
 			@Override
 			public void onSelect(SelectEvent event) {
-				ContentManager.getInstance().getContainer().openScreen(new PeopleSearchScreen());
+				PeopleSearchScreen screen = new PeopleSearchScreen();
+				ContentManager.getInstance().getContainer().openScreen(screen);
+				screen.selectAll();
+
 			}
 		});
 		toolBar.add(btn);

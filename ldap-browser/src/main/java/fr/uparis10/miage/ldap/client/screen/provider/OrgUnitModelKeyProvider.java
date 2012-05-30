@@ -20,6 +20,7 @@ package fr.uparis10.miage.ldap.client.screen.provider;
 
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 
+import fr.uparis10.miage.ldap.shared.enums.EnumOrgUnitAttr;
 import fr.uparis10.miage.ldap.shared.obj.OrgUnit;
 
 /**
@@ -30,8 +31,7 @@ public class OrgUnitModelKeyProvider implements ModelKeyProvider<OrgUnit> {
 
 	@Override
 	public String getKey(OrgUnit item) {
-
-		return item.getPrimaryKey().toString();
+		return item.get(EnumOrgUnitAttr.ou);
 	}
 
 }

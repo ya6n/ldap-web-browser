@@ -29,15 +29,25 @@ import fr.uparis10.miage.ldap.shared.obj.Person;
  */
 public class PersonValueProvider implements ValueProvider<Person, String> {
 
+	private EnumPersonAttr key;
+
+	public PersonValueProvider() {
+		this(EnumPersonAttr.uid);
+	}
+
+	public PersonValueProvider(EnumPersonAttr key) {
+		this.key = key;
+	}
+
 	public String getValue(Person person) {
-		return person.getPrimaryKeyValue();
+		return person.get(key);
 	}
 
 	public void setValue(Person person, String value) {
-		person.put(person.getPrimaryKey(), value);
+		person.put(key, value);
 	}
 
 	public String getPath() {
-		return EnumPersonAttr.uid.toString();
+		return key.name();
 	}
 }

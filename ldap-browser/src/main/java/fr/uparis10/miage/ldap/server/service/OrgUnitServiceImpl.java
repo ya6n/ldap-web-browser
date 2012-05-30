@@ -42,7 +42,11 @@ public class OrgUnitServiceImpl extends RemoteServiceServlet implements OrgUnitS
 	@Override
 	public List<OrgUnit> getOrgUnitsAll() throws IllegalArgumentException {
 		List<OrgUnit> listOrgUnit = OrgUnitManager.getInstance().getAllObjList();
-		return listOrgUnit == null ? new ArrayList<OrgUnit>() : listOrgUnit;
+		ArrayList<OrgUnit> result = new ArrayList<OrgUnit>();
+		if (listOrgUnit != null) {
+			result.addAll(listOrgUnit);
+		}
+		return result;
 	}
 
 }

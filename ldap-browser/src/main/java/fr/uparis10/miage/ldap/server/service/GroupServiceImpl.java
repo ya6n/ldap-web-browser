@@ -42,7 +42,10 @@ public class GroupServiceImpl extends RemoteServiceServlet implements GroupServi
 	@Override
 	public List<Group> getGroupsAll() throws IllegalArgumentException {
 		List<Group> listGroup = GroupManager.getInstance().getAllObjList();
-		return listGroup == null ? new ArrayList<Group>() : listGroup;
+		ArrayList<Group> result = new ArrayList<Group>();
+		if (listGroup != null) {
+			result.addAll(listGroup);
+		}
+		return result;
 	}
-
 }

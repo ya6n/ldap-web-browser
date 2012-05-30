@@ -44,7 +44,11 @@ public class OrganizationServiceImpl extends RemoteServiceServlet implements Org
 	@Override
 	public List<Organization> getOrganizationsAll() throws IllegalArgumentException {
 		List<Organization> listOrganization = OrganizationManager.getInstance().getAllObjList();
-		return listOrganization == null ? new ArrayList<Organization>() : listOrganization;
+		ArrayList<Organization> result = new ArrayList<Organization>();
+		if (listOrganization != null) {
+			result.addAll(listOrganization);
+		}
+		return result;
 	}
 
 }

@@ -55,6 +55,10 @@ import fr.uparis10.miage.ldap.client.screen.provider.OrgUnitModelKeyProvider;
 import fr.uparis10.miage.ldap.client.screen.provider.OrgUnitValueProvider;
 import fr.uparis10.miage.ldap.client.screen.provider.PersonModelKeyProvider;
 import fr.uparis10.miage.ldap.client.screen.provider.PersonValueProvider;
+import fr.uparis10.miage.ldap.client.service.GroupService;
+import fr.uparis10.miage.ldap.client.service.GroupServiceAsync;
+import fr.uparis10.miage.ldap.client.service.OrgUnitService;
+import fr.uparis10.miage.ldap.client.service.OrgUnitServiceAsync;
 import fr.uparis10.miage.ldap.client.service.PersonService;
 import fr.uparis10.miage.ldap.client.service.PersonServiceAsync;
 import fr.uparis10.miage.ldap.shared.enums.EnumGroupAttr;
@@ -254,11 +258,6 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		gridModel.add(personGrid);
 		gridModel.setHeadingText(messages.getResultGridTitle());
 		add(gridModel, new VerticalLayoutData(1, 300, new Margins(10, 0, 0, 0)));
-
-		Person person = new Person();
-		person.put(EnumPersonAttr.uid, "igorode");
-		personGrid.getStore().add(person);
-
 	}
 
 	private void generateOrgUnitGrid() {
@@ -283,20 +282,24 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		orgUnitGrid.getView().setStripeRows(true);
 		orgUnitGrid.getView().setColumnLines(true);
 
-		OrgUnit orgUnit = new OrgUnit();
-		orgUnit.put(EnumOrgUnitAttr.ou, "SEGMI");
-		orgUnit.put(EnumOrgUnitAttr.description, "UFR de sciences économiques, gestion, mathématiques, informatique");
-		orgUnitGrid.getStore().add(orgUnit);
-		orgUnit = new OrgUnit();
-		orgUnit.put(EnumOrgUnitAttr.ou, "MIAGE");
-		orgUnit.put(EnumOrgUnitAttr.description, "UFR des Sciences et Techniques des Activités Physiques et Sportives");
-		orgUnitGrid.getStore().add(orgUnit);
-		orgUnit = new OrgUnit();
-		orgUnit.put(EnumOrgUnitAttr.ou, "STAPS");
-		orgUnit.put(EnumOrgUnitAttr.description, "Méthodes informatiques appliquées à la gestion des entreprises");
-		orgUnitGrid.getStore().add(orgUnit);
+		// OrgUnit orgUnit = new OrgUnit();
+		// orgUnit.put(EnumOrgUnitAttr.ou, "SEGMI");
+		// orgUnit.put(EnumOrgUnitAttr.description,
+		// "UFR de sciences économiques, gestion, mathématiques, informatique");
+		// orgUnitGrid.getStore().add(orgUnit);
+		// orgUnit = new OrgUnit();
+		// orgUnit.put(EnumOrgUnitAttr.ou, "MIAGE");
+		// orgUnit.put(EnumOrgUnitAttr.description,
+		// "UFR des Sciences et Techniques des Activités Physiques et Sportives");
+		// orgUnitGrid.getStore().add(orgUnit);
+		// orgUnit = new OrgUnit();
+		// orgUnit.put(EnumOrgUnitAttr.ou, "STAPS");
+		// orgUnit.put(EnumOrgUnitAttr.description,
+		// "Méthodes informatiques appliquées à la gestion des entreprises");
+		// orgUnitGrid.getStore().add(orgUnit);
 
 		checkBoxSM.selectAll();
+
 	}
 
 	private void generateGroupGrid() {
@@ -321,18 +324,18 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		groupGrid.getView().setStripeRows(true);
 		groupGrid.getView().setColumnLines(true);
 
-		Group group = new Group();
-		group.put(EnumGroupAttr.cn, "étudiant");
-		group.put(EnumGroupAttr.businessCategory, "1111");
-		groupGrid.getStore().add(group);
-		group = new Group();
-		group.put(EnumGroupAttr.cn, "enseignant");
-		group.put(EnumGroupAttr.businessCategory, "2222");
-		groupGrid.getStore().add(group);
-		group = new Group();
-		group.put(EnumGroupAttr.cn, "employé");
-		group.put(EnumGroupAttr.businessCategory, "3333");
-		groupGrid.getStore().add(group);
+		// Group group = new Group();
+		// group.put(EnumGroupAttr.cn, "étudiant");
+		// group.put(EnumGroupAttr.businessCategory, "1111");
+		// groupGrid.getStore().add(group);
+		// group = new Group();
+		// group.put(EnumGroupAttr.cn, "enseignant");
+		// group.put(EnumGroupAttr.businessCategory, "2222");
+		// groupGrid.getStore().add(group);
+		// group = new Group();
+		// group.put(EnumGroupAttr.cn, "employé");
+		// group.put(EnumGroupAttr.businessCategory, "3333");
+		// groupGrid.getStore().add(group);
 
 	}
 
@@ -364,6 +367,43 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 	public void selectAll() {
 		groupGrid.getSelectionModel().selectAll();
 		orgUnitGrid.getSelectionModel().selectAll();
+
+		GroupServiceAsync groupService = GWT.create(GroupService.class);
+		groupService.getGroupsAll(new AsyncCallback<List<Group>>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onSuccess(List<Group> result) {
+				groupGrid.getStore().clear();
+				groupGrid.getStore().addAll(result);
+				groupGrid.getSelectionModel().selectAll();
+			}
+
+		});
+
+		OrgUnitServiceAsync orgUnitService = GWT.create(OrgUnitService.class);
+		orgUnitService.getOrgUnitsAll(new AsyncCallback<List<OrgUnit>>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onSuccess(List<OrgUnit> result) {
+				orgUnitGrid.getStore().clear();
+				orgUnitGrid.getStore().addAll(result);
+				orgUnitGrid.getSelectionModel().selectAll();
+			}
+
+		});
+
 	}
 
 	@Override

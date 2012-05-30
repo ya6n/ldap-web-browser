@@ -63,6 +63,16 @@
     <servlet-name>orgUnitServlet</servlet-name>
     <url-pattern>/LDAPBrowser/orgunit</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>loginServlet</servlet-name>
+    <servlet-class>fr.uparis10.miage.ldap.server.service.LoginServiceImpl</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>loginServlet</servlet-name>
+    <url-pattern>/LDAPBrowser/login</url-pattern>
+  </servlet-mapping>
 
   <!-- Default page to serve -->
   <welcome-file-list>

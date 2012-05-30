@@ -29,9 +29,9 @@ import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.PasswordField;
 import com.sencha.gxt.widget.core.client.form.TextField;
 
-import fr.uparis10.miage.ldap.client.GreetingService;
-import fr.uparis10.miage.ldap.client.GreetingServiceAsync;
 import fr.uparis10.miage.ldap.client.LDAPBrowser;
+import fr.uparis10.miage.ldap.client.service.LoginService;
+import fr.uparis10.miage.ldap.client.service.LoginServiceAsync;
 
 /**
  * @author iogorode
@@ -82,29 +82,32 @@ public class LoginScreen extends ContentPanel {
 				pass.reset();
 			}
 		});
-
 		btLogin.addSelectHandler(new SelectHandler() {
 
 			@Override
 			public void onSelect(SelectEvent event) {
-				GreetingServiceAsync greetingService = GWT
-						.create(GreetingService.class);
-				greetingService.greetServer(user.getValue(),
-						new AsyncCallback<String>() {
+				LoginServiceAsync loginService = GWT
+				    .create(LoginService.class);
+				loginService.loginUser(user.getValue(), pass.getValue(),
+				    new AsyncCallback<Boolean>() {
 
-							@Override
-							public void onSuccess(String result) {
-								Window.alert(result);
-								LDAPBrowser.onMainScreenLoad();
+					    @Override
+					    public void onSuccess(Boolean result) {
+						    if (result) {
+							    LDAPBrowser.onMainScreenLoad();
+						    }
+						    else {
+							    Window.alert(result.toString());
+						    }
 
-							}
+					    }
 
-							@Override
-							public void onFailure(Throwable caught) {
-								Window.alert("BAD");
+					    @Override
+					    public void onFailure(Throwable caught) {
+						    Window.alert("BAD");
 
-							}
-						});
+					    }
+				    });
 
 			}
 
@@ -117,5 +120,4 @@ public class LoginScreen extends ContentPanel {
 		loginForm.addButton(btReset);
 
 	}
-
 }

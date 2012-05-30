@@ -83,6 +83,15 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	public List<Person> searchPersons(SearchRequestModel requestModel) throws IllegalArgumentException {
 		PeopleManager peopleManager = PeopleManager.getInstance();
 		List<Person> listPerson = new ArrayList<Person>();
+		List<Person> result = new ArrayList<Person>();
+
+		if (requestModel.getLookUpPerson()) {
+			try {
+				listPerson.addAll(peopleManager.dummySearch(requestModel.getRequest()));
+			} catch (DataNotLoadedException e) {
+				e.printStackTrace();
+			}
+		}
 
 		if (requestModel.getLookUpGroup()) {
 			for (Entry<String, Boolean> currentEntry : requestModel.getGroupOptions().entrySet()) {
@@ -90,11 +99,11 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 				Boolean value = currentEntry.getValue();
 
 				if (value) {
-					try {
-						listPerson.retainAll(peopleManager.indexedSearch(EnumPersonAttr.supannRole,
-						    key));
-					} catch (DataNotLoadedException e) {
-						e.printStackTrace();
+					for (Person person : listPerson) {
+						if (person.get(EnumPersonAttr.supannRole).equals(key) &&
+						    !result.contains(person)) {
+							result.add(person);
+						}
 					}
 				}
 			}
@@ -105,24 +114,16 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 				String key = currentEntry.getKey();
 				Boolean value = currentEntry.getValue();
 				if (value) {
-					try {
-						listPerson.retainAll(peopleManager.indexedSearch(EnumPersonAttr.ou,
-						    key));
-					} catch (DataNotLoadedException e) {
-						e.printStackTrace();
+					for (Person person : listPerson) {
+						if (person.get(EnumPersonAttr.ou).equals(key) &&
+						    !result.contains(person)) {
+							result.add(person);
+						}
 					}
 				}
 			}
 		}
 
-		if (requestModel.getLookUpPerson()) {
-			try {
-				listPerson.retainAll(peopleManager.dummySearch(requestModel.getRequest()));
-			} catch (DataNotLoadedException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return listPerson;
+		return result;
 	}
 }

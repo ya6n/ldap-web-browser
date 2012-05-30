@@ -253,8 +253,11 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		personGrid = new Grid<Person>(new ListStore<Person>(new PersonModelKeyProvider()), cm);
 		personGrid.getView().setForceFit(true);
 		personGrid.getView().setAutoFill(true);
+		personGrid.getView().setStripeRows(true);
+		personGrid.getView().setColumnLines(true);
 		personGrid.setWidth(400);
 		personGrid.setHeight(200);
+
 		gridModel.add(personGrid);
 		gridModel.setHeadingText(messages.getResultGridTitle());
 		add(gridModel, new VerticalLayoutData(1, 300, new Margins(10, 0, 0, 0)));

@@ -21,9 +21,6 @@ package fr.uparis10.miage.ldap.shared.obj;
 import java.io.Serializable;
 import java.util.Map;
 
-import fr.uparis10.miage.ldap.shared.enums.EnumGroupAttr;
-import fr.uparis10.miage.ldap.shared.enums.EnumOrgUnitAttr;
-
 /**
  * @author iogorode
  * 
@@ -37,9 +34,9 @@ public class SearchRequestModel implements Serializable {
 
 	private String request;
 
-	private Map<EnumGroupAttr, Boolean> groupOptions;
+	private Map<String, Boolean> groupOptions;
 
-	private Map<EnumOrgUnitAttr, Boolean> orgUnitOptions;
+	private Map<String, Boolean> orgUnitOptions;
 
 	private Boolean lookUpPerson;
 
@@ -65,7 +62,7 @@ public class SearchRequestModel implements Serializable {
 	/**
 	 * @return the groupOptions
 	 */
-	public Map<EnumGroupAttr, Boolean> getGroupOptions() {
+	public Map<String, Boolean> getGroupOptions() {
 		return groupOptions;
 	}
 
@@ -73,14 +70,14 @@ public class SearchRequestModel implements Serializable {
 	 * @param groupOptions
 	 *          the groupOptions to set
 	 */
-	public void setGroupOptions(Map<EnumGroupAttr, Boolean> groupOptions) {
+	public void setGroupOptions(Map<String, Boolean> groupOptions) {
 		this.groupOptions = groupOptions;
 	}
 
 	/**
 	 * @return the orgUnitOptions
 	 */
-	public Map<EnumOrgUnitAttr, Boolean> getOrgUnitOptions() {
+	public Map<String, Boolean> getOrgUnitOptions() {
 		return orgUnitOptions;
 	}
 
@@ -88,7 +85,7 @@ public class SearchRequestModel implements Serializable {
 	 * @param orgUnitOptions
 	 *          the orgUnitOptions to set
 	 */
-	public void setOrgUnitOptions(Map<EnumOrgUnitAttr, Boolean> orgUnitOptions) {
+	public void setOrgUnitOptions(Map<String, Boolean> orgUnitOptions) {
 		this.orgUnitOptions = orgUnitOptions;
 	}
 

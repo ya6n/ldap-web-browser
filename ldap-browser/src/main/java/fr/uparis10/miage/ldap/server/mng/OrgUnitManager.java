@@ -18,6 +18,8 @@
  */
 package fr.uparis10.miage.ldap.server.mng;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -112,7 +114,17 @@ public final class OrgUnitManager extends ACacheManager<EnumOrgUnitAttr, String,
 	 * .directory.Attribute)
 	 */
 	@Override
-	public final String decodeAttribute(@NotNull final Attribute parInput, @NotNull final EnumOrgUnitAttr parType) throws NamingException {
+	protected final String decodeAttribute(@NotNull final Attribute parInput, @NotNull final EnumOrgUnitAttr parType) throws NamingException {
 		return ServerStringUtils.decodeAttribute(parInput, parType);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.uparis10.miage.ldap.server.mng.ABasicLdapManager#getCtxManager()
+	 */
+	@Override
+	protected final ALdapCtxManager getCtxManager() throws FileNotFoundException, IOException, NamingException {
+		return DataLdapCtxManager.getInstance();
 	}
 }

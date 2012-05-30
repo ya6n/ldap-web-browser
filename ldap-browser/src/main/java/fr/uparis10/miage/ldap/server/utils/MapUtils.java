@@ -28,20 +28,27 @@ import javax.validation.constraints.NotNull;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
- *
+ * 
  */
 public final class MapUtils {
-	
-	public final static <K_TYPE, V_TYPE> void putInListMap(@NotNull final Map<K_TYPE, List<V_TYPE>> parMap, @NotNull final K_TYPE parKey, @NotNull final V_TYPE parVal) {
+	/**
+	 * No Instance!
+	 */
+	private MapUtils() {
+	}
+
+	public final static <K_TYPE, V_TYPE> void putInListMap(@NotNull final Map<K_TYPE, List<V_TYPE>> parMap, @NotNull final K_TYPE parKey,
+	    @NotNull final V_TYPE parVal) {
 		List<V_TYPE> locValList = parMap.get(parKey);
 		if (null == locValList) {
 			locValList = new ArrayList<V_TYPE>(1);
 			parMap.put(parKey, locValList);
 		}
 		locValList.add(parVal);
-	}	
+	}
 
-	public final static <K_TYPE, V_TYPE> void putInListMap(@NotNull final Map<K_TYPE, List<V_TYPE>> parMap, @NotNull final K_TYPE parKey, @NotNull final Collection<V_TYPE> parValList) {
+	public final static <K_TYPE, V_TYPE> void putInListMap(@NotNull final Map<K_TYPE, List<V_TYPE>> parMap, @NotNull final K_TYPE parKey,
+	    @NotNull final Collection<V_TYPE> parValList) {
 		List<V_TYPE> locValList = parMap.get(parKey);
 		if (null == locValList) {
 			locValList = new ArrayList<V_TYPE>(parValList.size());
@@ -49,8 +56,9 @@ public final class MapUtils {
 		}
 		locValList.addAll(parValList);
 	}
-	
-	public final static <I_TYPE,K_TYPE,V_TYPE> void putInIndexMap(@NotNull final Map<I_TYPE,Map<K_TYPE,List<V_TYPE>>> parIndexMap, @NotNull final I_TYPE parIndexType, @NotNull final K_TYPE parKey, @NotNull final V_TYPE parVal) {
+
+	public final static <I_TYPE, K_TYPE, V_TYPE> void putInIndexMap(@NotNull final Map<I_TYPE, Map<K_TYPE, List<V_TYPE>>> parIndexMap,
+	    @NotNull final I_TYPE parIndexType, @NotNull final K_TYPE parKey, @NotNull final V_TYPE parVal) {
 		Map<K_TYPE, List<V_TYPE>> locIndex = parIndexMap.get(parIndexType);
 		if (null == locIndex) {
 			locIndex = new HashMap<K_TYPE, List<V_TYPE>>();

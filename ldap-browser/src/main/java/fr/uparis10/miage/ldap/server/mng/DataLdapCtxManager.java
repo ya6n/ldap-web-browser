@@ -18,31 +18,41 @@
  */
 package fr.uparis10.miage.ldap.server.mng;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.naming.NamingException;
-import javax.naming.directory.DirContext;
-
-import org.junit.Test;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public final class LdapCtxManagerTest {
+public final class DataLdapCtxManager extends ALdapCtxManager {
+	/**
+   * @throws FileNotFoundException
+   * @throws IOException
+   * @throws NamingException
+   */
+  private DataLdapCtxManager() throws FileNotFoundException, IOException, NamingException {
+	  super();
+  }
 
-	@Test(timeout = 10000L)
-	public final void testGetContextAndDn() throws FileNotFoundException, IOException, NamingException {
-		final DirContext locCtx = DataLdapCtxManager.getInstance().getContext();
-		final String locBaseDn = DataLdapCtxManager.getInstance().getBaseDN();
-		assertNotNull(locCtx);
-		assertNotNull(locBaseDn);
-		assertTrue(!locBaseDn.isEmpty());
-		final Object locBaseObj = locCtx.lookup(locBaseDn);
-		assertNotNull(locBaseObj);
+	private static DataLdapCtxManager _inst = null;
+
+	public final static DataLdapCtxManager getInstance() throws FileNotFoundException, IOException, NamingException {
+		if (null == _inst) {
+			_inst = new DataLdapCtxManager();
+		}
+
+		return _inst;
 	}
+
+	/* (non-Javadoc)
+   * @see fr.uparis10.miage.ldap.server.mng.ALdapCtxManager#getConfigFile()
+   */
+  @Override
+  public final String getConfigFile() {
+  	return "ldap_server.properties";
+  }
+
 }

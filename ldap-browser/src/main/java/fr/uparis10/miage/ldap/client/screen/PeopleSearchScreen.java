@@ -37,6 +37,8 @@ import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer.HorizontalLayoutData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.event.RowDoubleClickEvent;
+import com.sencha.gxt.widget.core.client.event.RowDoubleClickEvent.RowDoubleClickHandler;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.CheckBox;
@@ -48,6 +50,7 @@ import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
 
+import fr.uparis10.miage.ldap.client.ContentManager;
 import fr.uparis10.miage.ldap.client.messages.PeopleSearchScreenMessages;
 import fr.uparis10.miage.ldap.client.screen.provider.GroupModelKeyProvider;
 import fr.uparis10.miage.ldap.client.screen.provider.GroupValueProvider;
@@ -257,6 +260,16 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		personGrid.getView().setColumnLines(true);
 		personGrid.setWidth(400);
 		personGrid.setHeight(200);
+
+		personGrid.addRowDoubleClickHandler(new RowDoubleClickHandler() {
+
+			@Override
+			public void onRowDoubleClick(RowDoubleClickEvent event) {
+				Person person = personGrid.getStore().get(event.getRowIndex());
+
+				ContentManager.getInstance().getContainer().openScreen(new PeopleSynthesisScreen(person.get(EnumPersonAttr.uid), person));
+			}
+		});
 
 		gridModel.add(personGrid);
 		gridModel.setHeadingText(messages.getResultGridTitle());

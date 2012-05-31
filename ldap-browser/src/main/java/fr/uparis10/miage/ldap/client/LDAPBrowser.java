@@ -4,6 +4,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.sencha.gxt.widget.core.client.container.CenterLayoutContainer;
 
@@ -21,6 +22,7 @@ public class LDAPBrowser implements EntryPoint {
 	public void onModuleLoad() {
 
 		RootPanel rootPanel = RootPanel.get();
+
 		rootPanel.clear();
 
 		final CenterLayoutContainer root = new CenterLayoutContainer();
@@ -39,6 +41,7 @@ public class LDAPBrowser implements EntryPoint {
 		// rootPanel.setSize("100%", "100%");
 		root.add(loginScreen);
 		rootPanel.add(root);
+		RootPanel.get().add(RootLayoutPanel.get());
 
 		// root.layout(true);
 

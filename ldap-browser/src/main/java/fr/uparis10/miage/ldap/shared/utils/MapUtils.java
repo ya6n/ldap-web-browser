@@ -16,7 +16,7 @@
  *
  * Creation date: May 26, 2012
  */
-package fr.uparis10.miage.ldap.server.utils;
+package fr.uparis10.miage.ldap.shared.utils;
 
 import java.util.ArrayList;
 import java.util.Collection;

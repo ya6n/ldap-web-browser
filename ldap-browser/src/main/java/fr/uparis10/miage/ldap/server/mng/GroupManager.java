@@ -38,21 +38,21 @@ import fr.uparis10.miage.ldap.shared.obj.Group;
  */
 public final class GroupManager extends ACacheManager<EnumGroupAttr, String, Group> {
 
-	private static final String _prefix = "ou=groups,";
-	private static final String _filter = "objectClass=groupOfNames";
+	private static final String PREFIX = "ou=groups,";
+	private static final String FILTER = "objectClass=groupOfNames";
 
-	private static GroupManager _inst = null;
+	private static GroupManager INST = null;
 
 	private GroupManager() {
 		super();
 	}
 
 	public final static GroupManager getInstance() {
-		if (null == _inst) {
-			_inst = new GroupManager();
+		if (null == INST) {
+			INST = new GroupManager();
 		}
 
-		return _inst;
+		return INST;
 	}
 
 	/*
@@ -62,7 +62,7 @@ public final class GroupManager extends ACacheManager<EnumGroupAttr, String, Gro
 	 */
 	@Override
 	protected final String getDNPrefix() {
-		return _prefix;
+		return PREFIX;
 	}
 
 	/*
@@ -72,7 +72,7 @@ public final class GroupManager extends ACacheManager<EnumGroupAttr, String, Gro
 	 */
 	@Override
 	protected final String getGenericFilter() {
-		return _filter;
+		return FILTER;
 	}
 
 	/*

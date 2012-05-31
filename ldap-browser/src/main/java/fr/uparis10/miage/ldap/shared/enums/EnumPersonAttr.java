@@ -63,8 +63,7 @@ public enum EnumPersonAttr implements IIndexable, IDecoder<Object, String> {
 		@Override
 		public final String decodeValue(@NotNull final Object parObj) {
 			assert (parObj instanceof byte[]);
-			final String locDecStr = StringUtils.decodeByteArray((byte[]) parObj);
-			return locDecStr;
+			return StringUtils.decodeByteArray((byte[]) parObj);
 		}
 
 		@Override
@@ -630,14 +629,13 @@ public enum EnumPersonAttr implements IIndexable, IDecoder<Object, String> {
 	public final static int SUPANN_FIELD_SET_TYPE = 5;
 	private final static List<List<EnumPersonAttr>> VALUES_BY_FIELD_SET_ID;
 
-	@SuppressWarnings("rawtypes")
-	private final Class _type;
-	private final boolean _isIndexed;
-	private final int _fieldSetId;
+	private final Class<?> dataType;
+	private final boolean isIndexed;
+	private final int fieldSetId;
 	static {
 		final Map<Integer, List<EnumPersonAttr>> locMap = new HashMap<Integer, List<EnumPersonAttr>>();
 		for (final EnumPersonAttr locEnum : values()) {
-			MapUtils.putInListMap(locMap, locEnum._fieldSetId, locEnum);
+			MapUtils.putInListMap(locMap, locEnum.fieldSetId, locEnum);
 		}
 		final Set<Entry<Integer, List<EnumPersonAttr>>> locKeySet = locMap.entrySet();
 		VALUES_BY_FIELD_SET_ID = new ArrayList<List<EnumPersonAttr>>(locKeySet.size());
@@ -664,7 +662,7 @@ public enum EnumPersonAttr implements IIndexable, IDecoder<Object, String> {
 		this(parFieldSetId, String.class, false);
 	}
 
-	private EnumPersonAttr(final int parFieldSetId, @SuppressWarnings("rawtypes") final Class parType) {
+	private EnumPersonAttr(final int parFieldSetId, final Class<?> parType) {
 		this(parFieldSetId, parType, false);
 	}
 
@@ -672,20 +670,19 @@ public enum EnumPersonAttr implements IIndexable, IDecoder<Object, String> {
 		this(parFieldSetId, String.class, parDoIndex);
 	}
 
-	private EnumPersonAttr(final int parFieldSetId, @SuppressWarnings("rawtypes") final Class parType, final boolean parDoIndex) {
-		_type = parType;
-		_isIndexed = parDoIndex;
-		_fieldSetId = parFieldSetId;
+	private EnumPersonAttr(final int parFieldSetId, final Class<?> parType, final boolean parDoIndex) {
+		dataType = parType;
+		isIndexed = parDoIndex;
+		fieldSetId = parFieldSetId;
 	}
 
-	@SuppressWarnings("rawtypes")
-	public final Class getTypeClass() {
-		return _type;
+	public final Class<?> getTypeClass() {
+		return dataType;
 	}
 
 	@Override
 	public final boolean isIndexed() {
-		return _isIndexed;
+		return isIndexed;
 	}
 
 	/*

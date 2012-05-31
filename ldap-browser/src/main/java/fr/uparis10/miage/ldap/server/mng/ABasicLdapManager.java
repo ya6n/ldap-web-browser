@@ -34,6 +34,7 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.validation.constraints.NotNull;
 
+import fr.uparis10.miage.ldap.shared.exc.ContainerException;
 import fr.uparis10.miage.ldap.shared.itf.IIndexable;
 
 /**
@@ -66,11 +67,11 @@ public abstract class ABasicLdapManager<I_TYPE extends IIndexable, K_TYPE, V_TYP
 			locResMapList.trimToSize();
 			return locResMapList;
 		} catch (final NamingException locExc) {
-			throw new RuntimeException(locExc);
+			throw new ContainerException(locExc);
 		} catch (final FileNotFoundException locExc) {
-			throw new RuntimeException(locExc);
+			throw new ContainerException(locExc);
 		} catch (final IOException locExc) {
-			throw new RuntimeException(locExc);
+			throw new ContainerException(locExc);
 		}
 	}
 
@@ -84,7 +85,7 @@ public abstract class ABasicLdapManager<I_TYPE extends IIndexable, K_TYPE, V_TYP
 			final I_TYPE locAttrEnum;
 			try {
 				locAttrEnum = valueOfIndex(locAttrName);
-			} catch (final RuntimeException locExc) {
+			} catch (final ContainerException locExc) {
 				Logger.getLogger(ACacheManager.class.getName()).log(Level.SEVERE, "For attribute value [" + locAttrName + "]", locExc);
 				throw locExc;
 			}

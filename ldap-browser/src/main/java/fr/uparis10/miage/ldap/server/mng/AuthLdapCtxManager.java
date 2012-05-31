@@ -28,31 +28,33 @@ import javax.naming.NamingException;
  * 
  */
 public final class AuthLdapCtxManager extends ALdapCtxManager {
+	private static AuthLdapCtxManager INST = null;
+
 	/**
-   * @throws FileNotFoundException
-   * @throws IOException
-   * @throws NamingException
-   */
-  private AuthLdapCtxManager() throws FileNotFoundException, IOException, NamingException {
-	  super();
-  }
-
-	private static AuthLdapCtxManager _inst = null;
-
-	public final static AuthLdapCtxManager getInstance() throws FileNotFoundException, IOException, NamingException {
-		if (null == _inst) {
-			_inst = new AuthLdapCtxManager();
-		}
-
-		return _inst;
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws NamingException
+	 */
+	private AuthLdapCtxManager() throws FileNotFoundException, IOException, NamingException {
+		super();
 	}
 
-	/* (non-Javadoc)
-   * @see fr.uparis10.miage.ldap.server.mng.ALdapCtxManager#getConfigFile()
-   */
-  @Override
-  public final String getConfigFile() {
-  	return "ldap_auth_config.properties";
-  }
+	public final static AuthLdapCtxManager getInstance() throws FileNotFoundException, IOException, NamingException {
+		if (null == INST) {
+			INST = new AuthLdapCtxManager();
+		}
+
+		return INST;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.uparis10.miage.ldap.server.mng.ALdapCtxManager#getConfigFile()
+	 */
+	@Override
+	public final String getConfigFile() {
+		return "ldap_auth_config.properties";
+	}
 
 }

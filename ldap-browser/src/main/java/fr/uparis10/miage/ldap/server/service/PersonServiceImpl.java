@@ -21,6 +21,8 @@ package fr.uparis10.miage.ldap.server.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -66,7 +68,7 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 		try {
 			listPerson.addAll(PeopleManager.getInstance().dummySearch(request));
 		} catch (DataNotLoadedException e) {
-			e.printStackTrace();
+			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "The LDAP tree wasn't charged. Not just yet.", e);
 			listPerson = new ArrayList<Person>();
 		}
 		return listPerson;
@@ -98,7 +100,7 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 				try {
 					indicateur = peopleManager.dummySearch(requestModel.getRequest()).contains(person);
 				} catch (DataNotLoadedException e) {
-					e.printStackTrace();
+					Logger.getLogger(getClass().getName()).log(Level.SEVERE, "The LDAP tree wasn't charged. Not just yet.", e);
 				}
 			}
 

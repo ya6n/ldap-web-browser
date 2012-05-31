@@ -38,21 +38,21 @@ import fr.uparis10.miage.ldap.shared.obj.OrgUnit;
  */
 public final class OrgUnitManager extends ACacheManager<EnumOrgUnitAttr, String, OrgUnit> {
 
-	private static final String _prefix = "ou=structures,";
-	private static final String _filter = "objectClass=organizationalUnit";
+	private static final String PREFIX = "ou=structures,";
+	private static final String FILTER = "objectClass=organizationalUnit";
 
-	private static OrgUnitManager _inst = null;
+	private static OrgUnitManager INST = null;
 
 	private OrgUnitManager() {
 		super();
 	}
 
 	public final static OrgUnitManager getInstance() {
-		if (null == _inst) {
-			_inst = new OrgUnitManager();
+		if (null == INST) {
+			INST = new OrgUnitManager();
 		}
 
-		return _inst;
+		return INST;
 	}
 
 	/*
@@ -62,7 +62,7 @@ public final class OrgUnitManager extends ACacheManager<EnumOrgUnitAttr, String,
 	 */
 	@Override
 	protected final String getDNPrefix() {
-		return _prefix;
+		return PREFIX;
 	}
 
 	/*
@@ -72,7 +72,7 @@ public final class OrgUnitManager extends ACacheManager<EnumOrgUnitAttr, String,
 	 */
 	@Override
 	protected final String getGenericFilter() {
-		return _filter;
+		return FILTER;
 	}
 
 	/*

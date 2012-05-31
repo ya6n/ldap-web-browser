@@ -13,7 +13,7 @@ import fr.uparis10.miage.ldap.client.screen.LdapTreeScreen;
  * @author gorodenco
  * 
  */
-public class ContentManager {
+public final class ContentManager {
 
 	private static ContentManager instance = null;
 

@@ -61,15 +61,14 @@ public enum EnumOrgUnitAttr implements IIndexable, IDecoder<Object, String> {
 	supannCodeEntiteParent(true),
 	supannRefId(true);
 
-	@SuppressWarnings("rawtypes")
-	private final Class _type;
-	private final boolean _isIndexed;
+	private final Class<?> dataType;
+	private final boolean isIndexed;
 
 	private EnumOrgUnitAttr() {
 		this(String.class, false);
 	}
 
-	private EnumOrgUnitAttr(@SuppressWarnings("rawtypes") final Class parType) {
+	private EnumOrgUnitAttr(final Class<?> parType) {
 		this(parType, false);
 	}
 
@@ -77,19 +76,18 @@ public enum EnumOrgUnitAttr implements IIndexable, IDecoder<Object, String> {
 		this(String.class, parDoIndex);
 	}
 
-	private EnumOrgUnitAttr(@SuppressWarnings("rawtypes") final Class parType, final boolean parDoIndex) {
-		_type = parType;
-		_isIndexed = parDoIndex;
+	private EnumOrgUnitAttr(final Class<?> parType, final boolean parDoIndex) {
+		dataType = parType;
+		isIndexed = parDoIndex;
 	}
 
-	@SuppressWarnings("rawtypes")
-	public final Class getTypeClass() {
-		return _type;
+	public final Class<?> getTypeClass() {
+		return dataType;
 	}
 
 	@Override
 	public final boolean isIndexed() {
-		return _isIndexed;
+		return isIndexed;
 	}
 
 	/*

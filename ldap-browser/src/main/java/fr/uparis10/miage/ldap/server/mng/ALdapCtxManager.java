@@ -34,9 +34,9 @@ import javax.naming.directory.InitialDirContext;
  * 
  */
 public abstract class ALdapCtxManager {
-	protected final Properties _props;
-	private final String _baseDN;
-	private final DirContext _ctx;
+	private final Properties props;
+	private final String baseDN;
+	private final DirContext ctx;
 
 	/**
 	 * Singleton
@@ -46,14 +46,14 @@ public abstract class ALdapCtxManager {
 	 * @throws NamingException
 	 */
 	protected ALdapCtxManager() throws FileNotFoundException, IOException, NamingException {
-		_props = new Properties();
-		_props.load(new FileInputStream(new File(getConfigFile())));
-		_baseDN = _props.getProperty("basedn");
+		props = new Properties();
+		props.load(new FileInputStream(new File(getConfigFile())));
+		baseDN = props.getProperty("basedn");
 
-		final String locHost = _props.getProperty("host");
-		final String locPort = _props.getProperty("port");
-		final String _user = _props.getProperty("user");
-		final String _password = _props.getProperty("password");
+		final String locHost = props.getProperty("host");
+		final String locPort = props.getProperty("port");
+		final String locUser = props.getProperty("user");
+		final String locPassword = props.getProperty("password");
 		// --------------------------------------------------
 		// Set up the environment for creating the initial context
 		// --------------------------------------------------
@@ -67,18 +67,18 @@ public abstract class ALdapCtxManager {
 		locEnvProps.setProperty(Context.REFERRAL, "ignore");
 		locEnvProps.setProperty(Context.SECURITY_AUTHENTICATION, "simple");
 
-		locEnvProps.setProperty(Context.SECURITY_PRINCIPAL, _user);
-		locEnvProps.setProperty(Context.SECURITY_CREDENTIALS, _password);
+		locEnvProps.setProperty(Context.SECURITY_PRINCIPAL, locUser);
+		locEnvProps.setProperty(Context.SECURITY_CREDENTIALS, locPassword);
 
-		_ctx = new InitialDirContext(locEnvProps);
+		ctx = new InitialDirContext(locEnvProps);
 	}
 	
 	public final DirContext getContext() {
-		return _ctx;
+		return ctx;
 	}
 
 	public final String getBaseDN() {
-		return _baseDN;
+		return baseDN;
 	}
 	
 	public abstract String getConfigFile();

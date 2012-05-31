@@ -37,14 +37,14 @@ public final class DataLdapCtxManager extends ALdapCtxManager {
 	  super();
   }
 
-	private static DataLdapCtxManager _inst = null;
+	private static DataLdapCtxManager INST = null;
 
 	public final static DataLdapCtxManager getInstance() throws FileNotFoundException, IOException, NamingException {
-		if (null == _inst) {
-			_inst = new DataLdapCtxManager();
+		if (null == INST) {
+			INST = new DataLdapCtxManager();
 		}
 
-		return _inst;
+		return INST;
 	}
 
 	/* (non-Javadoc)

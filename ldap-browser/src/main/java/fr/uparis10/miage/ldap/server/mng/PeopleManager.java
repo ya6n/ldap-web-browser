@@ -45,8 +45,6 @@ public final class PeopleManager extends ACacheManager<EnumPersonAttr, String, P
 
 	private PeopleManager() {
 		super();
-		// TODO FIXME
-		refresh();
 	}
 
 	public final static PeopleManager getInstance() {

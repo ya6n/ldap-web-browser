@@ -127,10 +127,18 @@
               <followSymlinks>false</followSymlinks>
             </fileset>
             <fileset>
-              <directory>src/main/webapp/WEB-INF/classes</directory>
+              <directory>src/main/webapp</directory>
               <includes>
                 <include>**/*</include>
               </includes>
+              <excludes>
+                <exclude>WEB-INF/web.xml</exclude>
+                <exclude>WEB-INF/lib/gwt-servlet.jar</exclude>
+                <exclude>images/**/*</exclude>
+                <exclude>Bienvenue.html</exclude>
+                <exclude>LDAPBrowser.css</exclude>
+                <exclude>LDAPBrowser.html</exclude>
+              </excludes>
             </fileset>
           </filesets>
         </configuration>

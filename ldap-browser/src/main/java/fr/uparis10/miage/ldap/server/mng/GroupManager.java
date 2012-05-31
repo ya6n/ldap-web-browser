@@ -45,8 +45,6 @@ public final class GroupManager extends ACacheManager<EnumGroupAttr, String, Gro
 
 	private GroupManager() {
 		super();
-		// TODO FIXME
-		refresh();
 	}
 
 	public final static GroupManager getInstance() {

@@ -6,6 +6,14 @@
 <web-app>
 
   <!-- Servlets -->
+  <!-- The following one starts some task schedules: -->
+  <servlet>
+    <servlet-name>cacheUpdateDaemon</servlet-name>
+    <servlet-class>fr.uparis10.miage.ldap.server.run.CacheUpdateDaemon</servlet-class>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+  
+  <!-- Standard Business Logic servlets: -->
   <servlet>
     <servlet-name>greetServlet</servlet-name>
     <servlet-class>fr.uparis10.miage.ldap.server.GreetingServiceImpl</servlet-class>

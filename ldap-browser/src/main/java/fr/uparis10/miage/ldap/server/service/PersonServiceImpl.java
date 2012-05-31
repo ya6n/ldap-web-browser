@@ -124,7 +124,7 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 					if (currentEntry.getValue()) {
 						String key = currentEntry.getKey();
 						if (person.get(EnumPersonAttr.ou).equals(key)) {
-
+							indicateur = true;
 						}
 					}
 				}

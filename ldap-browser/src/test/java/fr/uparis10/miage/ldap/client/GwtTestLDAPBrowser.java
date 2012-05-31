@@ -31,6 +31,7 @@ public class GwtTestLDAPBrowser extends GWTTestCase {
 		// assertFalse(FieldVerifier.isValidName("ab"));
 		// assertFalse(FieldVerifier.isValidName("abc"));
 		// assertTrue(FieldVerifier.isValidName("abcd"));
+		finishTest();
 	}
 
 	/**
@@ -71,6 +72,7 @@ public class GwtTestLDAPBrowser extends GWTTestCase {
 		// finishTest();
 		// }
 		// });
+		finishTest();
 	}
 
 }

@@ -28,16 +28,17 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.validation.constraints.NotNull;
 
+import fr.uparis10.miage.ldap.server.itf.IWithCache;
+import fr.uparis10.miage.ldap.server.utils.MapUtils;
 import fr.uparis10.miage.ldap.shared.exc.DataNotLoadedException;
 import fr.uparis10.miage.ldap.shared.itf.IIndexable;
-import fr.uparis10.miage.ldap.shared.utils.MapUtils;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
 public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE extends Map<I_TYPE, K_TYPE>>
-    extends ABasicLdapManager<I_TYPE, K_TYPE, V_TYPE> {
+    extends ABasicLdapManager<I_TYPE, K_TYPE, V_TYPE> implements IWithCache {
 	private final ReadWriteLock _dataLock = new ReentrantReadWriteLock();
 	private List<V_TYPE> _valList;
 	private boolean _isDataLoaded = false;
@@ -49,6 +50,7 @@ public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE ex
 	protected ACacheManager() {
 	}
 
+	@Override
 	public final void refresh() {
 		final List<V_TYPE> locFreshValList = getFreshList();
 		final Map<I_TYPE, Map<K_TYPE, List<V_TYPE>>> locFreshIndexMap = buildIndexMap(locFreshValList);

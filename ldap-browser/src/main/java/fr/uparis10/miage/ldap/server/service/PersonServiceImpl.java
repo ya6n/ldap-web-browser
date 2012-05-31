@@ -62,9 +62,9 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	 */
 	@Override
 	public List<Person> searchPersons(String request) throws IllegalArgumentException {
-		List<Person> listPerson = null;
+		List<Person> listPerson = new ArrayList<Person>();
 		try {
-			listPerson = PeopleManager.getInstance().dummySearch(request);
+			listPerson.addAll(PeopleManager.getInstance().dummySearch(request));
 		} catch (DataNotLoadedException e) {
 			e.printStackTrace();
 			listPerson = new ArrayList<Person>();
@@ -82,46 +82,58 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	@Override
 	public List<Person> searchPersons(SearchRequestModel requestModel) throws IllegalArgumentException {
 		PeopleManager peopleManager = PeopleManager.getInstance();
+
 		List<Person> listPerson = new ArrayList<Person>();
+		listPerson.addAll(peopleManager.getAllObjList());
+
 		List<Person> result = new ArrayList<Person>();
 
-		if (requestModel.getLookUpPerson()) {
-			try {
-				listPerson.addAll(peopleManager.dummySearch(requestModel.getRequest()));
-			} catch (DataNotLoadedException e) {
-				e.printStackTrace();
+		boolean indicateur;
+
+		for (Person person : listPerson) {
+			indicateur = true;
+
+			if (requestModel.getLookUpPerson() &&
+			    !requestModel.getRequest().equals("")) {
+				try {
+					indicateur = peopleManager.dummySearch(requestModel.getRequest()).contains(person);
+				} catch (DataNotLoadedException e) {
+					e.printStackTrace();
+				}
 			}
-		}
 
-		if (requestModel.getLookUpGroup()) {
-			for (Entry<String, Boolean> currentEntry : requestModel.getGroupOptions().entrySet()) {
-				String key = currentEntry.getKey();
-				Boolean value = currentEntry.getValue();
-
-				if (value) {
-					for (Person person : listPerson) {
-						if (person.get(EnumPersonAttr.supannRole).equals(key) &&
-						    !result.contains(person)) {
-							result.add(person);
+			if (indicateur &&
+			    requestModel.getLookUpGroup() &&
+			    requestModel.getGroupOptions().size() > 0) {
+				indicateur = false;
+				for (Entry<String, Boolean> currentEntry : requestModel.getGroupOptions().entrySet()) {
+					if (currentEntry.getValue()) {
+						String key = currentEntry.getKey();
+						if (person.get(EnumPersonAttr.supannRole).equals(key)) {
+							indicateur = true;
 						}
 					}
 				}
 			}
-		}
 
-		if (requestModel.getLookUpOrgUnit()) {
-			for (Entry<String, Boolean> currentEntry : requestModel.getOrgUnitOptions().entrySet()) {
-				String key = currentEntry.getKey();
-				Boolean value = currentEntry.getValue();
-				if (value) {
-					for (Person person : listPerson) {
-						if (person.get(EnumPersonAttr.ou).equals(key) &&
-						    !result.contains(person)) {
-							result.add(person);
+			if (indicateur &&
+			    requestModel.getLookUpOrgUnit() &&
+			    requestModel.getOrgUnitOptions().size() > 0) {
+				indicateur = false;
+				for (Entry<String, Boolean> currentEntry : requestModel.getOrgUnitOptions().entrySet()) {
+					if (currentEntry.getValue()) {
+						String key = currentEntry.getKey();
+						if (person.get(EnumPersonAttr.ou).equals(key)) {
+
 						}
 					}
 				}
 			}
+
+			if (indicateur) {
+				result.add(person);
+			}
+
 		}
 
 		return result;

@@ -41,18 +41,18 @@ public final class GroupManager extends ACacheManager<EnumGroupAttr, String, Gro
 	private static final String PREFIX = "ou=groups,";
 	private static final String FILTER = "objectClass=groupOfNames";
 
-	private static GroupManager INST = null;
+	private static GroupManager theInst = null;
 
 	private GroupManager() {
 		super();
 	}
 
 	public final static GroupManager getInstance() {
-		if (null == INST) {
-			INST = new GroupManager();
+		if (null == theInst) {
+			theInst = new GroupManager();
 		}
 
-		return INST;
+		return theInst;
 	}
 
 	/*

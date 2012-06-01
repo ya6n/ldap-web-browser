@@ -28,7 +28,7 @@ import javax.naming.NamingException;
  * 
  */
 public final class AuthLdapCtxManager extends ALdapCtxManager {
-	private static AuthLdapCtxManager INST = null;
+	private static AuthLdapCtxManager theInst = null;
 
 	/**
 	 * @throws FileNotFoundException
@@ -40,11 +40,11 @@ public final class AuthLdapCtxManager extends ALdapCtxManager {
 	}
 
 	public final static AuthLdapCtxManager getInstance() throws FileNotFoundException, IOException, NamingException {
-		if (null == INST) {
-			INST = new AuthLdapCtxManager();
+		if (null == theInst) {
+			theInst = new AuthLdapCtxManager();
 		}
 
-		return INST;
+		return theInst;
 	}
 
 	/*

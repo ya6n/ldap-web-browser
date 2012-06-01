@@ -41,18 +41,18 @@ public final class OrganizationManager extends ACacheManager<EnumOrganizationAtt
 	private static final String PREFIX = "ou=structures,";
 	private static final String FILTER = "objectClass=organization";
 
-	private static OrganizationManager INST = null;
+	private static OrganizationManager theInst = null;
 
 	private OrganizationManager() {
 		super();
 	}
 
 	public final static OrganizationManager getInstance() {
-		if (null == INST) {
-			INST = new OrganizationManager();
+		if (null == theInst) {
+			theInst = new OrganizationManager();
 		}
 
-		return INST;
+		return theInst;
 	}
 
 	/*

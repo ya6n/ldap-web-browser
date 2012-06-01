@@ -41,18 +41,18 @@ public final class PeopleManager extends ACacheManager<EnumPersonAttr, String, P
 	private static final String PREFIX = "ou=people,";
 	private static final String FILTER = "objectClass=person";
 
-	private static PeopleManager INST = null;
+	private static PeopleManager theInst = null;
 
 	private PeopleManager() {
 		super();
 	}
 
 	public final static PeopleManager getInstance() {
-		if (null == INST) {
-			INST = new PeopleManager();
+		if (null == theInst) {
+			theInst = new PeopleManager();
 		}
 
-		return INST;
+		return theInst;
 	}
 
 	/*

@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Creation date: May 28, 2012
+ * Creation date: Jun 1, 2012
  */
-package fr.uparis10.miage.ldap.shared.utils;
+package fr.uparis10.miage.ldap.shared.exc;
 
 import javax.validation.constraints.NotNull;
 
@@ -24,21 +24,13 @@ import javax.validation.constraints.NotNull;
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  * 
  */
-public final class StringUtils {
-	
+public class ContainerException extends RuntimeException {
 	/**
-	 * No Instance!!
-	 */
-	private StringUtils() {
+   * 
+   */
+	private static final long serialVersionUID = 1L;
+
+	public ContainerException(@NotNull final Throwable parExc) {
+		super(parExc);
 	}
-
-	public final static String decodeByteArray(@NotNull final byte[] parArray) {
-		final StringBuilder locStrBld = new StringBuilder(parArray.length);
-		for (final byte locByte : parArray) {
-			locStrBld.append((char) locByte);
-		}
-
-		return locStrBld.toString();
-	}
-
 }

@@ -39,10 +39,10 @@ import fr.uparis10.miage.ldap.shared.itf.IIndexable;
  */
 public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE extends Map<I_TYPE, K_TYPE>>
     extends ABasicLdapManager<I_TYPE, K_TYPE, V_TYPE> implements IWithCache {
-	private final ReadWriteLock _dataLock = new ReentrantReadWriteLock();
-	private List<V_TYPE> _valList;
-	private boolean _isDataLoaded = false;
-	private Map<I_TYPE, Map<K_TYPE, List<V_TYPE>>> _indexMap = null;
+	private final ReadWriteLock dataLock = new ReentrantReadWriteLock();
+	private List<V_TYPE> valList;
+	private boolean isDataLoaded = false;
+	private Map<I_TYPE, Map<K_TYPE, List<V_TYPE>>> indexMap = null;
 
 	/**
 	 * Shall be a singleton
@@ -54,24 +54,24 @@ public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE ex
 	public final void refresh() {
 		final List<V_TYPE> locFreshValList = getFreshList();
 		final Map<I_TYPE, Map<K_TYPE, List<V_TYPE>>> locFreshIndexMap = buildIndexMap(locFreshValList);
-		_dataLock.writeLock().lock();
+		dataLock.writeLock().lock();
 		try {
-			_valList = locFreshValList;
-			_indexMap = locFreshIndexMap;
-			_isDataLoaded = true;
+			valList = locFreshValList;
+			indexMap = locFreshIndexMap;
+			isDataLoaded = true;
 		} catch (final Exception locExc) {
 		} finally {
-			_dataLock.writeLock().unlock();
+			dataLock.writeLock().unlock();
 		}
 	}
 
 	public final List<V_TYPE> indexedSearch(@NotNull final I_TYPE parIndex, @NotNull final K_TYPE parKeyVal) throws DataNotLoadedException {
-		if (!_isDataLoaded) {
+		if (!isDataLoaded) {
 			throw new DataNotLoadedException();
 		}
-		_dataLock.readLock().lock();
+		dataLock.readLock().lock();
 		try {
-			final Map<K_TYPE, List<V_TYPE>> locIndex = _indexMap.get(parIndex);
+			final Map<K_TYPE, List<V_TYPE>> locIndex = indexMap.get(parIndex);
 			final List<V_TYPE> locValList = locIndex.get(parKeyVal);
 			if (null == locValList) {
 				return Collections.<V_TYPE> emptyList();
@@ -79,18 +79,18 @@ public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE ex
 			assert (!locValList.isEmpty());
 			return Collections.<V_TYPE> unmodifiableList(locValList);
 		} finally {
-			_dataLock.readLock().unlock();
+			dataLock.readLock().unlock();
 		}
 	}
 
 	public final List<V_TYPE> indexedSearch(final K_TYPE parKeyVal) throws DataNotLoadedException {
-		if (!_isDataLoaded) {
+		if (!isDataLoaded) {
 			throw new DataNotLoadedException();
 		}
-		_dataLock.readLock().lock();
+		dataLock.readLock().lock();
 		try {
 			final ArrayList<V_TYPE> locResList = new ArrayList<V_TYPE>();
-			for (final Map<K_TYPE, List<V_TYPE>> locIndex : _indexMap.values()) {
+			for (final Map<K_TYPE, List<V_TYPE>> locIndex : indexMap.values()) {
 				final List<V_TYPE> locValList = locIndex.get(parKeyVal);
 				if (null == locValList) {
 					continue;
@@ -103,7 +103,7 @@ public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE ex
 			}
 			return locResList;
 		} finally {
-			_dataLock.readLock().unlock();
+			dataLock.readLock().unlock();
 		}
 	}
 
@@ -119,14 +119,14 @@ public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE ex
 	 */
 	public final List<V_TYPE> dummySearch(@NotNull final K_TYPE parKeyVal, final boolean parExactMatch, final boolean parIsCaseSens)
 	    throws DataNotLoadedException {
-		if (!_isDataLoaded) {
+		if (!isDataLoaded) {
 			throw new DataNotLoadedException();
 		}
-		_dataLock.readLock().lock();
+		dataLock.readLock().lock();
 		try {
 			final ArrayList<V_TYPE> locResList = new ArrayList<V_TYPE>();
 			final String locSearchFor = parIsCaseSens ? parKeyVal.toString() : parKeyVal.toString().toLowerCase();
-			for (final V_TYPE locObject : _valList) {
+			for (final V_TYPE locObject : valList) {
 				for (final K_TYPE locKeyVal : locObject.values()) {
 					final String locSearchInto = parIsCaseSens ? locKeyVal.toString() : locKeyVal.toString().toLowerCase();
 					if (parExactMatch ? locSearchInto.equals(locSearchFor) : locSearchInto.contains(locSearchFor)) {
@@ -140,7 +140,7 @@ public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE ex
 			}
 			return locResList;
 		} finally {
-			_dataLock.readLock().unlock();
+			dataLock.readLock().unlock();
 		}
 	}
 
@@ -148,7 +148,7 @@ public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE ex
 	 * @return an unmodifiable list containing all the objects in the system
 	 */
 	public final List<V_TYPE> getAllObjList() {
-		return Collections.<V_TYPE> unmodifiableList(_valList);
+		return Collections.<V_TYPE> unmodifiableList(valList);
 	}
 
 	/**

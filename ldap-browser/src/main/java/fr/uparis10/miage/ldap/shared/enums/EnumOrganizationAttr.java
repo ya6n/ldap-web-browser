@@ -75,15 +75,14 @@ public enum EnumOrganizationAttr implements IIndexable, IDecoder<Object, String>
 	eduOrgSuperiorURI,
 	eduOrgWhitePagesURI;
 
-	@SuppressWarnings("rawtypes")
-	private final Class _type;
-	private final boolean _isIndexed;
+	private final Class<?> dataType;
+	private final boolean isIndexed;
 
 	private EnumOrganizationAttr() {
 		this(String.class, false);
 	}
 
-	private EnumOrganizationAttr(@SuppressWarnings("rawtypes") final Class parType) {
+	private EnumOrganizationAttr(final Class<?> parType) {
 		this(parType, false);
 	}
 
@@ -91,19 +90,18 @@ public enum EnumOrganizationAttr implements IIndexable, IDecoder<Object, String>
 		this(String.class, parDoIndex);
 	}
 
-	private EnumOrganizationAttr(@SuppressWarnings("rawtypes") final Class parType, final boolean parDoIndex) {
-		_type = parType;
-		_isIndexed = parDoIndex;
+	private EnumOrganizationAttr(final Class<?> parType, final boolean parDoIndex) {
+		dataType = parType;
+		isIndexed = parDoIndex;
 	}
 
-	@SuppressWarnings("rawtypes")
-	public final Class getTypeClass() {
-		return _type;
+	public final Class<?> getTypeClass() {
+		return dataType;
 	}
 
 	@Override
 	public final boolean isIndexed() {
-		return _isIndexed;
+		return isIndexed;
 	}
 
 	/*

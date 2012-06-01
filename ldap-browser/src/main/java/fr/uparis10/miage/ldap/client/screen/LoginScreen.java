@@ -39,13 +39,13 @@ import fr.uparis10.miage.ldap.client.service.LoginServiceAsync;
  */
 public class LoginScreen extends ContentPanel {
 
-	FramedPanel loginForm;
+	private final FramedPanel loginForm;
 
-	TextField user;
-	PasswordField pass;
+	private final TextField user;
+	private final PasswordField pass;
 
-	TextButton btLogin;
-	TextButton btReset;
+	private final TextButton btLogin;
+	private final TextButton btReset;
 
 	public LoginScreen() {
 

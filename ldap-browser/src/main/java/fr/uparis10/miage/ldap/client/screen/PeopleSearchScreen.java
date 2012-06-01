@@ -86,23 +86,18 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		messages = (PeopleSearchScreenMessages) GWT.create(PeopleSearchScreenMessages.class);
 	}
 
-	private TextField searchBox;
-
-	private TextButton searchButton;
-
-	private Grid<Person> personGrid;
+	private final TextField searchBox;
+	private final TextButton searchButton;
+	private final Grid<Person> personGrid;
+	private final FieldSet advancedBox;
+	private final String title;
 
 	private Grid<Group> groupGrid;
-
 	private Grid<OrgUnit> orgUnitGrid;
 
 	private CheckBox opPerson;
 	private CheckBox opOrgUnit;
 	private CheckBox opGroup;
-
-	FieldSet advancedBox;
-
-	private String title;
 
 	public PeopleSearchScreen() {
 
@@ -129,8 +124,9 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 				PersonServiceAsync personService = GWT.create(PersonService.class);
 
 				String request = searchBox.getValue();
-				if (request == null)
+				if (request == null) {
 					request = "";
+				}
 
 				final Grid<Person> resultGrid = personGrid;
 				if (!advancedBox.isExpanded()

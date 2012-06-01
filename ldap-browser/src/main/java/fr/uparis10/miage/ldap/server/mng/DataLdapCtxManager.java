@@ -28,6 +28,8 @@ import javax.naming.NamingException;
  * 
  */
 public final class DataLdapCtxManager extends ALdapCtxManager {
+	private static DataLdapCtxManager theInst = null;
+
 	/**
    * @throws FileNotFoundException
    * @throws IOException
@@ -37,14 +39,12 @@ public final class DataLdapCtxManager extends ALdapCtxManager {
 	  super();
   }
 
-	private static DataLdapCtxManager _inst = null;
-
 	public final static DataLdapCtxManager getInstance() throws FileNotFoundException, IOException, NamingException {
-		if (null == _inst) {
-			_inst = new DataLdapCtxManager();
+		if (null == theInst) {
+			theInst = new DataLdapCtxManager();
 		}
 
-		return _inst;
+		return theInst;
 	}
 
 	/* (non-Javadoc)

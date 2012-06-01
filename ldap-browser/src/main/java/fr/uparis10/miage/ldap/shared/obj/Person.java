@@ -76,10 +76,15 @@ public class Person extends HashMap<EnumPersonAttr, String> implements IHasPrima
 	}
 
 	@Override
-	public boolean equals(final Object person) {
+	public final boolean equals(final Object person) {
 		if (person instanceof Person) {
 			return this.getPrimaryKeyValue().equals(((Person) person).getPrimaryKeyValue());
 		}
 		return false;
+	}
+	
+	@Override
+	public final int hashCode() {
+		return getPrimaryKeyValue().hashCode();
 	}
 }

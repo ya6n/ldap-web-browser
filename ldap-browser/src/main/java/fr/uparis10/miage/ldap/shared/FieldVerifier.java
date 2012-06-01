@@ -20,7 +20,13 @@ package fr.uparis10.miage.ldap.shared;
  * JavaScript (such as Widgets) cannot be run on the server.
  * </p>
  */
-public class FieldVerifier {
+public final class FieldVerifier {
+	
+	/**
+	 * Private constructor - Utility class
+	 */
+	private FieldVerifier() {
+	}
 
 	/**
 	 * Verifies that the specified name is valid for our service.

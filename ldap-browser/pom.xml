@@ -359,7 +359,6 @@
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-war-plugin</artifactId>
               <configuration>
-                <warName>${project.build.finalName}.tomcat</warName>
                 <packagingExcludes>WEB-INF/lib/gwt-user-*.jar</packagingExcludes>
               </configuration>
             </plugin>
@@ -371,7 +370,7 @@
                 <execution>
                   <phase>install</phase>
                   <goals>
-                    <goal>deploy</goal>
+                    <goal>undeploy,deploy</goal>
                   </goals>
                 </execution>
               </executions>

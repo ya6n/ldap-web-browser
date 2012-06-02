@@ -18,7 +18,8 @@ public class GwtTestLDAPBrowser extends GWTTestCase {
 	 * Must refer to a valid module that sources this class.
 	 */
 	public String getModuleName() {
-		return "fr.uparis10.miage.ldap.LDAPBrowserJUnit";
+//		return "fr.uparis10.miage.ldap.LDAPBrowserJUnit";
+		return null;
 	}
 
 	/**

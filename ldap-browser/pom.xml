@@ -24,8 +24,8 @@
   </issueManagement>
 
   <ciManagement>
-    <system>Hudson</system>
-    <url>http://http://miage08:8181</url>
+    <system>Jenkins</system>
+    <url>https://gorodenco.dyndns.org/jenkins</url>
   </ciManagement>
 
   <organization>
@@ -198,44 +198,6 @@
           <target>${targetJDK}</target>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
-        <configuration>
-          <includes>
-            <include>**/*.png</include>
-            <include>**/*.gif</include>
-            <include>**/*.class</include>
-            <include>**/*.jpeg</include>
-            <include>**/*.jpg</include>
-            <include>**/*.properties</include>
-            <include>**/*.xml</include>
-            <include>**/*.css</include>
-            <include>**/*.xsl</include>
-          </includes>
-          <archive>
-            <addMavenDescriptor />
-            <compress />
-            <forced />
-            <index />
-            <manifest>
-              <addClasspath />
-              <addDefaultImplementationEntries />
-              <addDefaultSpecificationEntries />
-              <addExtensions />
-              <classpathLayoutType />
-              <classpathMavenRepositoryLayout />
-              <classpathPrefix />
-              <customClasspathLayout />
-              <mainClass>fr.uparis10.miage.annoarius.edit.lanceur.Main</mainClass>
-              <packageName />
-            </manifest>
-            <manifestFile />
-            <pomPropertiesFile />
-          </archive>
-        </configuration>
-      </plugin>
       <!-- GWT Maven Plugin -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -283,7 +245,7 @@
         <executions>
           <execution>
             <id>exec</id>
-            <phase>install</phase>
+            <phase>verify</phase>
             <goals>
               <goal>exec</goal>
             </goals>
@@ -383,6 +345,71 @@
         <movePmdResult.arg1><![CDATA[-c]]></movePmdResult.arg1>
         <movePmdResult.arg2><![CDATA[rm reports/pmd.html;mv reports/pmd.net.sourceforge.pmd.renderers.XSLTRenderer reports/mvn-pmd-report.htm]]></movePmdResult.arg2>
       </properties>
+    </profile>
+    <profile>
+      <id>Tomcat7</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <finalName>${project.artifactId}-${project.version}.tomcat</finalName>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-war-plugin</artifactId>
+              <configuration>
+                <warName>${project.build.finalName}.tomcat</warName>
+                <packagingExcludes>WEB-INF/lib/gwt-user-*.jar</packagingExcludes>
+              </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.codehaus.cargo</groupId>
+              <artifactId>cargo-maven2-plugin</artifactId>
+              <version>1.2.2</version>
+              <executions>
+                <execution>
+                  <phase>install</phase>
+                  <goals>
+                    <goal>deploy</goal>
+                  </goals>
+                </execution>
+              </executions>
+              <configuration>
+                <wait>false</wait>
+                <container>
+                  <containerId>tomcat7x</containerId>
+                  <type>remote</type>
+                </container>
+                <configuration>
+                  <type>runtime</type>
+                  <properties>
+                    <cargo.logging>high</cargo.logging>
+                    <cargo.hostname>${tomcat.hostname}</cargo.hostname>
+                    <cargo.protocol>${tomcat.protocol}</cargo.protocol>
+                    <cargo.servlet.port>${tomcat.servlet.port}</cargo.servlet.port>
+                    <cargo.remote.username>${tomcat.remote.username}</cargo.remote.username>
+                    <cargo.remote.password>${tomcat.remote.password}</cargo.remote.password>
+                  </properties>
+                </configuration>
+                <deployer>
+                  <type>remote</type>
+                  <deployables>
+                    <deployable>
+                      <type>war</type>
+                      <pingURL>${tomcat.protocol}://${tomcat.hostname}:${tomcat.servlet.port}/${project.artifactId}/</pingURL>
+                      <pingTimeout>30000</pingTimeout>
+                      <properties>
+                        <context>/${project.artifactId}</context>
+                      </properties>
+                    </deployable>
+                  </deployables>
+                </deployer>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
     </profile>
   </profiles>
 </project>

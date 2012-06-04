@@ -43,5 +43,13 @@ public class LoginServiceImplTest {
 	public void testLoginUser() {
 		fail("Not yet implemented");
 	}
+	
+	/**
+	 * Test method for {@link fr.uparis10.miage.ldap.server.service.LoginServiceImpl#logoutUser()}.
+	 */
+	@Test
+	public void testLogoutUser() {
+		fail("Not yet implemented");
+	}
 
 }

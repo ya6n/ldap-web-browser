@@ -26,6 +26,7 @@ import fr.uparis10.miage.ldap.client.service.LoginService;
 import fr.uparis10.miage.ldap.server.mng.UserLoginManager;
 import fr.uparis10.miage.ldap.shared.exc.InvalidPasswordException;
 import fr.uparis10.miage.ldap.shared.exc.NoSuchUserException;
+import fr.uparis10.miage.ldap.shared.exc.UserNotLoggedException;
 import fr.uparis10.miage.ldap.shared.obj.Person;
 
 /**
@@ -56,4 +57,16 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		}
 		return true;
 	}
+
+	/* (non-Javadoc)
+   * @see fr.uparis10.miage.ldap.client.service.LoginService#logoutUser()
+   */
+  @Override
+  public Boolean logoutUser() throws IllegalArgumentException {
+		HttpSession session = this.getThreadLocalRequest().getSession();
+		session.setAttribute("CurrentLoggedPerson", null);
+		return true;
+  }
+	
+	
 }

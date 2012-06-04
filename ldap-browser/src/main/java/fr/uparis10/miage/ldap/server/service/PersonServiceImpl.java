@@ -30,6 +30,7 @@ import fr.uparis10.miage.ldap.client.service.PersonService;
 import fr.uparis10.miage.ldap.server.mng.PeopleManager;
 import fr.uparis10.miage.ldap.shared.enums.EnumPersonAttr;
 import fr.uparis10.miage.ldap.shared.exc.DataNotLoadedException;
+import fr.uparis10.miage.ldap.shared.exc.UserNotLoggedException;
 import fr.uparis10.miage.ldap.shared.obj.Person;
 import fr.uparis10.miage.ldap.shared.obj.SearchRequestModel;
 
@@ -40,15 +41,20 @@ import fr.uparis10.miage.ldap.shared.obj.SearchRequestModel;
 @SuppressWarnings("serial")
 public class PersonServiceImpl extends RemoteServiceServlet implements PersonService {
 
+	List<Person> result;
+	SearchRequestModel requestModel;
+	PeopleManager peopleManager;
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see fr.uparis10.miage.ldap.client.service.PersonService#getPersonsAll()
 	 */
 	@Override
-	public List<Person> getPersonsAll() throws IllegalArgumentException {
+	public List<Person> getPersonsAll() throws IllegalArgumentException, UserNotLoggedException {
+		UserLoginChecker.getInstance().check();
+		result = new ArrayList<Person>();
 		List<Person> listPerson = PeopleManager.getInstance().getAllObjList();
-		ArrayList<Person> result = new ArrayList<Person>();
 		if (listPerson != null) {
 			result.addAll(listPerson);
 		}
@@ -63,15 +69,16 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	 * lang.String)
 	 */
 	@Override
-	public List<Person> searchPersons(String request) throws IllegalArgumentException {
-		List<Person> listPerson = new ArrayList<Person>();
+	public List<Person> searchPersons(String request) throws IllegalArgumentException, UserNotLoggedException {
+		UserLoginChecker.getInstance().check();
+		result = new ArrayList<Person>();
 		try {
-			listPerson.addAll(PeopleManager.getInstance().dummySearch(request));
+			result.addAll(PeopleManager.getInstance().dummySearch(request));
 		} catch (DataNotLoadedException e) {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "The LDAP tree wasn't charged. Not just yet.", e);
-			listPerson = new ArrayList<Person>();
+			result = new ArrayList<Person>();
 		}
-		return listPerson;
+		return result;
 	}
 
 	/*
@@ -82,62 +89,94 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	 * .miage.ldap.shared.obj.SearchRequestModel)
 	 */
 	@Override
-	public List<Person> searchPersons(SearchRequestModel requestModel) throws IllegalArgumentException {
-		PeopleManager peopleManager = PeopleManager.getInstance();
+	public List<Person> searchPersons(SearchRequestModel requestModel) throws IllegalArgumentException, UserNotLoggedException {
+		UserLoginChecker.getInstance().check();
+		peopleManager = PeopleManager.getInstance();
 
 		List<Person> listPerson = new ArrayList<Person>();
 		listPerson.addAll(peopleManager.getAllObjList());
 
-		List<Person> result = new ArrayList<Person>();
+		result = new ArrayList<Person>();
+		this.requestModel = requestModel;
 
 		boolean indicateur;
 
 		for (Person person : listPerson) {
 			indicateur = true;
 
-			if (requestModel.getLookUpPerson() &&
-			    !requestModel.getRequest().equals("")) {
-				try {
-					indicateur = peopleManager.dummySearch(requestModel.getRequest()).contains(person);
-				} catch (DataNotLoadedException e) {
-					Logger.getLogger(getClass().getName()).log(Level.SEVERE, "The LDAP tree wasn't charged. Not just yet.", e);
-				}
-			}
+			indicateur = searByPerson(person);
 
-			if (indicateur &&
-			    requestModel.getLookUpGroup() &&
-			    requestModel.getGroupOptions().size() > 0) {
-				indicateur = false;
-				for (Entry<String, Boolean> currentEntry : requestModel.getGroupOptions().entrySet()) {
-					if (currentEntry.getValue()) {
-						String key = currentEntry.getKey();
-						if (person.get(EnumPersonAttr.supannRole).equals(key)) {
-							indicateur = true;
-						}
-					}
-				}
+			if (indicateur) {
+				indicateur = searchByGroup(person);
 			}
-
-			if (indicateur &&
-			    requestModel.getLookUpOrgUnit() &&
-			    requestModel.getOrgUnitOptions().size() > 0) {
-				indicateur = false;
-				for (Entry<String, Boolean> currentEntry : requestModel.getOrgUnitOptions().entrySet()) {
-					if (currentEntry.getValue()) {
-						String key = currentEntry.getKey();
-						if (person.get(EnumPersonAttr.ou).equals(key)) {
-							indicateur = true;
-						}
-					}
-				}
+			if (indicateur) {
+				indicateur = searchByOrgUnit(person);
 			}
 
 			if (indicateur) {
 				result.add(person);
 			}
-
 		}
 
 		return result;
+	}
+
+	/**
+   * @param person
+   * @return
+   */
+  private boolean searchByOrgUnit(Person person) {
+  	boolean indicateur = true;
+	  if (requestModel.getLookUpOrgUnit() &&
+	      requestModel.getOrgUnitOptions().size() > 0) {
+	  	indicateur = false;
+	  	for (Entry<String, Boolean> currentEntry : requestModel.getOrgUnitOptions().entrySet()) {
+	  		if (currentEntry.getValue()) {
+	  			String key = currentEntry.getKey();
+	  			if (person.get(EnumPersonAttr.ou).equals(key)) {
+	  				indicateur = true;
+	  			}
+	  		}
+	  	}
+	  }
+	  return indicateur;
+  }
+
+	/**
+	 * @param person
+	 * @return
+	 */
+	private boolean searchByGroup(Person person) {
+		boolean indicateur = true;
+		if (requestModel.getLookUpGroup() &&
+		    requestModel.getGroupOptions().size() > 0) {
+			indicateur = false;
+			for (Entry<String, Boolean> currentEntry : requestModel.getGroupOptions().entrySet()) {
+				if (currentEntry.getValue()) {
+					String key = currentEntry.getKey();
+					if (person.get(EnumPersonAttr.supannRole).equals(key)) {
+						indicateur = true;
+					}
+				}
+			}
+		}
+		return indicateur;
+	}
+
+	/**
+	 * @param person
+	 * @return
+	 */
+	private boolean searByPerson(Person person) {
+		boolean indicateur = true;
+		if (requestModel.getLookUpPerson() &&
+		    !requestModel.getRequest().equals("")) {
+			try {
+				indicateur = peopleManager.dummySearch(requestModel.getRequest()).contains(person);
+			} catch (DataNotLoadedException e) {
+				Logger.getLogger(getClass().getName()).log(Level.SEVERE, "The LDAP tree wasn't charged. Not just yet.", e);
+			}
+		}
+		return indicateur;
 	}
 }

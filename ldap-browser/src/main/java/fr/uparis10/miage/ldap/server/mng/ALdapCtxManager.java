@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
@@ -46,33 +47,38 @@ public abstract class ALdapCtxManager {
 	 * @throws NamingException
 	 */
 	protected ALdapCtxManager() throws FileNotFoundException, IOException, NamingException {
-		props = new Properties();
-		props.load(new FileInputStream(new File(getConfigFile())));
-		baseDN = props.getProperty("basedn");
+		try {
+			props = new Properties();
+			props.load(new FileInputStream(new File(getConfigFile())));
+			baseDN = props.getProperty("basedn");
 
-		final String locHost = props.getProperty("host");
-		final String locPort = props.getProperty("port");
-		final String locUser = props.getProperty("user");
-		final String locPassword = props.getProperty("password");
-		// --------------------------------------------------
-		// Set up the environment for creating the initial context
-		// --------------------------------------------------
-		Properties locEnvProps = new Properties();
-		locEnvProps.setProperty(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+			final String locHost = props.getProperty("host");
+			final String locPort = props.getProperty("port");
+			final String locUser = props.getProperty("user");
+			final String locPassword = props.getProperty("password");
+			// --------------------------------------------------
+			// Set up the environment for creating the initial context
+			// --------------------------------------------------
+			Properties locEnvProps = new Properties();
+			locEnvProps.setProperty(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
 
-		final String locUrl = "ldap://" + locHost + ((locPort == null || locPort.isEmpty()) ? "" : (":" + locPort));
-		locEnvProps.setProperty(Context.PROVIDER_URL, locUrl);
-		locEnvProps.setProperty(Context.URL_PKG_PREFIXES, "com.sun.jndi.url");
+			final String locUrl = "ldap://" + locHost + ((locPort == null || locPort.isEmpty()) ? "" : (":" + locPort));
+			locEnvProps.setProperty(Context.PROVIDER_URL, locUrl);
+			locEnvProps.setProperty(Context.URL_PKG_PREFIXES, "com.sun.jndi.url");
 
-		locEnvProps.setProperty(Context.REFERRAL, "ignore");
-		locEnvProps.setProperty(Context.SECURITY_AUTHENTICATION, "simple");
+			locEnvProps.setProperty(Context.REFERRAL, "ignore");
+			locEnvProps.setProperty(Context.SECURITY_AUTHENTICATION, "simple");
 
-		locEnvProps.setProperty(Context.SECURITY_PRINCIPAL, locUser);
-		locEnvProps.setProperty(Context.SECURITY_CREDENTIALS, locPassword);
+			locEnvProps.setProperty(Context.SECURITY_PRINCIPAL, locUser);
+			locEnvProps.setProperty(Context.SECURITY_CREDENTIALS, locPassword);
 
-		ctx = new InitialDirContext(locEnvProps);
+			ctx = new InitialDirContext(locEnvProps);
+		} catch (final FileNotFoundException locExc) {
+			Logger.getLogger(getClass().getName()).severe("Looking in : " + System.getProperty("user.dir"));
+			throw locExc;
+		}
 	}
-	
+
 	public final DirContext getContext() {
 		return ctx;
 	}
@@ -80,6 +86,6 @@ public abstract class ALdapCtxManager {
 	public final String getBaseDN() {
 		return baseDN;
 	}
-	
+
 	public abstract String getConfigFile();
 }

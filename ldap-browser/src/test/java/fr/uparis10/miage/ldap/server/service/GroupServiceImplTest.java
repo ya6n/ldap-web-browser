@@ -1,6 +1,6 @@
 /**
  * This file is part of LDAP Web Browser project
- * Copyright (C) 2012 iogorode
+ * Copyright (C) 2012 OMAR
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License v3 as published by
@@ -14,23 +14,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Creation date: 30 mai 2012
+ * Creation date: 1 juin 2012
  */
-package fr.uparis10.miage.ldap.client.service;
+package fr.uparis10.miage.ldap.server.service;
 
-import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
- * @author iogorode
- * 
+ * @author OMAR
+ *
  */
+public class GroupServiceImplTest {
 
-@RemoteServiceRelativePath("login")
-public interface LoginService extends RemoteService {
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+	}
 
-	Boolean loginUser(String login, String pass) throws IllegalArgumentException;
-	
-	Boolean logoutUser() throws IllegalArgumentException;
+	/**
+	 * Test method for {@link fr.uparis10.miage.ldap.server.service.GroupServiceImpl#getGroupsAll()}.
+	 */
+	@Test
+	public void testGetGroupsAll() {
+		fail("Not yet implemented");
+	}
 
 }

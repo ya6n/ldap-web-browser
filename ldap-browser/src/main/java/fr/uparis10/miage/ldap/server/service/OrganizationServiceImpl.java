@@ -25,6 +25,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import fr.uparis10.miage.ldap.client.service.OrganizationService;
 import fr.uparis10.miage.ldap.server.mng.OrganizationManager;
+import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
 import fr.uparis10.miage.ldap.shared.exc.UserNotLoggedException;
 import fr.uparis10.miage.ldap.shared.obj.Organization;
 
@@ -43,7 +44,7 @@ public class OrganizationServiceImpl extends RemoteServiceServlet implements Org
 	 * ()
 	 */
 	@Override
-	public List<Organization> getOrganizationsAll() throws IllegalArgumentException, UserNotLoggedException {
+	public List<Organization> getOrganizationsAll() throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
 		UserLoginChecker.getInstance().check();
 		List<Organization> listOrganization = OrganizationManager.getInstance().getAllObjList();
 		ArrayList<Organization> result = new ArrayList<Organization>();

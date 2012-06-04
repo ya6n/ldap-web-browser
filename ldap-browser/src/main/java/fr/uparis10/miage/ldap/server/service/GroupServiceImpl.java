@@ -25,6 +25,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import fr.uparis10.miage.ldap.client.service.GroupService;
 import fr.uparis10.miage.ldap.server.mng.GroupManager;
+import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
 import fr.uparis10.miage.ldap.shared.exc.UserNotLoggedException;
 import fr.uparis10.miage.ldap.shared.obj.Group;
 
@@ -41,7 +42,7 @@ public class GroupServiceImpl extends RemoteServiceServlet implements GroupServi
 	 * @see fr.uparis10.miage.ldap.client.service.GroupService#getGroupsAll()
 	 */
 	@Override
-	public List<Group> getGroupsAll() throws IllegalArgumentException, UserNotLoggedException {
+	public List<Group> getGroupsAll() throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
 		UserLoginChecker.getInstance().check();
 		List<Group> listGroup = GroupManager.getInstance().getAllObjList();
 		ArrayList<Group> result = new ArrayList<Group>();

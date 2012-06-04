@@ -30,6 +30,7 @@ import fr.uparis10.miage.ldap.client.service.PersonService;
 import fr.uparis10.miage.ldap.server.mng.PeopleManager;
 import fr.uparis10.miage.ldap.shared.enums.EnumPersonAttr;
 import fr.uparis10.miage.ldap.shared.exc.DataNotLoadedException;
+import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
 import fr.uparis10.miage.ldap.shared.exc.UserNotLoggedException;
 import fr.uparis10.miage.ldap.shared.obj.Person;
 import fr.uparis10.miage.ldap.shared.obj.SearchRequestModel;
@@ -51,7 +52,7 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	 * @see fr.uparis10.miage.ldap.client.service.PersonService#getPersonsAll()
 	 */
 	@Override
-	public List<Person> getPersonsAll() throws IllegalArgumentException, UserNotLoggedException {
+	public List<Person> getPersonsAll() throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
 		UserLoginChecker.getInstance().check();
 		result = new ArrayList<Person>();
 		List<Person> listPerson = PeopleManager.getInstance().getAllObjList();
@@ -69,7 +70,7 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	 * lang.String)
 	 */
 	@Override
-	public List<Person> searchPersons(String request) throws IllegalArgumentException, UserNotLoggedException {
+	public List<Person> searchPersons(String request) throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
 		UserLoginChecker.getInstance().check();
 		result = new ArrayList<Person>();
 		try {
@@ -89,7 +90,7 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	 * .miage.ldap.shared.obj.SearchRequestModel)
 	 */
 	@Override
-	public List<Person> searchPersons(SearchRequestModel requestModel) throws IllegalArgumentException, UserNotLoggedException {
+	public List<Person> searchPersons(SearchRequestModel requestModel) throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
 		UserLoginChecker.getInstance().check();
 		peopleManager = PeopleManager.getInstance();
 

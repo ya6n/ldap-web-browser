@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
+import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
 import fr.uparis10.miage.ldap.shared.exc.UserNotLoggedException;
 
 /**
@@ -40,10 +41,12 @@ public class UserLoginChecker extends RemoteServiceServlet{
 		return theInst;
 	}
 	
-	public final void check() throws UserNotLoggedException{
+	public final void check() throws UserNotLoggedException, ServicePropertiesIOException{
 		HttpSession session = this.getThreadLocalRequest().getSession();
 		if(session.getAttribute("CurrentLoggedPerson") == null){
 			throw new UserNotLoggedException();
 		}
+		int sessionExpirationTime = ServicesPropertiesManager.getInstance().getSessionExpirationTime();
+		session.setMaxInactiveInterval(sessionExpirationTime);
 	}
 }

@@ -26,16 +26,15 @@ import fr.uparis10.miage.ldap.client.service.LoginService;
 import fr.uparis10.miage.ldap.server.mng.UserLoginManager;
 import fr.uparis10.miage.ldap.shared.exc.InvalidPasswordException;
 import fr.uparis10.miage.ldap.shared.exc.NoSuchUserException;
-import fr.uparis10.miage.ldap.shared.exc.UserNotLoggedException;
+import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
 import fr.uparis10.miage.ldap.shared.obj.Person;
 
 /**
- * @author iogorode
+ * @author OMAR
  * 
  */
 @SuppressWarnings("serial")
 public class LoginServiceImpl extends RemoteServiceServlet implements LoginService {
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -44,12 +43,14 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 	 * String, java.lang.String)
 	 */
 	@Override
-	public Boolean loginUser(String login, String pass) throws IllegalArgumentException {
+	public Boolean loginUser(String login, String pass) throws IllegalArgumentException, ServicePropertiesIOException {
+		int sessionExpirationTime = ServicesPropertiesManager.getInstance().getSessionExpirationTime();
 		UserLoginManager userLoginManager = UserLoginManager.getInstance();
 		try {
 			Person person = userLoginManager.login(login, pass);
 			HttpSession session = this.getThreadLocalRequest().getSession();
 			session.setAttribute("CurrentLoggedPerson", person);
+			session.setMaxInactiveInterval(sessionExpirationTime);
 		} catch (NoSuchUserException e) {
 			return false;
 		} catch (InvalidPasswordException e) {
@@ -58,15 +59,17 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		return true;
 	}
 
-	/* (non-Javadoc)
-   * @see fr.uparis10.miage.ldap.client.service.LoginService#logoutUser()
-   */
-  @Override
-  public Boolean logoutUser() throws IllegalArgumentException {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see fr.uparis10.miage.ldap.client.service.LoginService#logoutUser()
+	 */
+	@Override
+	public Boolean logoutUser() throws IllegalArgumentException {
 		HttpSession session = this.getThreadLocalRequest().getSession();
-		session.setAttribute("CurrentLoggedPerson", null);
+		if (session.getAttribute("CurrentLoggedPerson") != null) {
+			session.setAttribute("CurrentLoggedPerson", null);
+		}
 		return true;
-  }
-	
-	
+	}
 }

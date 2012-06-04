@@ -19,6 +19,7 @@
 package fr.uparis10.miage.ldap.client.screen;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.ImageResource;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
@@ -27,6 +28,7 @@ import com.sencha.gxt.widget.core.client.form.FieldSet;
 import com.sencha.gxt.widget.core.client.form.TextField;
 
 import fr.uparis10.miage.ldap.client.enums.EnumPersonAttrMessages;
+import fr.uparis10.miage.ldap.client.resources.icons.IconsStore;
 import fr.uparis10.miage.ldap.shared.enums.EnumPersonAttr;
 import fr.uparis10.miage.ldap.shared.obj.Person;
 
@@ -210,6 +212,18 @@ public class PeopleSynthesisScreen extends VerticalLayoutContainer implements Sc
 	@Override
 	public String getScreenId() {
 		return screenId;
+	}
+
+	/**
+	 * @return the person
+	 */
+	public Person getPerson() {
+		return person;
+	}
+
+	@Override
+	public ImageResource getIcon() {
+		return IconsStore.INSTANCE.personIcon();
 	}
 
 }

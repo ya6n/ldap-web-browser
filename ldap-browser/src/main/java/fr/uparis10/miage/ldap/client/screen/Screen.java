@@ -18,6 +18,7 @@
  */
 package fr.uparis10.miage.ldap.client.screen;
 
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.IsWidget;
 
 /**
@@ -39,4 +40,7 @@ public interface Screen extends IsWidget {
 	 * @return
 	 */
 	String getScreenId();
+
+	ImageResource getIcon();
+
 }

@@ -33,4 +33,16 @@ public interface IconsStore extends ClientBundle {
 	@Source("search64.png")
 	ImageResource searchImg();
 
+	@Source("search16bis.png")
+	ImageResource searchIcon();
+
+	@Source("personIcon16.png")
+	ImageResource personIcon();
+
+	@Source("propertyIcon64.png")
+	ImageResource propertyIconBig();
+
+	@Source("propertyIcon16.png")
+	ImageResource propertyIconSmall();
+
 }

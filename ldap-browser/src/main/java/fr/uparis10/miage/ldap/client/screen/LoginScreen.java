@@ -16,6 +16,9 @@ package fr.uparis10.miage.ldap.client.screen;
 //import com.extjs.gxt.ui.client.widget.layout.VBoxLayout;
 //import com.extjs.gxt.ui.client.widget.layout.VBoxLayout.VBoxLayoutAlign;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.sencha.gxt.widget.core.client.ContentPanel;
@@ -82,33 +85,24 @@ public class LoginScreen extends ContentPanel {
 				pass.reset();
 			}
 		});
+
+		KeyDownHandler keyDownHandler = new KeyDownHandler() {
+
+			@Override
+			public void onKeyDown(KeyDownEvent event) {
+				if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
+					tryLogin();
+				}
+			}
+		};
+		user.addKeyDownHandler(keyDownHandler);
+		pass.addKeyDownHandler(keyDownHandler);
+
 		btLogin.addSelectHandler(new SelectHandler() {
 
 			@Override
 			public void onSelect(SelectEvent event) {
-				LoginServiceAsync loginService = GWT
-				    .create(LoginService.class);
-				loginService.loginUser(user.getValue(), pass.getValue(),
-				    new AsyncCallback<Boolean>() {
-
-					    @Override
-					    public void onSuccess(Boolean result) {
-						    if (result) {
-							    LDAPBrowser.onMainScreenLoad();
-						    }
-						    else {
-							    Window.alert(result.toString());
-						    }
-
-					    }
-
-					    @Override
-					    public void onFailure(Throwable caught) {
-						    Window.alert("BAD");
-
-					    }
-				    });
-
+				tryLogin();
 			}
 
 		});
@@ -119,5 +113,30 @@ public class LoginScreen extends ContentPanel {
 		loginForm.addButton(btLogin);
 		loginForm.addButton(btReset);
 
+	}
+
+	private void tryLogin() {
+		LoginServiceAsync loginService = GWT
+		    .create(LoginService.class);
+		loginService.loginUser(user.getCurrentValue(), pass.getCurrentValue(),
+		    new AsyncCallback<Boolean>() {
+
+			    @Override
+			    public void onSuccess(Boolean result) {
+				    if (result) {
+					    LDAPBrowser.onMainScreenLoad();
+				    }
+				    else {
+					    Window.alert(result.toString());
+				    }
+
+			    }
+
+			    @Override
+			    public void onFailure(Throwable caught) {
+				    Window.alert("BAD");
+
+			    }
+		    });
 	}
 }

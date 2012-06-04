@@ -6,7 +6,9 @@ package fr.uparis10.miage.ldap.client.screen;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
+import com.google.gwt.core.client.GWT;
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.TreeStore;
@@ -18,6 +20,12 @@ import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.tree.Tree;
+import com.sencha.gxt.widget.core.client.tree.TreeStyle;
+
+import fr.uparis10.miage.ldap.client.enums.EnumPersonAttrMessages;
+import fr.uparis10.miage.ldap.client.resources.icons.IconsStore;
+import fr.uparis10.miage.ldap.shared.enums.EnumPersonAttr;
+import fr.uparis10.miage.ldap.shared.obj.Person;
 
 //import com.extjs.gxt.ui.client.data.BaseTreeModel;
 //import com.extjs.gxt.ui.client.data.ModelData;
@@ -40,9 +48,10 @@ public class LdapTreeScreen extends ContentPanel {
 	/**
 	 * 
 	 */
+	final Tree<TreeNodeImpl, String> tree;
 
 	public LdapTreeScreen() {
-		final Tree<TreeNodeImpl, String> tree = getTreeModel();
+		tree = getTreeModel();
 
 		// final TreePanel<ModelData> tree = new TreePanel<ModelData>(store);
 		tree.setWidth(300);
@@ -69,17 +78,19 @@ public class LdapTreeScreen extends ContentPanel {
 
 		add(buttonBar, new MarginData(10));
 		add(tree, new MarginData(10));
+
+		tree.expandAll();
 	}
 
 	private Tree<TreeNodeImpl, String> getTreeModel() {
 
 		TreeStore<TreeNodeImpl> store = new TreeStore<TreeNodeImpl>(
-				new ModelKeyProvider<TreeNodeImpl>() {
-					@Override
-					public String getKey(TreeNodeImpl item) {
-						return item.getId() + "";
-					}
-				});
+		    new ModelKeyProvider<TreeNodeImpl>() {
+			    @Override
+			    public String getKey(TreeNodeImpl item) {
+				    return item.getId() + "";
+			    }
+		    });
 
 		TreeNodeImpl model = new TreeNodeImpl(0, "root");
 		// store.set("name", "root");
@@ -87,39 +98,76 @@ public class LdapTreeScreen extends ContentPanel {
 
 		TreeNodeImpl beth = new TreeNodeImpl(1, "Beethoven");
 		model.addChild(beth);
+		store.add(model, beth);
+
 		TreeNodeImpl quart = new TreeNodeImpl(2, "Quartets");
 		beth.addChild(quart);
+		store.add(beth, quart);
 
 		TreeNodeImpl fugue = new TreeNodeImpl(3,
-				"Grosse Fugue for String Quartet");
+		    "Grosse Fugue for String Quartet");
 		quart.addChild(fugue);
+		store.add(quart, fugue);
 
 		TreeNodeImpl moz = new TreeNodeImpl(4, "Mozard");
 		model.addChild(moz);
+		store.add(model, moz);
 
 		Tree<TreeNodeImpl, String> root = new Tree<TreeNodeImpl, String>(store,
-				new ValueProvider<TreeNodeImpl, String>() {
+		    new ValueProvider<TreeNodeImpl, String>() {
 
-					@Override
-					public String getValue(TreeNodeImpl object) {
-						return object.getName();
-					}
+			    @Override
+			    public String getValue(TreeNodeImpl object) {
+				    return object.getName();
+			    }
 
-					@Override
-					public void setValue(TreeNodeImpl object, String value) {
-					}
+			    @Override
+			    public void setValue(TreeNodeImpl object, String value) {
+			    }
 
-					@Override
-					public String getPath() {
-						return "name";
-					}
-				});
+			    @Override
+			    public String getPath() {
+				    return "name";
+			    }
+		    });
+
+		root.setExpanded(model, true);
 
 		return root;
 	}
 
+	public void loadPerson(Person person) {
+
+		TreeStore<TreeNodeImpl> store = tree.getStore();
+
+		store.clear();
+
+		int id = 0;
+		TreeNodeImpl model = new TreeNodeImpl(id++, person.get(EnumPersonAttr.uid));
+
+		store.add(model);
+
+		TreeStyle treeStyle = new TreeStyle();
+		// treeStyle.setJointOpenIcon(IconsStore.INSTANCE.searchImg());
+		treeStyle.setNodeOpenIcon(IconsStore.INSTANCE.personIcon());
+		treeStyle.setNodeCloseIcon(IconsStore.INSTANCE.personIcon());
+		treeStyle.setLeafIcon(IconsStore.INSTANCE.propertyIconSmall());
+		tree.setStyle(treeStyle);
+
+		final EnumPersonAttrMessages messages = (EnumPersonAttrMessages) GWT.create(EnumPersonAttrMessages.class);
+		TreeNodeImpl propertyNode;
+		for (Entry<EnumPersonAttr, String> entry : person.entrySet()) {
+			propertyNode = new TreeNodeImpl(id++, entry.getKey().getTitleMessage(messages) + " : " + entry.getValue());
+			model.addChild(propertyNode);
+			store.add(model, propertyNode);
+		}
+
+		tree.setExpanded(model, true);
+
+	}
+
 	public class TreeNodeImpl implements Serializable,
-			TreeStore.TreeNode<TreeNodeImpl> {
+	    TreeStore.TreeNode<TreeNodeImpl> {
 
 		/**
 		 * 

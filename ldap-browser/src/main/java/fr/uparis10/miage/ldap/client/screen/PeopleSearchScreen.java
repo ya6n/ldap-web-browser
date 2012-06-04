@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.IdentityValueProvider;
@@ -37,6 +38,8 @@ import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer.HorizontalLayoutData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.event.RowClickEvent;
+import com.sencha.gxt.widget.core.client.event.RowClickEvent.RowClickHandler;
 import com.sencha.gxt.widget.core.client.event.RowDoubleClickEvent;
 import com.sencha.gxt.widget.core.client.event.RowDoubleClickEvent.RowDoubleClickHandler;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
@@ -52,6 +55,7 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
 
 import fr.uparis10.miage.ldap.client.ContentManager;
 import fr.uparis10.miage.ldap.client.messages.PeopleSearchScreenMessages;
+import fr.uparis10.miage.ldap.client.resources.icons.IconsStore;
 import fr.uparis10.miage.ldap.client.screen.provider.GroupModelKeyProvider;
 import fr.uparis10.miage.ldap.client.screen.provider.GroupValueProvider;
 import fr.uparis10.miage.ldap.client.screen.provider.OrgUnitModelKeyProvider;
@@ -257,6 +261,17 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		personGrid.setWidth(400);
 		personGrid.setHeight(200);
 
+		// final PagingLoader<PagingLoadConfig, PagingLoadResult<Person>> loader =
+		// new PagingLoader<PagingLoadConfig, PagingLoadResult<Person>>(
+		// new StorageReadProxy<PagingLoadConfig>(false));
+		// loader.setRemoteSort(true);
+		// loader.addLoadHandler(new LoadResultListStoreBinding<PagingLoadConfig,
+		// Person, PagingLoadResult<Person>>(store));
+
+		// final PagingToolBar toolBar = new PagingToolBar(10);
+		// toolBar.getElement().getStyle().setProperty("borderBottom", "none");
+		// toolBar.bind(loader);
+
 		personGrid.addRowDoubleClickHandler(new RowDoubleClickHandler() {
 
 			@Override
@@ -264,6 +279,16 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 				Person person = personGrid.getStore().get(event.getRowIndex());
 
 				ContentManager.getInstance().getContainer().openScreen(new PeopleSynthesisScreen(person.get(EnumPersonAttr.uid), person));
+			}
+		});
+
+		personGrid.addRowClickHandler(new RowClickHandler() {
+
+			@Override
+			public void onRowClick(RowClickEvent event) {
+				Person person = personGrid.getStore().get(event.getRowIndex());
+
+				ContentManager.getInstance().getLdapTreeScreen().loadPerson(person);
 			}
 		});
 
@@ -426,6 +451,11 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 	@Override
 	public String getTitle() {
 		return title;
+	}
+
+	@Override
+	public ImageResource getIcon() {
+		return IconsStore.INSTANCE.searchIcon();
 	}
 
 }

@@ -30,7 +30,7 @@ import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
 import fr.uparis10.miage.ldap.shared.obj.Person;
 
 /**
- * @author iogorode
+ * @author OMAR
  * 
  */
 @SuppressWarnings("serial")

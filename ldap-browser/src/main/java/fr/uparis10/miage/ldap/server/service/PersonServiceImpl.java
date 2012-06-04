@@ -36,7 +36,7 @@ import fr.uparis10.miage.ldap.shared.obj.Person;
 import fr.uparis10.miage.ldap.shared.obj.SearchRequestModel;
 
 /**
- * @author gorodenco
+ * @author OMAR
  * 
  */
 @SuppressWarnings("serial")

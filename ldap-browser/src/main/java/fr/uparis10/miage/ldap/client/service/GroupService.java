@@ -8,6 +8,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
 import fr.uparis10.miage.ldap.shared.exc.UserNotLoggedException;
 import fr.uparis10.miage.ldap.shared.obj.Group;
+import fr.uparis10.miage.ldap.shared.obj.Person;
 
 /**
  * The client side stub for the RPC service.
@@ -15,4 +16,13 @@ import fr.uparis10.miage.ldap.shared.obj.Group;
 @RemoteServiceRelativePath("group")
 public interface GroupService extends RemoteService {
 	List<Group> getGroupsAll() throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException;
+
+	/**
+   * @param person
+   * @return
+   * @throws IllegalArgumentException
+   * @throws UserNotLoggedException
+   * @throws ServicePropertiesIOException
+   */
+  List<Group> getPersonGroups(Person person) throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException;
 }

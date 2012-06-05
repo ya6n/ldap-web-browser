@@ -53,7 +53,7 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	 */
 	@Override
 	public List<Person> getPersonsAll() throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
-		UserLoginChecker.getInstance().check();
+		UserLoginChecker.getInstance().check(this.getThreadLocalRequest().getSession());
 		result = new ArrayList<Person>();
 		List<Person> listPerson = PeopleManager.getInstance().getAllObjList();
 		if (listPerson != null) {
@@ -71,7 +71,7 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	 */
 	@Override
 	public List<Person> searchPersons(String request) throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
-		UserLoginChecker.getInstance().check();
+		UserLoginChecker.getInstance().check(this.getThreadLocalRequest().getSession());
 		result = new ArrayList<Person>();
 		try {
 			result.addAll(PeopleManager.getInstance().dummySearch(request));
@@ -91,7 +91,7 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	 */
 	@Override
 	public List<Person> searchPersons(SearchRequestModel requestModel) throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
-		UserLoginChecker.getInstance().check();
+		UserLoginChecker.getInstance().check(this.getThreadLocalRequest().getSession());
 		peopleManager = PeopleManager.getInstance();
 
 		List<Person> listPerson = new ArrayList<Person>();
@@ -123,25 +123,25 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	}
 
 	/**
-   * @param person
-   * @return
-   */
-  private boolean searchByOrgUnit(Person person) {
-  	boolean indicateur = true;
-	  if (requestModel.getLookUpOrgUnit() &&
-	      requestModel.getOrgUnitOptions().size() > 0) {
-	  	indicateur = false;
-	  	for (Entry<String, Boolean> currentEntry : requestModel.getOrgUnitOptions().entrySet()) {
-	  		if (currentEntry.getValue()) {
-	  			String key = currentEntry.getKey();
-	  			if (person.get(EnumPersonAttr.ou).equals(key)) {
-	  				indicateur = true;
-	  			}
-	  		}
-	  	}
-	  }
-	  return indicateur;
-  }
+	 * @param person
+	 * @return
+	 */
+	private boolean searchByOrgUnit(Person person) {
+		boolean indicateur = true;
+		if (requestModel.getLookUpOrgUnit() &&
+		    requestModel.getOrgUnitOptions().size() > 0) {
+			indicateur = false;
+			for (Entry<String, Boolean> currentEntry : requestModel.getOrgUnitOptions().entrySet()) {
+				if (currentEntry.getValue()) {
+					String key = currentEntry.getKey();
+					if (person.get(EnumPersonAttr.ou).equals(key)) {
+						indicateur = true;
+					}
+				}
+			}
+		}
+		return indicateur;
+	}
 
 	/**
 	 * @param person

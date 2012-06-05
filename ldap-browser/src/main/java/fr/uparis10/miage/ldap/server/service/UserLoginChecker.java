@@ -20,17 +20,14 @@ package fr.uparis10.miage.ldap.server.service;
 
 import javax.servlet.http.HttpSession;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
 import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
 import fr.uparis10.miage.ldap.shared.exc.UserNotLoggedException;
 
 /**
  * @author OMAR
- *
+ * 
  */
-public class UserLoginChecker extends RemoteServiceServlet{
-  private static final long serialVersionUID = 8837235543380422322L;
+public class UserLoginChecker {
 	private static UserLoginChecker theInst;
 
 	public final static UserLoginChecker getInstance() {
@@ -40,10 +37,10 @@ public class UserLoginChecker extends RemoteServiceServlet{
 
 		return theInst;
 	}
-	
-	public final void check() throws UserNotLoggedException, ServicePropertiesIOException{
-		HttpSession session = this.getThreadLocalRequest().getSession();
-		if(session.getAttribute("CurrentLoggedPerson") == null){
+
+	public final void check(HttpSession session) throws UserNotLoggedException, ServicePropertiesIOException {
+		// HttpSession session = this.getThreadLocalRequest().getSession();
+		if (session.getAttribute("CurrentLoggedPerson") == null) {
 			throw new UserNotLoggedException();
 		}
 		int sessionExpirationTime = ServicesPropertiesManager.getInstance().getSessionExpirationTime();

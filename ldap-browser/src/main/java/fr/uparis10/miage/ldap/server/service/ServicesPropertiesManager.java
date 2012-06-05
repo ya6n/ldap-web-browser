@@ -32,7 +32,7 @@ public class ServicesPropertiesManager {
 	private static ServicesPropertiesManager theInst;
 
 	private Properties configProp;
-	private final String SERVICES_PROPERTIES_FILE_PATH = "/ldap-browser/src/main/resources/fr/uparis10/miage/ldap/server/service/services.properties";
+	private final String SERVICES_PROPERTIES_FILE_PATH = "/fr/uparis10/miage/ldap/server/service/services.properties";
 
 	public final static ServicesPropertiesManager getInstance() {
 		if (null == theInst) {
@@ -48,16 +48,17 @@ public class ServicesPropertiesManager {
 	private void loadProps() throws ServicePropertiesIOException {
 		configProp = new Properties();
 		InputStream in = this.getClass().getResourceAsStream(SERVICES_PROPERTIES_FILE_PATH);
+		assert (in != null) : "Resource SERVICES_PROPERTIES_FILE_PATH is NOT NOT NOT NOT here!!!";
 		try {
 			configProp.load(in);
 		} catch (IOException e) {
 			throw new ServicePropertiesIOException(e);
 		}
 	}
-	
-	public int getSessionExpirationTime() throws ServicePropertiesIOException{
+
+	public int getSessionExpirationTime() throws ServicePropertiesIOException {
 		loadProps();
-		int sessionExpirationTime = Integer.parseInt(configProp.getProperty("sessionExpirationTime"));
+		int sessionExpirationTime = Integer.parseInt(configProp.getProperty("serverSessionExpirationTime"));
 		return sessionExpirationTime;
 	}
 

@@ -30,4 +30,5 @@ public interface LoginServiceAsync {
 	void loginUser(String login, String pass, AsyncCallback<Boolean> callback);
 
 	void logoutUser(AsyncCallback<Boolean> callback);
+
 }

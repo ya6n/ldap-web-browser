@@ -27,12 +27,10 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import fr.uparis10.miage.ldap.client.service.OrganizationService;
 import fr.uparis10.miage.ldap.server.mng.OrganizationManager;
-import fr.uparis10.miage.ldap.shared.enums.EnumOrgUnitAttr;
 import fr.uparis10.miage.ldap.shared.enums.EnumOrganizationAttr;
 import fr.uparis10.miage.ldap.shared.enums.EnumPersonAttr;
 import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
 import fr.uparis10.miage.ldap.shared.exc.UserNotLoggedException;
-import fr.uparis10.miage.ldap.shared.obj.OrgUnit;
 import fr.uparis10.miage.ldap.shared.obj.Organization;
 import fr.uparis10.miage.ldap.shared.obj.Person;
 
@@ -52,7 +50,7 @@ public class OrganizationServiceImpl extends RemoteServiceServlet implements Org
 	 */
 	@Override
 	public List<Organization> getOrganizationsAll() throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
-		UserLoginChecker.getInstance().check();
+		UserLoginChecker.getInstance().check(this.getThreadLocalRequest().getSession());
 		List<Organization> listOrganization = OrganizationManager.getInstance().getAllObjList();
 		ArrayList<Organization> result = new ArrayList<Organization>();
 		if (listOrganization != null) {
@@ -60,7 +58,6 @@ public class OrganizationServiceImpl extends RemoteServiceServlet implements Org
 		}
 		return result;
 	}
-	
 
 	@Override
 	public List<Organization> getPersonOrganizations(Person person) throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
@@ -68,26 +65,27 @@ public class OrganizationServiceImpl extends RemoteServiceServlet implements Org
 		List<String> personOrganizationList = new ArrayList<String>();
 
 		String[] personOrganismes = person.get(EnumPersonAttr.supannOrganisme).split(";");
-		
-		if (personOrganismes != null && 
-				personOrganismes.length > 0) {
+
+		if (personOrganismes != null &&
+		    personOrganismes.length > 0) {
 			personOrganizationList.addAll(Arrays.asList(personOrganismes));
 		}
 
 		String personOrganization = person.get(EnumPersonAttr.o);
 		if (personOrganization != null &&
-		    !personOrganization.equals("")){
+		    !personOrganization.equals("")) {
 			personOrganizationList.add(personOrganization);
 		}
-		
+
 		if (personOrganizationList.size() > 0) {
 			result = fillPersonsOrganizationList(personOrganizationList);
 		}
 
 		return result;
 	}
-	
-	private List<Organization> fillPersonsOrganizationList(List<String> personOrganisationList) throws IllegalArgumentException, ServicePropertiesIOException, UserNotLoggedException {
+
+	private List<Organization> fillPersonsOrganizationList(List<String> personOrganisationList) throws IllegalArgumentException, ServicePropertiesIOException,
+	    UserNotLoggedException {
 		List<Organization> listOrganization = getOrganizationsAll();
 		List<Organization> result = new ArrayList<Organization>();
 		for (Organization organization : listOrganization) {

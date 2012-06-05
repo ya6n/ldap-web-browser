@@ -28,11 +28,9 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import fr.uparis10.miage.ldap.client.service.OrgUnitService;
 import fr.uparis10.miage.ldap.server.mng.OrgUnitManager;
 import fr.uparis10.miage.ldap.shared.enums.EnumOrgUnitAttr;
-import fr.uparis10.miage.ldap.shared.enums.EnumPersonAttr;
 import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
 import fr.uparis10.miage.ldap.shared.exc.UserNotLoggedException;
 import fr.uparis10.miage.ldap.shared.obj.OrgUnit;
-import fr.uparis10.miage.ldap.shared.obj.Person;
 
 /**
  * @author OMAR
@@ -48,7 +46,7 @@ public class OrgUnitServiceImpl extends RemoteServiceServlet implements OrgUnitS
 	 */
 	@Override
 	public List<OrgUnit> getOrgUnitsAll() throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
-		UserLoginChecker.getInstance().check();
+		UserLoginChecker.getInstance().check(this.getThreadLocalRequest().getSession());
 		List<OrgUnit> listOrgUnit = OrgUnitManager.getInstance().getAllObjList();
 		ArrayList<OrgUnit> result = new ArrayList<OrgUnit>();
 		if (listOrgUnit != null) {
@@ -58,23 +56,23 @@ public class OrgUnitServiceImpl extends RemoteServiceServlet implements OrgUnitS
 	}
 
 	@Override
-	public List<OrgUnit> getPersonOrgUnits(Person person) throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
+	public List<OrgUnit> getPersonOrgUnits(String supannEntiteAffectation, String supannEntiteAffectationPrincipale) throws IllegalArgumentException,
+	    UserNotLoggedException, ServicePropertiesIOException {
 		List<OrgUnit> result = new ArrayList<OrgUnit>();
 		List<String> personOrgUnitList = new ArrayList<String>();
 
-		String[] personAffectations = person.get(EnumPersonAttr.supannEntiteAffectation).split(";");
-		
-		if (personAffectations != null && 
-				personAffectations.length > 0) {
+		String[] personAffectations = supannEntiteAffectation.split(";");
+
+		if (personAffectations != null &&
+		    personAffectations.length > 0) {
 			personOrgUnitList.addAll(Arrays.asList(personAffectations));
 		}
 
-		String personAffectationPrincipale = person.get(EnumPersonAttr.supannEntiteAffectationPrincipale);
-		if (personAffectationPrincipale != null &&
-		    !personAffectationPrincipale.equals("")){
-			personOrgUnitList.add(personAffectationPrincipale);
+		if (supannEntiteAffectationPrincipale != null &&
+		    !supannEntiteAffectationPrincipale.equals("")) {
+			personOrgUnitList.add(supannEntiteAffectationPrincipale);
 		}
-		
+
 		if (personOrgUnitList.size() > 0) {
 			result = fillPersonsOrgUnitsList(personOrgUnitList);
 		}
@@ -86,12 +84,13 @@ public class OrgUnitServiceImpl extends RemoteServiceServlet implements OrgUnitS
 	 * @param listOrgUnit
 	 * @param result
 	 * @param personOrgUnitList
-	 * @return 
-	 * @throws UserNotLoggedException 
-	 * @throws ServicePropertiesIOException 
-	 * @throws IllegalArgumentException 
+	 * @return
+	 * @throws UserNotLoggedException
+	 * @throws ServicePropertiesIOException
+	 * @throws IllegalArgumentException
 	 */
-	private List<OrgUnit> fillPersonsOrgUnitsList(List<String> personOrgUnitList) throws IllegalArgumentException, ServicePropertiesIOException, UserNotLoggedException {
+	private List<OrgUnit> fillPersonsOrgUnitsList(List<String> personOrgUnitList) throws IllegalArgumentException, ServicePropertiesIOException,
+	    UserNotLoggedException {
 		List<OrgUnit> listOrgUnit = getOrgUnitsAll();
 		List<OrgUnit> result = new ArrayList<OrgUnit>();
 		for (OrgUnit orgUnit : listOrgUnit) {

@@ -106,7 +106,7 @@
     <finalName>${project.artifactId}-${project.version}</finalName>
     <!-- Generate compiled stuff in the folder used for developing mode -->
     <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
-    <!-- testOutputDirectory>target/test-classes</testOutputDirectory -->
+    <testOutputDirectory>${basedir}/target/test-classes</testOutputDirectory>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -141,14 +141,6 @@
               </excludes>
             </fileset>
           </filesets>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>2.5</version>
-        <configuration>
-          <outputDirectory>${basedir}/target/bin</outputDirectory>
         </configuration>
       </plugin>
       <plugin>
@@ -263,6 +255,15 @@
       <plugin>
         <groupId>org.codehaus.sonar</groupId>
         <artifactId>sonar-maven3-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.12</version>
+        <configuration>
+          <!--  à activer temporament pour ignorer les tests unitaires cassés -->
+          <!--  testFailureIgnore>true</testFailureIgnore -->
+        </configuration>
       </plugin>
     </plugins>
     <defaultGoal>install</defaultGoal>

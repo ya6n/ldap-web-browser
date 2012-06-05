@@ -18,6 +18,7 @@
  */
 package fr.uparis10.miage.ldap.server.service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
@@ -38,8 +39,11 @@ public class UserLoginChecker {
 		return theInst;
 	}
 
-	public final void check(HttpSession session) throws UserNotLoggedException, ServicePropertiesIOException {
-		// HttpSession session = this.getThreadLocalRequest().getSession();
+	public final void check(final HttpServletRequest parServlet) throws UserNotLoggedException, ServicePropertiesIOException {
+		if (null == parServlet && ServicesPropertiesManager.getInstance().isTestRunning()) {
+			return;
+		}
+		final HttpSession session = parServlet.getSession();
 		if (session.getAttribute("CurrentLoggedPerson") == null) {
 			throw new UserNotLoggedException();
 		}

@@ -34,15 +34,15 @@ public class ApplicationHeader extends BorderLayoutContainer {
 	 */
 	public ApplicationHeader() {
 
-		logo = new Image("images/logo-mos-car.png");
+		logo = new Image("images/logo-upx.png");
 		SimpleContainer logoContainer = new SimpleContainer();
 		logoContainer.add(logo);
 
-		/*info = new ContentPanel();
-		info.setHeaderVisible(false);
-		info.setBodyBorder(false);
-		info.setBorders(false);*/
-		
+		/*
+		 * info = new ContentPanel(); info.setHeaderVisible(false);
+		 * info.setBodyBorder(false); info.setBorders(false);
+		 */
+
 		menu = getMenu();
 		info = getInfo();
 
@@ -74,10 +74,10 @@ public class ApplicationHeader extends BorderLayoutContainer {
 
 		return toolBar;
 	}
-	
+
 	private ToolBar getInfo() {
 		ToolBar toolBar = new ToolBar();
-		
+
 		TextButton btn = new TextButton("Logout", IconsStore.INSTANCE.logoutImg());
 		btn.setScale(ButtonScale.LARGE);
 		btn.setIconAlign(IconAlign.TOP);
@@ -87,8 +87,8 @@ public class ApplicationHeader extends BorderLayoutContainer {
 
 			@Override
 			public void onSelect(SelectEvent event) {
-				//logout code
-				//replace logout (label & image) by login (label & image)
+				// logout code
+				// replace logout (label & image) by login (label & image)
 
 			}
 		});

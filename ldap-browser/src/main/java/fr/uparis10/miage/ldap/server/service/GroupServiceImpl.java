@@ -44,7 +44,7 @@ public class GroupServiceImpl extends RemoteServiceServlet implements GroupServi
 	 */
 	@Override
 	public List<Group> getGroupsAll() throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
-		UserLoginChecker.getInstance().check(this.getThreadLocalRequest().getSession());
+		UserLoginChecker.getInstance().check(this.getThreadLocalRequest());
 
 		List<Group> listGroup = GroupManager.getInstance().getAllObjList();
 		ArrayList<Group> result = new ArrayList<Group>();
@@ -58,13 +58,13 @@ public class GroupServiceImpl extends RemoteServiceServlet implements GroupServi
 	 * @param person
 	 * @return
 	 */
-	public List<Group> getPersonGroups(String supannRole) throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
+	public List<Group> getPersonGroups(String uid) throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
 		List<Group> listGroup = getGroupsAll();
 		List<Group> result = new ArrayList<Group>();
 
 		for (Group group : listGroup) {
 			if (group.get(EnumGroupAttr.member).
-			    indexOf(supannRole) != -1) {
+			    indexOf(uid) != -1) {
 				result.add(group);
 			}
 		}

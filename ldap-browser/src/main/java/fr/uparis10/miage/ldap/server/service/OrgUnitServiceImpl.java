@@ -46,7 +46,7 @@ public class OrgUnitServiceImpl extends RemoteServiceServlet implements OrgUnitS
 	 */
 	@Override
 	public List<OrgUnit> getOrgUnitsAll() throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
-		UserLoginChecker.getInstance().check(this.getThreadLocalRequest().getSession());
+		UserLoginChecker.getInstance().check(this.getThreadLocalRequest());
 		List<OrgUnit> listOrgUnit = OrgUnitManager.getInstance().getAllObjList();
 		ArrayList<OrgUnit> result = new ArrayList<OrgUnit>();
 		if (listOrgUnit != null) {
@@ -61,6 +61,8 @@ public class OrgUnitServiceImpl extends RemoteServiceServlet implements OrgUnitS
 		List<OrgUnit> result = new ArrayList<OrgUnit>();
 		List<String> personOrgUnitList = new ArrayList<String>();
 
+		if (supannEntiteAffectation == null)
+			supannEntiteAffectation = "";
 		String[] personAffectations = supannEntiteAffectation.split(";");
 
 		if (personAffectations != null &&

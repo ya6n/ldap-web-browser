@@ -9,5 +9,5 @@ import fr.uparis10.miage.ldap.shared.obj.Group;
 public interface GroupServiceAsync {
 	void getGroupsAll(AsyncCallback<List<Group>> callback);
 
-	void getPersonGroups(String supannRole, AsyncCallback<List<Group>> callback);
+	void getPersonGroups(String uid, AsyncCallback<List<Group>> callback);
 }

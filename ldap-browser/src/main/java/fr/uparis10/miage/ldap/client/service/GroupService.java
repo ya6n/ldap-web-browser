@@ -22,5 +22,5 @@ public interface GroupService extends RemoteService {
 	 * @throws UserNotLoggedException
 	 * @throws ServicePropertiesIOException
 	 */
-	List<Group> getPersonGroups(String supannRole) throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException;
+	List<Group> getPersonGroups(String uid) throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException;
 }

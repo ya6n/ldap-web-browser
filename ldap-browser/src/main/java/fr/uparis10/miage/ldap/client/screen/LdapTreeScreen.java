@@ -5,12 +5,16 @@ package fr.uparis10.miage.ldap.client.screen;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
+import com.sencha.gxt.data.shared.SortDir;
+import com.sencha.gxt.data.shared.Store.StoreSortInfo;
 import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.data.shared.TreeStore.TreeNode;
 import com.sencha.gxt.widget.core.client.ContentPanel;
@@ -24,7 +28,15 @@ import com.sencha.gxt.widget.core.client.tree.TreeStyle;
 
 import fr.uparis10.miage.ldap.client.enums.EnumPersonAttrMessages;
 import fr.uparis10.miage.ldap.client.resources.icons.IconsStore;
+import fr.uparis10.miage.ldap.client.service.GroupService;
+import fr.uparis10.miage.ldap.client.service.GroupServiceAsync;
+import fr.uparis10.miage.ldap.client.service.OrgUnitService;
+import fr.uparis10.miage.ldap.client.service.OrgUnitServiceAsync;
+import fr.uparis10.miage.ldap.shared.enums.EnumGroupAttr;
+import fr.uparis10.miage.ldap.shared.enums.EnumOrgUnitAttr;
 import fr.uparis10.miage.ldap.shared.enums.EnumPersonAttr;
+import fr.uparis10.miage.ldap.shared.obj.Group;
+import fr.uparis10.miage.ldap.shared.obj.OrgUnit;
 import fr.uparis10.miage.ldap.shared.obj.Person;
 
 //import com.extjs.gxt.ui.client.data.BaseTreeModel;
@@ -49,6 +61,10 @@ public class LdapTreeScreen extends ContentPanel {
 	 * 
 	 */
 	final Tree<TreeNodeImpl, String> tree;
+
+	int lastIdOffset;
+
+	String currentPersonId;
 
 	public LdapTreeScreen() {
 		tree = getTreeModel();
@@ -136,14 +152,33 @@ public class LdapTreeScreen extends ContentPanel {
 		return root;
 	}
 
-	public void loadPerson(Person person) {
+	public void loadPerson(final Person person) {
 
-		TreeStore<TreeNodeImpl> store = tree.getStore();
+		if (person.get(EnumPersonAttr.uid).equals(currentPersonId)) {
+			return;
+		}
+		final TreeStore<TreeNodeImpl> store = tree.getStore();
+
+		final StoreSortInfo<TreeNodeImpl> sortInfo = new StoreSortInfo<TreeNodeImpl>(new Comparator<TreeNodeImpl>() {
+
+			@Override
+			public int compare(TreeNodeImpl o1, TreeNodeImpl o2) {
+				int size1 = o1.getChildren().size();
+				int size2 = o2.getChildren().size();
+				if (size1 > 0 && size2 == 0) {
+					return -1;
+				} else if (size1 == 0 && size2 > 0) {
+					return 1;
+				}
+				else
+					return o1.getName().compareTo(o2.getName());
+			}
+		}, SortDir.ASC);
 
 		store.clear();
 
 		int id = 0;
-		TreeNodeImpl model = new TreeNodeImpl(id++, person.get(EnumPersonAttr.uid));
+		final TreeNodeImpl model = new TreeNodeImpl(id++, person.get(EnumPersonAttr.uid));
 
 		store.add(model);
 
@@ -155,14 +190,78 @@ public class LdapTreeScreen extends ContentPanel {
 		tree.setStyle(treeStyle);
 
 		final EnumPersonAttrMessages messages = (EnumPersonAttrMessages) GWT.create(EnumPersonAttrMessages.class);
-		TreeNodeImpl propertyNode;
-		for (Entry<EnumPersonAttr, String> entry : person.entrySet()) {
-			propertyNode = new TreeNodeImpl(id++, entry.getKey().getTitleMessage(messages) + " : " + entry.getValue());
-			model.addChild(propertyNode);
-			store.add(model, propertyNode);
-		}
 
+		currentPersonId = person.get(EnumPersonAttr.uid);
 		tree.setExpanded(model, true);
+		this.lastIdOffset = id;
+
+		// Ne pas oublier qu'il y a qu'un seul Thread en JavaScript
+		final LdapTreeScreen thisScreen = this;
+		GroupServiceAsync groupService = GWT.create(GroupService.class);
+		final OrgUnitServiceAsync orgUnitService = GWT.create(OrgUnitService.class);
+		groupService.getPersonGroups(person.get(EnumPersonAttr.uid), new AsyncCallback<List<Group>>() {
+
+			@Override
+			public void onSuccess(List<Group> result) {
+				if (currentPersonId != null && currentPersonId.equals(person.get(EnumPersonAttr.uid))) {
+					int id = thisScreen.getLastIdOffset();
+					thisScreen.setLastIdOffset(id + 1 + result.size());
+
+					TreeNodeImpl groupsNode = new TreeNodeImpl(id++, "Groups");
+					store.add(model, groupsNode);
+					TreeNodeImpl groupNode;
+					for (Group group : result) {
+						groupNode = new TreeNodeImpl(id++, group.get(EnumGroupAttr.cn));
+						groupsNode.addChild(groupNode);
+						store.add(groupsNode, groupNode);
+					}
+
+					orgUnitService.getPersonOrgUnits(person.get(EnumPersonAttr.supannEntiteAffectation), person.get(EnumPersonAttr.supannEntiteAffectationPrincipale),
+					    new AsyncCallback<List<OrgUnit>>() {
+
+						    @Override
+						    public void onSuccess(List<OrgUnit> result) {
+							    if (currentPersonId != null && currentPersonId.equals(person.get(EnumPersonAttr.uid))) {
+								    int id = thisScreen.getLastIdOffset();
+								    thisScreen.setLastIdOffset(id + 1 + result.size());
+
+								    TreeNodeImpl orgUnitsNode = new TreeNodeImpl(id++, "OrgUnits");
+								    store.add(model, orgUnitsNode);
+								    TreeNodeImpl orgUnitNode;
+								    for (OrgUnit orgUnit : result) {
+									    orgUnitNode = new TreeNodeImpl(id++, "(" + orgUnit.get(EnumOrgUnitAttr.ou) + ") " + orgUnit.get(EnumOrgUnitAttr.description));
+									    orgUnitsNode.addChild(orgUnitNode);
+									    store.add(orgUnitsNode, orgUnitNode);
+								    }
+
+								    TreeNodeImpl propertyNode;
+								    for (Entry<EnumPersonAttr, String> entry : person.entrySet()) {
+									    propertyNode = new TreeNodeImpl(id++, entry.getKey().getTitleMessage(messages) + " : " + entry.getValue());
+									    model.addChild(propertyNode);
+									    store.add(model, propertyNode);
+								    }
+								    tree.setExpanded(model, true);
+
+								    // store.addSortInfo(sortInfo);
+							    }
+						    }
+
+						    @Override
+						    public void onFailure(Throwable caught) {
+							    // TODO Auto-generated method stub
+
+						    }
+					    });
+
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 
 	}
 
@@ -222,6 +321,21 @@ public class LdapTreeScreen extends ContentPanel {
 			return name != null ? name : super.toString();
 		}
 
+	}
+
+	/**
+	 * @return the lastId
+	 */
+	public int getLastIdOffset() {
+		return lastIdOffset;
+	}
+
+	/**
+	 * @param lastId
+	 *          the lastId to set
+	 */
+	public void setLastIdOffset(int lastIdOffset) {
+		this.lastIdOffset = lastIdOffset;
 	}
 
 }

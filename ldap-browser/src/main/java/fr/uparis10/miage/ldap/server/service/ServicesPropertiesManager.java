@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import fr.uparis10.miage.ldap.server.utils.PropertyParseUtil;
 import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
 
 /**
@@ -29,12 +30,14 @@ import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
  * 
  */
 public class ServicesPropertiesManager {
+	private final static String SERVICES_PROPERTIES_FILE_PATH = "/fr/uparis10/miage/ldap/server/service/services.properties";
+	private final static String SESSION_EXP_TIME = "serverSessionExpirationTime";
+
 	private static ServicesPropertiesManager theInst;
 
-	private Properties configProp;
-	private final String SERVICES_PROPERTIES_FILE_PATH = "/fr/uparis10/miage/ldap/server/service/services.properties";
+	private final int sessionExpirationTime;
 
-	public final static ServicesPropertiesManager getInstance() {
+	public final static ServicesPropertiesManager getInstance() throws ServicePropertiesIOException {
 		if (null == theInst) {
 			theInst = new ServicesPropertiesManager();
 		}
@@ -42,24 +45,28 @@ public class ServicesPropertiesManager {
 		return theInst;
 	}
 
+	private ServicesPropertiesManager() throws ServicePropertiesIOException {
+		final Properties locProps = loadProps();
+		// trying to get the session expiration timeout; otherwise - no expiration
+		sessionExpirationTime = PropertyParseUtil.getIntOrDefault(locProps, SESSION_EXP_TIME, Integer.MAX_VALUE);
+	}
+
 	/**
 	 * @throws ServicePropertiesIOException
 	 */
-	private void loadProps() throws ServicePropertiesIOException {
-		configProp = new Properties();
+	private Properties loadProps() throws ServicePropertiesIOException {
+		final Properties configProp = new Properties();
 		InputStream in = this.getClass().getResourceAsStream(SERVICES_PROPERTIES_FILE_PATH);
-		assert (in != null) : "Resource SERVICES_PROPERTIES_FILE_PATH is NOT NOT NOT NOT here!!!";
+		assert (in != null) : "Resource :" + SERVICES_PROPERTIES_FILE_PATH + " is NOT NOT NOT NOT here!!!";
 		try {
 			configProp.load(in);
 		} catch (IOException e) {
 			throw new ServicePropertiesIOException(e);
 		}
+		return configProp;
 	}
 
-	public int getSessionExpirationTime() throws ServicePropertiesIOException {
-		loadProps();
-		int sessionExpirationTime = Integer.parseInt(configProp.getProperty("serverSessionExpirationTime"));
+	public int getSessionExpirationTime() {
 		return sessionExpirationTime;
 	}
-
 }

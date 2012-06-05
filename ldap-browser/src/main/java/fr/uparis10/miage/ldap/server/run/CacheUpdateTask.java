@@ -21,7 +21,6 @@ package fr.uparis10.miage.ldap.server.run;
 import java.util.TimerTask;
 
 import fr.uparis10.miage.ldap.server.itf.IWithCache;
-import fr.uparis10.miage.ldap.server.mng.ACacheManager;
 import fr.uparis10.miage.ldap.server.mng.GroupManager;
 import fr.uparis10.miage.ldap.server.mng.OrgUnitManager;
 import fr.uparis10.miage.ldap.server.mng.OrganizationManager;

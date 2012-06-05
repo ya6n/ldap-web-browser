@@ -7,7 +7,6 @@ import com.google.gwt.user.client.ui.Image;
 import com.sencha.gxt.cell.core.client.ButtonCell.ButtonArrowAlign;
 import com.sencha.gxt.cell.core.client.ButtonCell.ButtonScale;
 import com.sencha.gxt.cell.core.client.ButtonCell.IconAlign;
-import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.SimpleContainer;
@@ -26,7 +25,7 @@ public class ApplicationHeader extends BorderLayoutContainer {
 
 	private Image logo;
 
-	private ContentPanel info;
+	private ToolBar info;
 
 	private ToolBar menu;
 
@@ -39,12 +38,13 @@ public class ApplicationHeader extends BorderLayoutContainer {
 		SimpleContainer logoContainer = new SimpleContainer();
 		logoContainer.add(logo);
 
-		info = new ContentPanel();
+		/*info = new ContentPanel();
 		info.setHeaderVisible(false);
 		info.setBodyBorder(false);
-		info.setBorders(false);
-
+		info.setBorders(false);*/
+		
 		menu = getMenu();
+		info = getInfo();
 
 		setWestWidget(logoContainer, new BorderLayoutData(250));
 		setCenterWidget(menu, new BorderLayoutData());
@@ -67,6 +67,28 @@ public class ApplicationHeader extends BorderLayoutContainer {
 				PeopleSearchScreen screen = new PeopleSearchScreen();
 				ContentManager.getInstance().getContainer().openScreen(screen);
 				screen.selectAll();
+
+			}
+		});
+		toolBar.add(btn);
+
+		return toolBar;
+	}
+	
+	private ToolBar getInfo() {
+		ToolBar toolBar = new ToolBar();
+		
+		TextButton btn = new TextButton("Logout", IconsStore.INSTANCE.logoutImg());
+		btn.setScale(ButtonScale.LARGE);
+		btn.setIconAlign(IconAlign.TOP);
+		btn.setArrowAlign(ButtonArrowAlign.BOTTOM);
+
+		btn.addSelectHandler(new SelectHandler() {
+
+			@Override
+			public void onSelect(SelectEvent event) {
+				//logout code
+				//replace logout (label & image) by login (label & image)
 
 			}
 		});

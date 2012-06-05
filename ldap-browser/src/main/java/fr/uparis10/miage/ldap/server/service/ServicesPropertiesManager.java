@@ -37,6 +37,12 @@ public class ServicesPropertiesManager {
 
 	private final int sessionExpirationTime;
 
+	protected ServicesPropertiesManager() throws ServicePropertiesIOException {
+		final Properties locProps = loadProps();
+		// trying to get the session expiration timeout; otherwise - no expiration
+		sessionExpirationTime = PropertyParseUtil.getIntOrDefault(locProps, SESSION_EXP_TIME, Integer.MAX_VALUE);
+	}
+
 	public final static ServicesPropertiesManager getInstance() throws ServicePropertiesIOException {
 		if (null == theInst) {
 			theInst = new ServicesPropertiesManager();
@@ -44,11 +50,17 @@ public class ServicesPropertiesManager {
 
 		return theInst;
 	}
+	
+	public int getSessionExpirationTime() {
+		return sessionExpirationTime;
+	}
+	
+	public boolean isTestRunning() {
+		return false;
+	}
 
-	private ServicesPropertiesManager() throws ServicePropertiesIOException {
-		final Properties locProps = loadProps();
-		// trying to get the session expiration timeout; otherwise - no expiration
-		sessionExpirationTime = PropertyParseUtil.getIntOrDefault(locProps, SESSION_EXP_TIME, Integer.MAX_VALUE);
+	protected static final void setInstance(final ServicesPropertiesManager parInst) {
+		theInst = parInst;
 	}
 
 	/**
@@ -64,9 +76,5 @@ public class ServicesPropertiesManager {
 			throw new ServicePropertiesIOException(e);
 		}
 		return configProp;
-	}
-
-	public int getSessionExpirationTime() {
-		return sessionExpirationTime;
 	}
 }

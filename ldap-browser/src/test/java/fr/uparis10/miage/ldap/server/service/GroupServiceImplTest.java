@@ -18,30 +18,69 @@
  */
 package fr.uparis10.miage.ldap.server.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.uparis10.miage.ldap.server.mng.GroupManager;
+import fr.uparis10.miage.ldap.shared.exc.DataNotLoadedException;
+import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
+import fr.uparis10.miage.ldap.shared.exc.UserNotLoggedException;
+import fr.uparis10.miage.ldap.shared.obj.Group;
+
 /**
  * @author OMAR
- *
+ * 
  */
 public class GroupServiceImplTest {
+
+	private GroupServiceImpl theTestInst;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
-	public void setUp() throws Exception {
+	public final void setUp() throws Exception {
+		TestingServicesPropertiesManager.initTestInstance();
+		theTestInst = new GroupServiceImpl();
 	}
 
 	/**
-	 * Test method for {@link fr.uparis10.miage.ldap.server.service.GroupServiceImpl#getGroupsAll()}.
+	 * Test method for
+	 * {@link fr.uparis10.miage.ldap.server.service.GroupServiceImpl#getGroupsAll()}
+	 * .
+	 * 
+	 * @throws UserNotLoggedException
+	 * @throws ServicePropertiesIOException
+	 * @throws IllegalArgumentException
 	 */
-	@Test
-	public void testGetGroupsAll() {
-		fail("Not yet implemented");
+	@Test(timeout = 10000L)
+	public final void testGetGroupsAll() throws IllegalArgumentException, ServicePropertiesIOException, UserNotLoggedException {
+		final List<Group> locGroupList = theTestInst.getGroupsAll();
+		assertNotNull(locGroupList);
+		assertFalse(locGroupList.isEmpty());
 	}
 
+	/**
+	 * Test method for
+	 * {@link fr.uparis10.miage.ldap.server.service.GroupServiceImpl#getPersonGroups()}
+	 * .
+	 * 
+	 * @throws IllegalArgumentException
+	 * @throws ServicePropertiesIOException
+	 * @throws UserNotLoggedException
+	 * @throws DataNotLoadedException
+	 */
+	public final void testGetPersonGroups() throws IllegalArgumentException, ServicePropertiesIOException, UserNotLoggedException, DataNotLoadedException {
+		final List<Group> locGroupList = theTestInst.getPersonGroups("admin");
+		final List<Group> locExpGrList = GroupManager.getInstance().dummySearch("admin");
+		for (final Group locGroup : locGroupList) {
+			assertTrue(locExpGrList.contains(locGroup));
+		}
+	}
 }

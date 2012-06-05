@@ -28,6 +28,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 import fr.uparis10.miage.ldap.junit.AssertUtils;
 import fr.uparis10.miage.ldap.server.service.ServicesPropertiesManager;
+import fr.uparis10.miage.ldap.server.service.UserLoginChecker;
 
 /**
  * This Unit Test will test that some Singleton classes are singleton as
@@ -54,7 +55,8 @@ public class SingletonTest {
 		    new Object[] { OrgUnitManager.class },
 		    new Object[] { OrganizationManager.class },
 		    new Object[] { UserLoginManager.class },
-		    new Object[] { ServicesPropertiesManager.class });
+		    new Object[] { ServicesPropertiesManager.class },
+		    new Object[] { UserLoginChecker.class });
 	}
 
 	@Test(timeout = 10000L)

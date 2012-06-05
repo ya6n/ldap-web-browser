@@ -28,13 +28,13 @@ import org.junit.Test;
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
  *
  */
-public class PropertyParseUtilTest {
+public final class PropertyParseUtilTest {
 
 	/**
 	 * Test method for {@link fr.uparis10.miage.ldap.server.utils.PropertyParseUtil#getIntOrDefault(java.util.Properties, java.lang.String, int)}.
 	 */
 	@Test (timeout=1000L)
-	public void testGetIntOrDefaultOK() {
+	public final void testGetIntOrDefaultOK() {
 		final Properties locProps = new Properties();
 		final String locKey = "theKey";
 		final String locValue = "1234";
@@ -47,7 +47,7 @@ public class PropertyParseUtilTest {
 	 * Test method for {@link fr.uparis10.miage.ldap.server.utils.PropertyParseUtil#getIntOrDefault(java.util.Properties, java.lang.String, int)}.
 	 */
 	@Test (timeout=1000L)
-	public void testGetIntOrDefaultKO1() {
+	public final void testGetIntOrDefaultKO1() {
 		final Properties locProps = new Properties();
 		final String locKey = "theKey";
 		final int locIntValue = PropertyParseUtil.getIntOrDefault(locProps, locKey, Integer.MIN_VALUE);
@@ -58,7 +58,7 @@ public class PropertyParseUtilTest {
 	 * Test method for {@link fr.uparis10.miage.ldap.server.utils.PropertyParseUtil#getIntOrDefault(java.util.Properties, java.lang.String, int)}.
 	 */
 	@Test (timeout=1000L)
-	public void testGetIntOrDefaultKO2() {
+	public final void testGetIntOrDefaultKO2() {
 		final Properties locProps = new Properties();
 		final String locKey = "theKey";
 		final String locValue = "INVALID_INT_VALUE";

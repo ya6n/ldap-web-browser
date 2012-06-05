@@ -50,7 +50,7 @@ public class OrganizationServiceImpl extends RemoteServiceServlet implements Org
 	 */
 	@Override
 	public List<Organization> getOrganizationsAll() throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
-		UserLoginChecker.getInstance().check(this.getThreadLocalRequest().getSession());
+		UserLoginChecker.getInstance().check(this.getThreadLocalRequest());
 		List<Organization> listOrganization = OrganizationManager.getInstance().getAllObjList();
 		ArrayList<Organization> result = new ArrayList<Organization>();
 		if (listOrganization != null) {
@@ -64,11 +64,14 @@ public class OrganizationServiceImpl extends RemoteServiceServlet implements Org
 		List<Organization> result = new ArrayList<Organization>();
 		List<String> personOrganizationList = new ArrayList<String>();
 
-		String[] personOrganismes = person.get(EnumPersonAttr.supannOrganisme).split(";");
+		final String locPersOrgStr = person.get(EnumPersonAttr.supannOrganisme);
 
-		if (personOrganismes != null &&
-		    personOrganismes.length > 0) {
-			personOrganizationList.addAll(Arrays.asList(personOrganismes));
+		if (locPersOrgStr != null &&
+		    locPersOrgStr.isEmpty()) {
+			final String[] personOrganismes = person.get(EnumPersonAttr.supannOrganisme).split(";");
+			assert (null != personOrganismes);
+			assert (personOrganismes.length > 0);
+			personOrganizationList.addAll(Arrays.<String> asList(personOrganismes));
 		}
 
 		String personOrganization = person.get(EnumPersonAttr.o);

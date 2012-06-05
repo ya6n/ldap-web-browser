@@ -53,7 +53,7 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	 */
 	@Override
 	public List<Person> getPersonsAll() throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
-		UserLoginChecker.getInstance().check(this.getThreadLocalRequest().getSession());
+		UserLoginChecker.getInstance().check(this.getThreadLocalRequest());
 		result = new ArrayList<Person>();
 		List<Person> listPerson = PeopleManager.getInstance().getAllObjList();
 		if (listPerson != null) {
@@ -71,7 +71,7 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	 */
 	@Override
 	public List<Person> searchPersons(String request) throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
-		UserLoginChecker.getInstance().check(this.getThreadLocalRequest().getSession());
+		UserLoginChecker.getInstance().check(this.getThreadLocalRequest());
 		result = new ArrayList<Person>();
 		try {
 			result.addAll(PeopleManager.getInstance().dummySearch(request));
@@ -91,7 +91,7 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	 */
 	@Override
 	public List<Person> searchPersons(SearchRequestModel requestModel) throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
-		UserLoginChecker.getInstance().check(this.getThreadLocalRequest().getSession());
+		UserLoginChecker.getInstance().check(this.getThreadLocalRequest());
 		peopleManager = PeopleManager.getInstance();
 
 		List<Person> listPerson = new ArrayList<Person>();

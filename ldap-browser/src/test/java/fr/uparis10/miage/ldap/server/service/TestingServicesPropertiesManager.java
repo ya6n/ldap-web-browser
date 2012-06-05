@@ -16,31 +16,25 @@
  *
  * Creation date: Jun 5, 2012
  */
-package fr.uparis10.miage.ldap.server.utils;
+package fr.uparis10.miage.ldap.server.service;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
-import fr.uparis10.miage.ldap.server.service.ServicesPropertiesManager;
 import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
- * 
+ *
  */
-public final class ServicesPropertiesManagerTest {
-
-	/**
-	 * Test method for
-	 * {@link fr.uparis10.miage.ldap.server.service.ServicesPropertiesManager#getSessionExpirationTime()}
-	 * .
-	 * 
-	 * @throws ServicePropertiesIOException
-	 */
-	@Test(timeout = 10000L)
-	public final void testGetSessionExpirationTime() throws ServicePropertiesIOException {
-		// on sait que c'est 1800 sec par defaut
-		assertEquals(1800, ServicesPropertiesManager.getInstance().getSessionExpirationTime());
+public final class TestingServicesPropertiesManager extends ServicesPropertiesManager {
+	public final static void initTestInstance() throws ServicePropertiesIOException {
+		setInstance(new TestingServicesPropertiesManager());
+	}
+	
+	private TestingServicesPropertiesManager() throws ServicePropertiesIOException {
+		super();
+	}
+	
+	@Override
+	public final boolean isTestRunning() {
+		return true;
 	}
 }

@@ -44,7 +44,7 @@ public class GroupServiceImpl extends RemoteServiceServlet implements GroupServi
 	 */
 	@Override
 	public List<Group> getGroupsAll() throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
-		UserLoginChecker.getInstance().check(this.getThreadLocalRequest().getSession());
+		UserLoginChecker.getInstance().check(this.getThreadLocalRequest());
 
 		List<Group> listGroup = GroupManager.getInstance().getAllObjList();
 		ArrayList<Group> result = new ArrayList<Group>();

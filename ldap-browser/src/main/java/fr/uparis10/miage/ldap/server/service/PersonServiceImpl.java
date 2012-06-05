@@ -42,9 +42,9 @@ import fr.uparis10.miage.ldap.shared.obj.SearchRequestModel;
 @SuppressWarnings("serial")
 public class PersonServiceImpl extends RemoteServiceServlet implements PersonService {
 
-	List<Person> result;
-	SearchRequestModel requestModel;
-	PeopleManager peopleManager;
+	private List<Person> result;
+	private SearchRequestModel requestModel;
+	private PeopleManager peopleManager;
 
 	/*
 	 * (non-Javadoc)
@@ -170,7 +170,8 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	 */
 	private boolean searByPerson(Person person) {
 		boolean indicateur = true;
-		if (requestModel.getLookUpPerson() &&
+		if (requestModel != null &&
+				requestModel.getLookUpPerson()  &&
 		    !requestModel.getRequest().equals("")) {
 			try {
 				indicateur = peopleManager.dummySearch(requestModel.getRequest()).contains(person);

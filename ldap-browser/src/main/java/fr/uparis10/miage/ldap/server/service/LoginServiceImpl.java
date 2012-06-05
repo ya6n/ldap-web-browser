@@ -35,6 +35,11 @@ import fr.uparis10.miage.ldap.shared.obj.Person;
  */
 @SuppressWarnings("serial")
 public class LoginServiceImpl extends RemoteServiceServlet implements LoginService {
+	
+	public HttpSession getSession(){
+		return this.getThreadLocalRequest().getSession();
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 

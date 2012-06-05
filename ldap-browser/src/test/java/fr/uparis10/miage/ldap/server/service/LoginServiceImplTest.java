@@ -20,36 +20,80 @@ package fr.uparis10.miage.ldap.server.service;
 
 import static org.junit.Assert.*;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
+import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
+import fr.uparis10.miage.ldap.shared.obj.Person;
+
 /**
  * @author OMAR
- *
+ * 
  */
-public class LoginServiceImplTest {
-
+public class LoginServiceImplTest extends RemoteServiceServlet {
 	/**
-	 * @throws java.lang.Exception
-	 */
+   * 
+   */
+	private static final long serialVersionUID = -6472974790838771710L;
+
+	private LoginServiceImpl _loginServiceImpl;
+
 	@Before
-	public void setUp() throws Exception {
+	public final void beforeTest() throws ServicePropertiesIOException {
+		TestingServicesPropertiesManager.initTestInstance();
+		_loginServiceImpl = new LoginServiceImpl();
+	}
+
+	@After
+	public final void afterTest() {
+		_loginServiceImpl = null;
 	}
 
 	/**
-	 * Test method for {@link fr.uparis10.miage.ldap.server.service.LoginServiceImpl#loginUser(java.lang.String, java.lang.String)}.
+	 * Test method for
+	 * {@link fr.uparis10.miage.ldap.server.service.LoginServiceImpl#loginUser(java.lang.String, java.lang.String)}
+	 * .
+	 * 
+	 * @throws ServicePropertiesIOException
+	 * @throws IllegalArgumentException
 	 */
 	@Test
-	public void testLoginUser() {
-		fail("Not yet implemented");
+	public void testLoginUser() throws IllegalArgumentException, ServicePropertiesIOException {
+		assertTrue(_loginServiceImpl.loginUser("admin", "miage"));
+		assertNotNull(_loginServiceImpl.getSession().getAttribute("CurrentLoggedPerson"));
+		assertTrue(_loginServiceImpl.getSession().getAttribute("CurrentLoggedPerson") instanceof Person);
 	}
-	
+
 	/**
-	 * Test method for {@link fr.uparis10.miage.ldap.server.service.LoginServiceImpl#logoutUser()}.
+	 * Test method for
+	 * {@link fr.uparis10.miage.ldap.server.service.LoginServiceImpl#loginUser(java.lang.String, java.lang.String)}
+	 * .
+	 * 
+	 * @throws ServicePropertiesIOException
+	 * @throws IllegalArgumentException
 	 */
 	@Test
-	public void testLogoutUser() {
-		fail("Not yet implemented");
+	public void testBadLoginUser() throws IllegalArgumentException, ServicePropertiesIOException {
+		assertFalse(_loginServiceImpl.loginUser("bad-login", "bad-password"));
+		assertNull(_loginServiceImpl.getSession().getAttribute("CurrentLoggedPerson"));
+	}
+
+	/**
+	 * Test method for
+	 * {@link fr.uparis10.miage.ldap.server.service.LoginServiceImpl#logoutUser()}
+	 * .
+	 * 
+	 * @throws ServicePropertiesIOException
+	 * @throws IllegalArgumentException
+	 */
+	@Test
+	public void testLogoutUser() throws IllegalArgumentException, ServicePropertiesIOException {
+		_loginServiceImpl.loginUser("admin", "miage");
+		assertTrue(_loginServiceImpl.logoutUser());
+		assertNull(_loginServiceImpl.getSession().getAttribute("CurrentLoggedPerson"));
 	}
 
 }

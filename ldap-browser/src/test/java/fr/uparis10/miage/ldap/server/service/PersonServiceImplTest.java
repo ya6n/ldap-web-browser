@@ -20,8 +20,19 @@ package fr.uparis10.miage.ldap.server.service;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import fr.uparis10.miage.ldap.shared.enums.EnumGroupAttr;
+import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
+import fr.uparis10.miage.ldap.shared.exc.UserNotLoggedException;
+import fr.uparis10.miage.ldap.shared.obj.Person;
+import fr.uparis10.miage.ldap.shared.obj.SearchRequestModel;
 
 /**
  * @author OMAR
@@ -29,58 +40,68 @@ import org.junit.Test;
  */
 public class PersonServiceImplTest {
 
-	/**
-	 * @throws java.lang.Exception
-	 */
+	private PersonServiceImpl _personServiceImpl;
+
 	@Before
-	public void setUp() throws Exception {
+	public final void beforeTest() throws ServicePropertiesIOException {
+		TestingServicesPropertiesManager.initTestInstance();
+		_personServiceImpl = new PersonServiceImpl();
+	}
+
+	@After
+	public final void afterTest() {
+		_personServiceImpl = null;
 	}
 
 	/**
 	 * Test method for {@link fr.uparis10.miage.ldap.server.service.PersonServiceImpl#getPersonsAll()}.
+	 * @throws UserNotLoggedException 
+	 * @throws ServicePropertiesIOException 
+	 * @throws IllegalArgumentException 
 	 */
 	@Test
-	public void testGetPersonsAll() {
-		fail("Not yet implemented");
+	public void testGetPersonsAll() throws IllegalArgumentException, ServicePropertiesIOException, UserNotLoggedException {
+		List<Person> personsList = _personServiceImpl.getPersonsAll();
+		assertNotNull(personsList);
 	}
 
 	/**
 	 * Test method for {@link fr.uparis10.miage.ldap.server.service.PersonServiceImpl#searchPersons(java.lang.String)}.
+	 * @throws UserNotLoggedException 
+	 * @throws ServicePropertiesIOException 
+	 * @throws IllegalArgumentException 
 	 */
 	@Test
-	public void testSearchPersonsString() {
-		fail("Not yet implemented");
+	public void testSearchPersonsString() throws IllegalArgumentException, ServicePropertiesIOException, UserNotLoggedException {
+		List<Person> personsList = _personServiceImpl.searchPersons("");
+		assertNotNull(personsList);
 	}
 
 	/**
 	 * Test method for {@link fr.uparis10.miage.ldap.server.service.PersonServiceImpl#searchPersons(fr.uparis10.miage.ldap.shared.obj.SearchRequestModel)}.
+	 * @throws UserNotLoggedException 
+	 * @throws ServicePropertiesIOException 
+	 * @throws IllegalArgumentException 
 	 */
 	@Test
-	public void testSearchPersonsSearchRequestModel() {
-		fail("Not yet implemented");
+	public void testSearchPersonsSearchRequestModel() throws IllegalArgumentException, ServicePropertiesIOException, UserNotLoggedException {
+		SearchRequestModel searchRequestModel = new SearchRequestModel();
+		searchRequestModel.setLookUpGroup(true);
+		searchRequestModel.setLookUpOrgUnit(true);
+		searchRequestModel.setLookUpPerson(true);
+		
+		Map<String, Boolean> groupOptions = new HashMap<String, Boolean>();
+		groupOptions.put("etudiants", true);
+		
+		Map<String, Boolean> orgUnitOptions = new HashMap<String, Boolean>();
+		groupOptions.put("segmi", true);
+		
+		searchRequestModel.setGroupOptions(groupOptions);
+		searchRequestModel.setRequest("boomar");
+		searchRequestModel.setOrgUnitOptions(orgUnitOptions);
+		
+		List<Person> personsList = _personServiceImpl.searchPersons(searchRequestModel);
+		assertNotNull(personsList);
+		assertTrue(personsList.size() > 0);
 	}
-	
-	/**
-	 * Test method for {@link fr.uparis10.miage.ldap.server.service.PersonServiceImpl#searchByOrgUnit(fr.uparis10.miage.ldap.shared.obj.Person)}.
-	 */
-	@Test
-	public void testSearchByOrgUnitPerson() {
-		fail("Not yet implemented");
-	}
-	
-	/**
-	 * Test method for {@link fr.uparis10.miage.ldap.server.service.PersonServiceImpl#searchByGroup(fr.uparis10.miage.ldap.shared.obj.Person)}.
-	 */
-	@Test
-	public void testSearchByGroupPerson() {
-		fail("Not yet implemented");
-	}
-	
-	/**
-	 * Test method for {@link fr.uparis10.miage.ldap.server.service.PersonServiceImpl#searByPerson(fr.uparis10.miage.ldap.shared.obj.Person)}.
-	 */
-	@Test
-	public void testSearByPersonPerson() {
-		fail("Not yet implemented");
-	}	
 }

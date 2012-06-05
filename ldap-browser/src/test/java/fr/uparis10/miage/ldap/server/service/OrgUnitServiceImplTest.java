@@ -20,28 +20,55 @@ package fr.uparis10.miage.ldap.server.service;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
+import fr.uparis10.miage.ldap.shared.exc.UserNotLoggedException;
+import fr.uparis10.miage.ldap.shared.obj.OrgUnit;
 
 /**
  * @author OMAR
  *
  */
 public class OrgUnitServiceImplTest {
-
-	/**
-	 * @throws java.lang.Exception
-	 */
+	private OrgUnitServiceImpl _orgUnitServiceImpl;
+	
 	@Before
-	public void setUp() throws Exception {
+	public final void beforeTest() throws ServicePropertiesIOException {
+		TestingServicesPropertiesManager.initTestInstance();
+		_orgUnitServiceImpl = new OrgUnitServiceImpl();
+	}
+
+	@After
+	public final void afterTest() {
+		_orgUnitServiceImpl = null;
 	}
 
 	/**
 	 * Test method for {@link fr.uparis10.miage.ldap.server.service.OrgUnitServiceImpl#getOrgUnitsAll()}.
+	 * @throws UserNotLoggedException 
+	 * @throws ServicePropertiesIOException 
+	 * @throws IllegalArgumentException 
 	 */
 	@Test
-	public void testGetOrgUnitsAll() {
-		fail("Not yet implemented");
+	public void testGetOrgUnitsAll() throws IllegalArgumentException, ServicePropertiesIOException, UserNotLoggedException {
+		List<OrgUnit> listOrgUnit =  _orgUnitServiceImpl.getOrgUnitsAll();
+		assertNotNull(listOrgUnit);
 	}
-
+	
+	/**
+	 * Test method for {@link fr.uparis10.miage.ldap.server.service.OrgUnitServiceImpl#getPersonOrgUnits()}.
+	 * @throws UserNotLoggedException 
+	 * @throws ServicePropertiesIOException 
+	 * @throws IllegalArgumentException 
+	 */
+	@Test
+	public void testGetPersonOrgUnits() throws IllegalArgumentException, ServicePropertiesIOException, UserNotLoggedException {
+		List<OrgUnit> personOrgUnitList =  _orgUnitServiceImpl.getPersonOrgUnits("", "");
+		assertNotNull(personOrgUnitList);
+	}
 }

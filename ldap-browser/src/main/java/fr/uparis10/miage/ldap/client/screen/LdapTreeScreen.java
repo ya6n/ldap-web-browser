@@ -40,18 +40,6 @@ import fr.uparis10.miage.ldap.shared.obj.Group;
 import fr.uparis10.miage.ldap.shared.obj.OrgUnit;
 import fr.uparis10.miage.ldap.shared.obj.Person;
 
-//import com.extjs.gxt.ui.client.data.BaseTreeModel;
-//import com.extjs.gxt.ui.client.data.ModelData;
-//import com.extjs.gxt.ui.client.event.ButtonEvent;
-//import com.extjs.gxt.ui.client.event.SelectionListener;
-//import com.extjs.gxt.ui.client.store.TreeStore;
-//import com.extjs.gxt.ui.client.widget.ContentPanel;
-//import com.extjs.gxt.ui.client.widget.Layout;
-//import com.extjs.gxt.ui.client.widget.button.Button;
-//import com.extjs.gxt.ui.client.widget.button.ButtonBar;
-//import com.extjs.gxt.ui.client.widget.layout.FlowData;
-//import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
-
 /**
  * @author iogorode
  * 
@@ -70,10 +58,7 @@ public class LdapTreeScreen extends ContentPanel {
 	public LdapTreeScreen() {
 		tree = getTreeModel();
 
-		// final TreePanel<ModelData> tree = new TreePanel<ModelData>(store);
 		tree.setWidth(300);
-		// tree.setDisplayProperty("name");
-		// tree.getStyle().setLeafIcon(Resources.ICONS.BaseTreeModel());
 
 		ButtonBar buttonBar = new ButtonBar();
 

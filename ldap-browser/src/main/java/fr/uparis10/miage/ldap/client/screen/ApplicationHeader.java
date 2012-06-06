@@ -58,11 +58,6 @@ public class ApplicationHeader extends BorderLayoutContainer {
 		SimpleContainer logoContainer = new SimpleContainer();
 		logoContainer.add(logo);
 
-		/*
-		 * info = new ContentPanel(); info.setHeaderVisible(false);
-		 * info.setBodyBorder(false); info.setBorders(false);
-		 */
-
 		menu = getMenu();
 		info = getInfo();
 
@@ -99,18 +94,9 @@ public class ApplicationHeader extends BorderLayoutContainer {
 		ContentPanel toolBar = new ContentPanel();
 
 		HorizontalLayoutContainer tbContainer = new HorizontalLayoutContainer();
-		// TextButton btn = new TextButton("Logout",
-		// IconsStore.INSTANCE.logoutImg32());
 
 		IconButton btn = new IconButton("logout-button");
 
-		// btn.setScale(ButtonScale.MEDIUM);
-		// btn.setIconAlign(IconAlign.LEFT);
-		// btn.setArrowAlign(ButtonArrowAlign.BOTTOM);
-		// Label userId = new
-		// Label(ContentManager.getInstance().getUserPerson().get(EnumPersonAttr.uid));
-		// Label userName = new
-		// Label(ContentManager.getInstance().getUserPerson().get(EnumPersonAttr.displayName));
 		userId = new TextField();
 		userName = new TextField();
 
@@ -125,10 +111,7 @@ public class ApplicationHeader extends BorderLayoutContainer {
 
 			@Override
 			public void onSelect(SelectEvent event) {
-				// logout code
-				// replace logout (label & image) by login (label & image)
 				loginService.logoutUser(new AsyncCallback<Boolean>() {
-
 					@Override
 					public void onSuccess(Boolean result) {
 						if (result) {
@@ -136,13 +119,11 @@ public class ApplicationHeader extends BorderLayoutContainer {
 							userName.reset();
 							Window.Location.reload();
 						}
-
 					}
 
 					@Override
 					public void onFailure(Throwable caught) {
 						ContentManager.getInstance().chekFailure(caught);
-
 					}
 				});
 
@@ -150,10 +131,7 @@ public class ApplicationHeader extends BorderLayoutContainer {
 		});
 		btn.setWidth(64);
 		btn.setHeight(36);
-		// btn.setStyleName("logout-button");
-		// btn.setStylePrimaryName("logout-button");
 
-		// tbContainer.add(btn, new HorizontalLayoutData(-1, -1, new Margins(0)));
 		VerticalLayoutContainer container = new VerticalLayoutContainer();
 
 		container.add(userId, new VerticalLayoutData(1, -1, new Margins(0, 2, 2, 0)));
@@ -167,9 +145,7 @@ public class ApplicationHeader extends BorderLayoutContainer {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				// TODO Auto-generated method stub
 				loginService.logoutUser(new AsyncCallback<Boolean>() {
-
 					@Override
 					public void onSuccess(Boolean result) {
 						if (result) {
@@ -193,7 +169,6 @@ public class ApplicationHeader extends BorderLayoutContainer {
 
 		container.setWidth(166);
 
-		// simContainer.add(child)
 		tbContainer.add(container, new HorizontalLayoutData(-1, 1, new Margins(10)));
 
 		toolBar.add(tbContainer);

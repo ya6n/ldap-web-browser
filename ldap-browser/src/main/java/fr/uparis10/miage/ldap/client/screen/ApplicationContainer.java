@@ -15,16 +15,6 @@ import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import fr.uparis10.miage.ldap.client.ContentManager;
 import fr.uparis10.miage.ldap.shared.obj.Person;
 
-//import com.extjs.gxt.ui.client.widget.ContentPanel;
-//import com.extjs.gxt.ui.client.widget.Layout;
-//import com.extjs.gxt.ui.client.widget.TabItem;
-//import com.extjs.gxt.ui.client.widget.TabPanel;
-//import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-
-/**
- * @author iogorode
- * 
- */
 /**
  * @author iogorode
  * 
@@ -38,7 +28,6 @@ public class ApplicationContainer extends ContentPanel {
 	 */
 	public ApplicationContainer() {
 		setHeaderVisible(false);
-		// setLayout(new FitLayout());
 
 		tabPanel = new TabPanel();
 
@@ -85,16 +74,12 @@ public class ApplicationContainer extends ContentPanel {
 		SimpleContainer simpleContainer = new SimpleContainer();
 		simpleContainer.add(new Frame("Bienvenue.html"));
 		tabPanel.add(simpleContainer, item);
-		// new HTMLPanel("<center>Bienvenue dans LDAP Browser</center>"), item);
-
 	}
 
 	public void openScreen(Screen screen) {
 		TabItemConfig item = new TabItemConfig(screen.getTitle(), true);
 		item.setIcon(screen.getIcon());
 
-		// SimpleContainer simpleContainer = new SimpleContainer();
-		// simpleContainer.add(screen);
 		tabPanel.add(screen, item);
 		tabPanel.setActiveWidget(screen);
 

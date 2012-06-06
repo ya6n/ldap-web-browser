@@ -34,13 +34,8 @@ public class LDAPBrowser implements EntryPoint {
 		root.setWidth(Window.getClientWidth());
 		root.setHeight(Window.getClientHeight());
 		root.setPosition(0, 0);
-		// root.setStyleAttribute("margins", "0px");
-		// root.setStyleAttribute("padding", "0px");
-		// root.setHeaderVisible(false);
 		root.setBorders(false);
-		// root.setBodyBorder(false);
 		Window.setMargin("0px");
-		// rootPanel.setSize("100%", "100%");
 
 		Window.addResizeHandler(new ResizeHandler() {
 
@@ -87,7 +82,6 @@ public class LDAPBrowser implements EntryPoint {
 
 		final MainScreen mainScreen = new MainScreen();
 
-		// rootPanel.setSize("100%", "100%");
 		rootPanel.add(mainScreen);
 
 		mainScreen.show();

@@ -211,9 +211,6 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		sc.setHeadingText(messages.getGroupListTitle());
 		sc.add(groupGrid);
 		groupGrid.setHeight(110);
-		// FieldLabel fl = new FieldLabel(groupGrid, messages.getGroupListLabel());
-		// fl.setLabelAlign(LabelAlign.TOP);
-		// sc.add(fl);
 		hp.add(sc, new HorizontalLayoutData(0.38, 150, new Margins(0, 0, 0, 0)));
 
 		// ajout des options de recherche
@@ -225,9 +222,6 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		sc.setHeadingText(messages.getOrgUnitListTitle());
 		orgUnitGrid.setHeight(110);
 		sc.add(orgUnitGrid);
-		// fl = new FieldLabel(orgUnitGrid, messages.getOrgUnitListLabel());
-		// fl.setLabelAlign(LabelAlign.TOP);
-		// sc.add(fl);
 		hp.add(sc, new HorizontalLayoutData(0.38, 150, new Margins(0, 0, 0, 0)));
 
 		advancedBox.add(hp, new VerticalLayoutData(1, 1));
@@ -261,33 +255,18 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		personGrid.setWidth(400);
 		personGrid.setHeight(200);
 
-		// final PagingLoader<PagingLoadConfig, PagingLoadResult<Person>> loader =
-		// new PagingLoader<PagingLoadConfig, PagingLoadResult<Person>>(
-		// new StorageReadProxy<PagingLoadConfig>(false));
-		// loader.setRemoteSort(true);
-		// loader.addLoadHandler(new LoadResultListStoreBinding<PagingLoadConfig,
-		// Person, PagingLoadResult<Person>>(store));
-
-		// final PagingToolBar toolBar = new PagingToolBar(10);
-		// toolBar.getElement().getStyle().setProperty("borderBottom", "none");
-		// toolBar.bind(loader);
-
 		personGrid.addRowDoubleClickHandler(new RowDoubleClickHandler() {
-
 			@Override
 			public void onRowDoubleClick(RowDoubleClickEvent event) {
 				Person person = personGrid.getStore().get(event.getRowIndex());
-
 				ContentManager.getInstance().getContainer().openScreen(new PeopleSynthesisScreen(person.get(EnumPersonAttr.uid), person));
 			}
 		});
 
 		personGrid.addRowClickHandler(new RowClickHandler() {
-
 			@Override
 			public void onRowClick(RowClickEvent event) {
 				Person person = personGrid.getStore().get(event.getRowIndex());
-
 				ContentManager.getInstance().getLdapTreeScreen().loadPerson(person);
 			}
 		});
@@ -320,30 +299,12 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		orgUnitGrid.getView().setColumnLines(true);
 
 		orgUnitGrid.addRowDoubleClickHandler(new RowDoubleClickHandler() {
-
 			@Override
 			public void onRowDoubleClick(RowDoubleClickEvent event) {
 				OrgUnit orgUnit = orgUnitGrid.getStore().get(event.getRowIndex());
-
 				ContentManager.getInstance().getContainer().openScreen(new OrgUnitSynthesisScreen(orgUnit.get(EnumOrgUnitAttr.ou), orgUnit));
 			}
 		});
-
-		// OrgUnit orgUnit = new OrgUnit();
-		// orgUnit.put(EnumOrgUnitAttr.ou, "SEGMI");
-		// orgUnit.put(EnumOrgUnitAttr.description,
-		// "UFR de sciences économiques, gestion, mathématiques, informatique");
-		// orgUnitGrid.getStore().add(orgUnit);
-		// orgUnit = new OrgUnit();
-		// orgUnit.put(EnumOrgUnitAttr.ou, "MIAGE");
-		// orgUnit.put(EnumOrgUnitAttr.description,
-		// "UFR des Sciences et Techniques des Activités Physiques et Sportives");
-		// orgUnitGrid.getStore().add(orgUnit);
-		// orgUnit = new OrgUnit();
-		// orgUnit.put(EnumOrgUnitAttr.ou, "STAPS");
-		// orgUnit.put(EnumOrgUnitAttr.description,
-		// "Méthodes informatiques appliquées à la gestion des entreprises");
-		// orgUnitGrid.getStore().add(orgUnit);
 
 		checkBoxSM.selectAll();
 
@@ -372,27 +333,12 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		groupGrid.getView().setColumnLines(true);
 
 		groupGrid.addRowDoubleClickHandler(new RowDoubleClickHandler() {
-
 			@Override
 			public void onRowDoubleClick(RowDoubleClickEvent event) {
 				Group group = groupGrid.getStore().get(event.getRowIndex());
-
 				ContentManager.getInstance().getContainer().openScreen(new GroupSynthesisScreen(group.get(EnumGroupAttr.cn), group));
 			}
 		});
-
-		// Group group = new Group();
-		// group.put(EnumGroupAttr.cn, "étudiant");
-		// group.put(EnumGroupAttr.businessCategory, "1111");
-		// groupGrid.getStore().add(group);
-		// group = new Group();
-		// group.put(EnumGroupAttr.cn, "enseignant");
-		// group.put(EnumGroupAttr.businessCategory, "2222");
-		// groupGrid.getStore().add(group);
-		// group = new Group();
-		// group.put(EnumGroupAttr.cn, "employé");
-		// group.put(EnumGroupAttr.businessCategory, "3333");
-		// groupGrid.getStore().add(group);
 
 	}
 

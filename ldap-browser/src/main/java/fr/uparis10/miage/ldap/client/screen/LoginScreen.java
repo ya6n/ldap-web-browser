@@ -3,18 +3,6 @@
  */
 package fr.uparis10.miage.ldap.client.screen;
 
-//import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
-//import com.extjs.gxt.ui.client.event.ButtonEvent;
-//import com.extjs.gxt.ui.client.event.SelectionListener;
-//import com.extjs.gxt.ui.client.util.Padding;
-//import com.extjs.gxt.ui.client.widget.Layout;
-//import com.extjs.gxt.ui.client.widget.LayoutContainer;
-//import com.extjs.gxt.ui.client.widget.button.Button;
-//import com.extjs.gxt.ui.client.widget.form.FormPanel;
-//import com.extjs.gxt.ui.client.widget.form.TextField;
-//import com.extjs.gxt.ui.client.widget.layout.BoxLayout.BoxLayoutPack;
-//import com.extjs.gxt.ui.client.widget.layout.VBoxLayout;
-//import com.extjs.gxt.ui.client.widget.layout.VBoxLayout.VBoxLayoutAlign;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;

@@ -268,7 +268,7 @@
         <version>2.12</version>
         <configuration>
           <!--  à activer temporament pour ignorer les tests unitaires cassés -->
-          <testFailureIgnore>true</testFailureIgnore>
+          <!--  testFailureIgnore>true</testFailureIgnore -->
         </configuration>
       </plugin>
     </plugins>

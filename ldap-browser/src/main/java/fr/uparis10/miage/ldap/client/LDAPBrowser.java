@@ -1,6 +1,7 @@
 package fr.uparis10.miage.ldap.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
@@ -9,6 +10,8 @@ import com.sencha.gxt.widget.core.client.container.CenterLayoutContainer;
 
 import fr.uparis10.miage.ldap.client.screen.LoginScreen;
 import fr.uparis10.miage.ldap.client.screen.MainScreen;
+import fr.uparis10.miage.ldap.client.service.LoginService;
+import fr.uparis10.miage.ldap.client.service.LoginServiceAsync;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -38,12 +41,6 @@ public class LDAPBrowser implements EntryPoint {
 		// root.setBodyBorder(false);
 		Window.setMargin("0px");
 		// rootPanel.setSize("100%", "100%");
-		root.add(loginScreen);
-		rootPanel.add(root);
-
-		// root.layout(true);
-
-		root.show();
 
 		Window.addResizeHandler(new ResizeHandler() {
 
@@ -54,6 +51,16 @@ public class LDAPBrowser implements EntryPoint {
 
 			}
 		});
+
+		final LoginServiceAsync loginService = GWT.create(LoginService.class);
+
+		// TODO ajouter la verification du client
+		root.add(loginScreen);
+		rootPanel.add(root);
+
+		// root.layout(true);
+
+		root.show();
 
 	}
 

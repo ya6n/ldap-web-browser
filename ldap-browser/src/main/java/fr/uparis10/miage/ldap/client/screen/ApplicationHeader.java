@@ -3,6 +3,9 @@
  */
 package fr.uparis10.miage.ldap.client.screen;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Image;
 import com.sencha.gxt.cell.core.client.ButtonCell.ButtonArrowAlign;
 import com.sencha.gxt.cell.core.client.ButtonCell.ButtonScale;
@@ -16,6 +19,8 @@ import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 import fr.uparis10.miage.ldap.client.ContentManager;
 import fr.uparis10.miage.ldap.client.resources.icons.IconsStore;
+import fr.uparis10.miage.ldap.client.service.LoginService;
+import fr.uparis10.miage.ldap.client.service.LoginServiceAsync;
 
 /**
  * @author iogorode
@@ -83,12 +88,29 @@ public class ApplicationHeader extends BorderLayoutContainer {
 		btn.setIconAlign(IconAlign.TOP);
 		btn.setArrowAlign(ButtonArrowAlign.BOTTOM);
 
+		final LoginServiceAsync loginService = GWT.create(LoginService.class);
 		btn.addSelectHandler(new SelectHandler() {
 
 			@Override
 			public void onSelect(SelectEvent event) {
 				// logout code
 				// replace logout (label & image) by login (label & image)
+				loginService.logoutUser(new AsyncCallback<Boolean>() {
+
+					@Override
+					public void onSuccess(Boolean result) {
+						if (result) {
+							Window.Location.reload();
+						}
+
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+					}
+				});
 
 			}
 		});

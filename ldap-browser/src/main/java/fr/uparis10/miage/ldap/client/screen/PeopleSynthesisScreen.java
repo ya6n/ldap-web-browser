@@ -22,9 +22,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ImageResource;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.core.client.util.Margins;
-import com.sencha.gxt.widget.core.client.ContentPanel;
-import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer.HorizontalLayoutData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FieldSet;
@@ -72,12 +69,7 @@ public class PeopleSynthesisScreen extends VerticalLayoutContainer implements Sc
 
 		int countAdded = 0;
 
-		VerticalLayoutContainer[] form = new VerticalLayoutContainer[2];
-		form[0] = new VerticalLayoutContainer();
-		form[1] = new VerticalLayoutContainer();
-
-		// l'index qui basqule entre 0 et 1
-		int p = 0;
+		VerticalLayoutContainer form = new VerticalLayoutContainer();
 
 		// code example:
 		for (EnumPersonAttr property : EnumPersonAttr.getEnumsForFieldSetId(1)) {
@@ -88,20 +80,14 @@ public class PeopleSynthesisScreen extends VerticalLayoutContainer implements Sc
 				textField.setValue(locValue);
 				textField.setReadOnly(true);
 				final FieldLabel labTextField = new FieldLabel(textField, property.getTitleMessage(messages));
-				form[p].add(labTextField, new VerticalLayoutData(1, -1, new Margins(5, 0, 5, 0)));
-				p = 1 - p;
+				form.add(labTextField, new VerticalLayoutData(1, -1, new Margins(5, 0, 5, 0)));
 				countAdded++;
 			}
 		}
 		if (countAdded != 0) {
 			FieldSet general = new FieldSet();
-			general.setHeadingText("Person Peroperties");
-			ContentPanel vcontainer = new ContentPanel();
-			HorizontalLayoutContainer container = new HorizontalLayoutContainer();
-			container.add(form[0], new HorizontalLayoutData(0.5, -1, new Margins(0)));
-			container.add(form[1], new HorizontalLayoutData(0.5, -1, new Margins(0)));
-			vcontainer.add(container);
-			general.add(vcontainer);
+			general.setHeadingText("Person Properties");
+			general.add(form);
 			this.add(general, new VerticalLayoutData(1, -1, new Margins(10)));
 		}
 	}
@@ -128,7 +114,7 @@ public class PeopleSynthesisScreen extends VerticalLayoutContainer implements Sc
 
 		if (countAdded != 0) {
 			FieldSet general = new FieldSet();
-			general.setHeadingText("Orgpers Peroperties");
+			general.setHeadingText("Orgpers Properties");
 			general.add(form);
 			this.add(general, new VerticalLayoutData(1, -1, new Margins(10)));
 		}
@@ -156,7 +142,7 @@ public class PeopleSynthesisScreen extends VerticalLayoutContainer implements Sc
 
 		if (countAdded != 0) {
 			FieldSet general = new FieldSet();
-			general.setHeadingText("Edupers Peroperties");
+			general.setHeadingText("Edupers Properties");
 			general.add(form);
 			this.add(general, new VerticalLayoutData(1, -1, new Margins(10)));
 		}
@@ -184,7 +170,7 @@ public class PeopleSynthesisScreen extends VerticalLayoutContainer implements Sc
 
 		if (countAdded != 0) {
 			FieldSet general = new FieldSet();
-			general.setHeadingText("Inetorg Peroperties");
+			general.setHeadingText("Inetorg Properties");
 			general.add(form);
 			this.add(general, new VerticalLayoutData(1, -1, new Margins(10)));
 		}
@@ -212,7 +198,7 @@ public class PeopleSynthesisScreen extends VerticalLayoutContainer implements Sc
 
 		if (countAdded != 0) {
 			FieldSet general = new FieldSet();
-			general.setHeadingText("Supann Peroperties");
+			general.setHeadingText("Supann Properties");
 			general.add(form);
 			this.add(general, new VerticalLayoutData(1, -1, new Margins(10)));
 		}

@@ -20,6 +20,8 @@ package fr.uparis10.miage.ldap.client.service;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import fr.uparis10.miage.ldap.shared.obj.Person;
+
 /**
  * @author iogorode
  * 
@@ -27,8 +29,10 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface LoginServiceAsync {
 
-	void loginUser(String login, String pass, AsyncCallback<Boolean> callback);
+	void loginUser(String login, String pass, AsyncCallback<Person> callback);
 
 	void logoutUser(AsyncCallback<Boolean> callback);
+
+	void isUserLoggedIn(AsyncCallback<Person> callback);
 
 }

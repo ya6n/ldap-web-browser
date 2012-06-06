@@ -18,7 +18,7 @@
  */
 package fr.uparis10.miage.ldap.server.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
@@ -26,17 +26,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import fr.uparis10.miage.ldap.shared.exc.DataNotLoadedException;
 import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
 import fr.uparis10.miage.ldap.shared.exc.UserNotLoggedException;
 import fr.uparis10.miage.ldap.shared.obj.OrgUnit;
 
 /**
  * @author OMAR
- *
+ * 
  */
 public class OrgUnitServiceImplTest {
 	private OrgUnitServiceImpl _orgUnitServiceImpl;
-	
+
 	@Before
 	public final void beforeTest() throws ServicePropertiesIOException {
 		TestingServicesPropertiesManager.initTestInstance();
@@ -49,26 +50,38 @@ public class OrgUnitServiceImplTest {
 	}
 
 	/**
-	 * Test method for {@link fr.uparis10.miage.ldap.server.service.OrgUnitServiceImpl#getOrgUnitsAll()}.
-	 * @throws UserNotLoggedException 
-	 * @throws ServicePropertiesIOException 
-	 * @throws IllegalArgumentException 
+	 * Test method for
+	 * {@link fr.uparis10.miage.ldap.server.service.OrgUnitServiceImpl#getOrgUnitsAll()}
+	 * .
+	 * 
+	 * @throws UserNotLoggedException
+	 * @throws ServicePropertiesIOException
+	 * @throws IllegalArgumentException
 	 */
 	@Test
 	public void testGetOrgUnitsAll() throws IllegalArgumentException, ServicePropertiesIOException, UserNotLoggedException {
-		List<OrgUnit> listOrgUnit =  _orgUnitServiceImpl.getOrgUnitsAll();
+		List<OrgUnit> listOrgUnit = _orgUnitServiceImpl.getOrgUnitsAll();
 		assertNotNull(listOrgUnit);
 	}
-	
+
 	/**
-	 * Test method for {@link fr.uparis10.miage.ldap.server.service.OrgUnitServiceImpl#getPersonOrgUnits()}.
-	 * @throws UserNotLoggedException 
-	 * @throws ServicePropertiesIOException 
-	 * @throws IllegalArgumentException 
+	 * Test method for
+	 * {@link fr.uparis10.miage.ldap.server.service.OrgUnitServiceImpl#getPersonOrgUnits()}
+	 * .
+	 * 
+	 * @throws UserNotLoggedException
+	 * @throws ServicePropertiesIOException
+	 * @throws IllegalArgumentException
 	 */
 	@Test
 	public void testGetPersonOrgUnits() throws IllegalArgumentException, ServicePropertiesIOException, UserNotLoggedException {
-		List<OrgUnit> personOrgUnitList =  _orgUnitServiceImpl.getPersonOrgUnits("", "");
+		List<OrgUnit> personOrgUnitList = null;
+		try {
+			personOrgUnitList = _orgUnitServiceImpl.getPersonOrgUnits("", "");
+		} catch (DataNotLoadedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertNotNull(personOrgUnitList);
 	}
 }

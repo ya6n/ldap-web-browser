@@ -22,6 +22,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
+import fr.uparis10.miage.ldap.shared.obj.Person;
 
 /**
  * @author iogorode
@@ -31,8 +32,10 @@ import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
 @RemoteServiceRelativePath("login")
 public interface LoginService extends RemoteService {
 
-	Boolean loginUser(String login, String pass) throws IllegalArgumentException, ServicePropertiesIOException;
-	
+	Person loginUser(String login, String pass) throws IllegalArgumentException, ServicePropertiesIOException;
+
 	Boolean logoutUser() throws IllegalArgumentException;
+
+	Person isUserLoggedIn() throws IllegalArgumentException;
 
 }

@@ -141,7 +141,7 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 
 						@Override
 						public void onFailure(Throwable caught) {
-							// TODO Auto-generated method stub
+							ContentManager.getInstance().chekFailure(caught);
 						}
 
 						@Override
@@ -177,7 +177,7 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 
 						@Override
 						public void onFailure(Throwable caught) {
-							// TODO Auto-generated method stub
+							ContentManager.getInstance().chekFailure(caught);
 						}
 
 						@Override
@@ -319,6 +319,16 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		orgUnitGrid.getView().setStripeRows(true);
 		orgUnitGrid.getView().setColumnLines(true);
 
+		orgUnitGrid.addRowDoubleClickHandler(new RowDoubleClickHandler() {
+
+			@Override
+			public void onRowDoubleClick(RowDoubleClickEvent event) {
+				OrgUnit orgUnit = orgUnitGrid.getStore().get(event.getRowIndex());
+
+				ContentManager.getInstance().getContainer().openScreen(new OrgUnitSynthesisScreen(orgUnit.get(EnumOrgUnitAttr.ou), orgUnit));
+			}
+		});
+
 		// OrgUnit orgUnit = new OrgUnit();
 		// orgUnit.put(EnumOrgUnitAttr.ou, "SEGMI");
 		// orgUnit.put(EnumOrgUnitAttr.description,
@@ -360,6 +370,16 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		groupGrid.getView().setForceFit(true);
 		groupGrid.getView().setStripeRows(true);
 		groupGrid.getView().setColumnLines(true);
+
+		groupGrid.addRowDoubleClickHandler(new RowDoubleClickHandler() {
+
+			@Override
+			public void onRowDoubleClick(RowDoubleClickEvent event) {
+				Group group = groupGrid.getStore().get(event.getRowIndex());
+
+				ContentManager.getInstance().getContainer().openScreen(new GroupSynthesisScreen(group.get(EnumGroupAttr.cn), group));
+			}
+		});
 
 		// Group group = new Group();
 		// group.put(EnumGroupAttr.cn, "étudiant");
@@ -410,7 +430,7 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				ContentManager.getInstance().chekFailure(caught);
 
 			}
 
@@ -428,7 +448,7 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				ContentManager.getInstance().chekFailure(caught);
 
 			}
 

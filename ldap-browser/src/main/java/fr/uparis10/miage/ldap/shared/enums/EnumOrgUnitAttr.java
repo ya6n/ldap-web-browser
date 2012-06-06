@@ -20,6 +20,7 @@ package fr.uparis10.miage.ldap.shared.enums;
 
 import javax.validation.constraints.NotNull;
 
+import fr.uparis10.miage.ldap.client.enums.EnumOrgUnitAttrMessages;
 import fr.uparis10.miage.ldap.shared.itf.IDecoder;
 import fr.uparis10.miage.ldap.shared.itf.IIndexable;
 
@@ -29,37 +30,172 @@ import fr.uparis10.miage.ldap.shared.itf.IIndexable;
  */
 public enum EnumOrgUnitAttr implements IIndexable, IDecoder<Object, String> {
 	// Generic
-	objectClass,
+	objectClass {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getObjectClass();
+		}
+	},
 
 	// Inherited from "organizationalUnit" class:
-	ou(true),
-	userPassword,
-	searchGuide(true),
-	seeAlso,
-	businessCategory(true),
-	x121Address(true),
-	registeredAddress(true),
-	destinationIndicator(true),
-	preferredDeliveryMethod(true),
-	telexNumber(true),
-	teletexTerminalIdentifier(true),
-	telephoneNumber(true),
-	internationaliSDNNumber(true),
-	facsimileTelephoneNumber(true),
-	street(true),
-	postOfficeBox(true),
-	postalCode(true),
-	postalAddress(true),
-	physicalDeliveryOfficeName(true),
-	st,
-	l,
-	description(true),
+	ou(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getOu();
+		}
+	},
+	userPassword {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getUserPassword();
+		}
+	},
+	searchGuide(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getSearchGuide();
+		}
+	},
+	seeAlso {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getSeeAlso();
+		}
+	},
+	businessCategory(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getBusinessCategory();
+		}
+	},
+	x121Address(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getX121Address();
+		}
+	},
+	registeredAddress(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getRegisteredAddress();
+		}
+	},
+	destinationIndicator(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getDestinationIndicator();
+		}
+	},
+	preferredDeliveryMethod(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getPreferredDeliveryMethod();
+		}
+	},
+	telexNumber(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getTelexNumber();
+		}
+	},
+	teletexTerminalIdentifier(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getTeletexTerminalIdentifier();
+		}
+	},
+	telephoneNumber(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getTelephoneNumber();
+		}
+	},
+	internationaliSDNNumber(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getInternationaliSDNNumber();
+		}
+	},
+	facsimileTelephoneNumber(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getFacsimileTelephoneNumber();
+		}
+	},
+	street(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getStreet();
+		}
+	},
+	postOfficeBox(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getPostOfficeBox();
+		}
+	},
+	postalCode(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getPostalCode();
+		}
+	},
+	postalAddress(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getPostalAddress();
+		}
+	},
+	physicalDeliveryOfficeName(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getPhysicalDeliveryOfficeName();
+		}
+	},
+	st {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getSt();
+		}
+	},
+	l {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getL();
+		}
+	},
+	description(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getDescription();
+		}
+	},
 
 	// Inherited from "supannEntite" class:
-	supannCodeEntite(true),
-	supannTypeEntite(true),
-	supannCodeEntiteParent(true),
-	supannRefId(true);
+	supannCodeEntite(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getSupannCodeEntite();
+		}
+	},
+	supannTypeEntite(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getSupannTypeEntite();
+		}
+	},
+	supannCodeEntiteParent(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getSupannCodeEntiteParent();
+		}
+	},
+	supannRefId(true) {
+		@Override
+		public final String getTitleMessage(final EnumOrgUnitAttrMessages parMessages) {
+			return parMessages.getSupannRefId();
+		}
+	};
 
 	private final Class<?> dataType;
 	private final boolean isIndexed;
@@ -100,4 +236,7 @@ public enum EnumOrgUnitAttr implements IIndexable, IDecoder<Object, String> {
 	public final String decodeValue(@NotNull final Object parInput) {
 		return parInput.toString();
 	}
+
+	public abstract String getTitleMessage(final EnumOrgUnitAttrMessages
+	    parMessages);
 }

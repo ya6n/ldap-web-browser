@@ -26,6 +26,7 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.tree.Tree;
 import com.sencha.gxt.widget.core.client.tree.TreeStyle;
 
+import fr.uparis10.miage.ldap.client.ContentManager;
 import fr.uparis10.miage.ldap.client.enums.EnumPersonAttrMessages;
 import fr.uparis10.miage.ldap.client.resources.icons.IconsStore;
 import fr.uparis10.miage.ldap.client.service.GroupService;
@@ -108,27 +109,6 @@ public class LdapTreeScreen extends ContentPanel {
 			    }
 		    });
 
-		TreeNodeImpl model = new TreeNodeImpl(0, "root");
-		// store.set("name", "root");
-		store.add(model);
-
-		TreeNodeImpl beth = new TreeNodeImpl(1, "Beethoven");
-		model.addChild(beth);
-		store.add(model, beth);
-
-		TreeNodeImpl quart = new TreeNodeImpl(2, "Quartets");
-		beth.addChild(quart);
-		store.add(beth, quart);
-
-		TreeNodeImpl fugue = new TreeNodeImpl(3,
-		    "Grosse Fugue for String Quartet");
-		quart.addChild(fugue);
-		store.add(quart, fugue);
-
-		TreeNodeImpl moz = new TreeNodeImpl(4, "Mozard");
-		model.addChild(moz);
-		store.add(model, moz);
-
 		Tree<TreeNodeImpl, String> root = new Tree<TreeNodeImpl, String>(store,
 		    new ValueProvider<TreeNodeImpl, String>() {
 
@@ -146,8 +126,6 @@ public class LdapTreeScreen extends ContentPanel {
 				    return "name";
 			    }
 		    });
-
-		root.setExpanded(model, true);
 
 		return root;
 	}
@@ -248,7 +226,7 @@ public class LdapTreeScreen extends ContentPanel {
 
 						    @Override
 						    public void onFailure(Throwable caught) {
-							    // TODO Auto-generated method stub
+							    ContentManager.getInstance().chekFailure(caught);
 
 						    }
 					    });
@@ -258,7 +236,7 @@ public class LdapTreeScreen extends ContentPanel {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
+				ContentManager.getInstance().chekFailure(caught);
 
 			}
 		});

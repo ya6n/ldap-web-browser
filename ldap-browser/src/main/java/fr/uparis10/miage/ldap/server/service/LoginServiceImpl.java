@@ -36,11 +36,11 @@ import fr.uparis10.miage.ldap.shared.obj.Person;
  */
 @SuppressWarnings("serial")
 public class LoginServiceImpl extends RemoteServiceServlet implements LoginService {
-	
-	public HttpSession getSession(){
+
+	public HttpSession getSession() {
 		return this.getThreadLocalRequest().getSession();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -49,23 +49,24 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 	 * String, java.lang.String)
 	 */
 	@Override
-	public Boolean loginUser(String login, String pass) throws IllegalArgumentException, ServicePropertiesIOException {
+	public Person loginUser(String login, String pass) throws IllegalArgumentException, ServicePropertiesIOException {
 		int sessionExpirationTime = ServicesPropertiesManager.getInstance().getSessionExpirationTime();
 		final UserLoginManager userLoginManager = UserLoginManager.getInstance();
+		final Person person;
 		assert (null != userLoginManager);
 		try {
-			final Person person = userLoginManager.login(login, pass);
+			person = userLoginManager.login(login, pass);
 			final HttpServletRequest locRequest = this.getThreadLocalRequest();
 			assert (null != locRequest) : "locRequest shall not be NULL";
 			final HttpSession session = locRequest.getSession();
 			session.setAttribute("CurrentLoggedPerson", person);
 			session.setMaxInactiveInterval(sessionExpirationTime);
 		} catch (final NoSuchUserException e) {
-			return false;
+			return null;
 		} catch (final InvalidPasswordException e) {
-			return false;
+			return null;
 		}
-		return true;
+		return person;
 	}
 
 	/*
@@ -80,5 +81,15 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 			session.setAttribute("CurrentLoggedPerson", null);
 		}
 		return true;
+	}
+
+	@Override
+	public Person isUserLoggedIn() throws IllegalArgumentException {
+		HttpSession session = this.getThreadLocalRequest().getSession();
+		Object person = session.getAttribute("CurrentLoggedPerson");
+		if (person instanceof Person) {
+			return (Person) person;
+		}
+		return null;
 	}
 }

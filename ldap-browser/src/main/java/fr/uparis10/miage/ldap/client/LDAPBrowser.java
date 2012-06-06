@@ -5,6 +5,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.sencha.gxt.widget.core.client.container.CenterLayoutContainer;
 
@@ -12,6 +13,7 @@ import fr.uparis10.miage.ldap.client.screen.LoginScreen;
 import fr.uparis10.miage.ldap.client.screen.MainScreen;
 import fr.uparis10.miage.ldap.client.service.LoginService;
 import fr.uparis10.miage.ldap.client.service.LoginServiceAsync;
+import fr.uparis10.miage.ldap.shared.obj.Person;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -23,13 +25,11 @@ public class LDAPBrowser implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 
-		RootPanel rootPanel = RootPanel.get();
+		final RootPanel rootPanel = RootPanel.get();
 
 		rootPanel.clear();
 
 		final CenterLayoutContainer root = new CenterLayoutContainer();
-
-		LoginScreen loginScreen = new LoginScreen();
 
 		root.setWidth(Window.getClientWidth());
 		root.setHeight(Window.getClientHeight());
@@ -54,13 +54,29 @@ public class LDAPBrowser implements EntryPoint {
 
 		final LoginServiceAsync loginService = GWT.create(LoginService.class);
 
-		// TODO ajouter la verification du client
-		root.add(loginScreen);
-		rootPanel.add(root);
+		loginService.isUserLoggedIn(new AsyncCallback<Person>() {
 
-		// root.layout(true);
+			@Override
+			public void onSuccess(Person result) {
+				if (result != null) {
+					ContentManager.getInstance().setUserPerson(result);
+					ContentManager.getInstance().getHeader().updateUserData();
+					onMainScreenLoad();
+				} else {
+					LoginScreen loginScreen = new LoginScreen();
+					root.add(loginScreen);
+					rootPanel.add(root);
+				}
+				root.show();
+			}
 
-		root.show();
+			@Override
+			public void onFailure(Throwable caught) {
+				LoginScreen loginScreen = new LoginScreen();
+				root.add(loginScreen);
+				rootPanel.add(root);
+			}
+		});
 
 	}
 

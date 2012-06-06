@@ -20,8 +20,8 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.FramedPanel;
+import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
@@ -33,8 +33,6 @@ import com.sencha.gxt.widget.core.client.form.PasswordField;
 import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.info.Info;
 
-import fr.uparis10.miage.ldap.client.ContentManager;
-import fr.uparis10.miage.ldap.client.LDAPBrowser;
 import fr.uparis10.miage.ldap.client.messages.LoginScreenMessages;
 import fr.uparis10.miage.ldap.client.service.LoginService;
 import fr.uparis10.miage.ldap.client.service.LoginServiceAsync;
@@ -44,15 +42,9 @@ import fr.uparis10.miage.ldap.shared.obj.Person;
  * @author iogorode
  * 
  */
-public class LoginScreen extends ContentPanel {
+public class PopupLoginScreen extends Window {
 
 	private final FramedPanel loginForm;
-
-	private final TextField user;
-	private final PasswordField pass;
-
-	private final TextButton btLogin;
-	private final TextButton btReset;
 
 	public static final LoginScreenMessages messages;
 
@@ -60,17 +52,26 @@ public class LoginScreen extends ContentPanel {
 		messages = (LoginScreenMessages) GWT.create(LoginScreenMessages.class);
 	}
 
-	public LoginScreen() {
+	private final TextField user;
+	private final PasswordField pass;
 
-		setHeaderVisible(false);
-		setBodyBorder(false);
-		setBorders(false);
+	private final TextButton btLogin;
+	private final TextButton btReset;
+
+	public PopupLoginScreen() {
+		super();
 		setWidth(400);
 		setHeight(250);
+		this.setResizable(false);
+		this.setHeadingText(messages.getTitle());
+		this.setModal(true);
+		this.setBlinkModal(true);
 
 		VerticalLayoutContainer p = new VerticalLayoutContainer();
 		loginForm = new FramedPanel();
-		loginForm.setHeadingText(messages.getTitle());
+		// loginForm.setHeadingText("Login Form");
+		loginForm.setHeaderVisible(false);
+		loginForm.setBorders(false);
 
 		loginForm.setWidth(400);
 		loginForm.setHeight(200);
@@ -123,11 +124,14 @@ public class LoginScreen extends ContentPanel {
 		loginForm.addButton(btLogin);
 		loginForm.addButton(btReset);
 
+		this.show();
+
 	}
 
 	private void tryLogin() {
 		LoginServiceAsync loginService = GWT
 		    .create(LoginService.class);
+		final PopupLoginScreen thisScreen = this;
 		loginService.loginUser(user.getCurrentValue(), pass.getCurrentValue(),
 		    new AsyncCallback<Person>() {
 
@@ -135,9 +139,7 @@ public class LoginScreen extends ContentPanel {
 			    public void onSuccess(Person result) {
 				    if (result != null) {
 					    Info.display(messages.getSuccessTitle(), messages.getSuccessMessage());
-					    ContentManager.getInstance().setUserPerson(result);
-					    ContentManager.getInstance().getHeader().updateUserData();
-					    LDAPBrowser.onMainScreenLoad();
+					    thisScreen.hide();
 				    }
 				    else {
 					    AlertMessageBox d = new AlertMessageBox(messages.getAlertTitle(), messages.getAlertMessage());
@@ -148,7 +150,6 @@ public class LoginScreen extends ContentPanel {
 
 			    @Override
 			    public void onFailure(Throwable caught) {
-				    ContentManager.getInstance().chekFailure(caught);
 			    }
 		    });
 	}

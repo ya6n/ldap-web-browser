@@ -32,3 +32,48 @@ h1 {
 #closeButton {
   margin: 15px 6px 6px;
 }
+
+.usercontent-header{
+	background-image:url(images/toolbar-bg.png) !important;
+}
+
+.logout-button{
+	background-image: url(images/btn-logout.png) !important;
+	background-repeat: no-repeat !important;
+border-top-left-radius: 7px;
+	border-top-right-radius: 7px;
+	border-bottom-left-radius: 7px;
+	border-bottom-right-radius: 7px;
+	text-align: center !important;
+	padding-top: 4px !important;
+	padding-left: 11px !important;
+	cursor:  pointer !important;
+	
+}
+
+
+
+.logout-button:HOVER{
+	opacity:0.90!important;
+}
+
+.logout-button:ACTIVE{
+	opacity:0.90!important;
+	-webkit-box-shadow: inset 0px -3px 1px rgba(255, 255, 255, 1), inset 0 0px 3px rgba(0, 0, 0, 0.9);
+   -moz-box-shadow: inset 0px -3px 1px rgba(255, 255, 255, 1), inset 0 0px 3px rgba(0, 0, 0, 0.9);
+   box-shadow: inset 0px -3px 1px rgba(255, 255, 255, 1), inset 0 0px 3px rgba(0, 0, 0, 0.9);
+	
+}
+
+.logout-button div{
+font-size:16px!important;
+color:white!important;
+}
+.logout-button td{
+background:transparent!important;
+}
+
+.userinfo-text, .userinfo-text input{
+	background: transparent!important;
+} 
+

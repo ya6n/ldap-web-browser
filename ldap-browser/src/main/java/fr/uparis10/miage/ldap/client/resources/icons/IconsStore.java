@@ -36,9 +36,15 @@ public interface IconsStore extends ClientBundle {
 	@Source("logout64.png")
 	ImageResource logoutImg();
 
+	@Source("logout48.png")
+	ImageResource logoutImg48();
+
+	@Source("logout32.png")
+	ImageResource logoutImg32();
+
 	@Source("login64.png")
 	ImageResource loginImg();
-	
+
 	@Source("search16bis.png")
 	ImageResource searchIcon();
 
@@ -50,5 +56,14 @@ public interface IconsStore extends ClientBundle {
 
 	@Source("propertyIcon16.png")
 	ImageResource propertyIconSmall();
+
+	@Source("groupIcon16.png")
+	ImageResource groupIcon16();
+
+	@Source("orgUnitIcon16.png")
+	ImageResource orgUnitIcon16();
+
+	@Source("organizationIcon16.png")
+	ImageResource organizationIcon16();
 
 }

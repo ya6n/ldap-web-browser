@@ -93,7 +93,7 @@ public interface EnumOrgUnitAttrMessages extends Messages {
 	String getSt();
 
 	@Key("l")
-	String get1();
+	String getL();
 
 	@Key("description")
 	String getDescription();

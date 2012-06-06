@@ -20,6 +20,7 @@ package fr.uparis10.miage.ldap.shared.enums;
 
 import javax.validation.constraints.NotNull;
 
+import fr.uparis10.miage.ldap.client.enums.EnumGroupAttrMessages;
 import fr.uparis10.miage.ldap.shared.itf.IDecoder;
 import fr.uparis10.miage.ldap.shared.itf.IIndexable;
 
@@ -29,23 +30,88 @@ import fr.uparis10.miage.ldap.shared.itf.IIndexable;
  */
 public enum EnumGroupAttr implements IIndexable, IDecoder<Object, String> {
 	// Generic
-	objectClass,
+	objectClass {
+		@Override
+		public final String getTitleMessage(final EnumGroupAttrMessages parMessages) {
+			return parMessages.getObjectClass();
+		}
+	},
 
 	// Inherited from "groupOfNames" class:
-	member,
-	cn(true),
-	businessCategory(true),
-	seeAlso,
-	owner(true),
-	ou(true),
-	o(true),
-	description,
+	member {
+		@Override
+		public final String getTitleMessage(final EnumGroupAttrMessages parMessages) {
+			return parMessages.getMember();
+		}
+	},
+	cn(true) {
+		@Override
+		public final String getTitleMessage(final EnumGroupAttrMessages parMessages) {
+			return parMessages.getCn();
+		}
+	},
+	businessCategory(true) {
+		@Override
+		public final String getTitleMessage(final EnumGroupAttrMessages parMessages) {
+			return parMessages.getBusinessCategory();
+		}
+	},
+	seeAlso {
+		@Override
+		public final String getTitleMessage(final EnumGroupAttrMessages parMessages) {
+			return parMessages.getSeeAlso();
+		}
+	},
+	owner(true) {
+		@Override
+		public final String getTitleMessage(final EnumGroupAttrMessages parMessages) {
+			return parMessages.getOwner();
+		}
+	},
+	ou(true) {
+		@Override
+		public final String getTitleMessage(final EnumGroupAttrMessages parMessages) {
+			return parMessages.getOu();
+		}
+	},
+	o(true) {
+		@Override
+		public final String getTitleMessage(final EnumGroupAttrMessages parMessages) {
+			return parMessages.getO();
+		}
+	},
+	description {
+		@Override
+		public final String getTitleMessage(final EnumGroupAttrMessages parMessages) {
+			return parMessages.getDescription();
+		}
+	},
 
 	// Inherited from "supannGroupe" class:
-	supannGroupeDateFin,
-	supannGroupeAdminDN(true),
-	supannGroupeLecteurDN(true),
-	supannRefId(true);
+	supannGroupeDateFin {
+		@Override
+		public final String getTitleMessage(final EnumGroupAttrMessages parMessages) {
+			return parMessages.getSupannGroupeDateFin();
+		}
+	},
+	supannGroupeAdminDN(true) {
+		@Override
+		public final String getTitleMessage(final EnumGroupAttrMessages parMessages) {
+			return parMessages.getSupannGroupeAdminDN();
+		}
+	},
+	supannGroupeLecteurDN(true) {
+		@Override
+		public final String getTitleMessage(final EnumGroupAttrMessages parMessages) {
+			return parMessages.getSupannGroupeLecteurDN();
+		}
+	},
+	supannRefId(true) {
+		@Override
+		public final String getTitleMessage(final EnumGroupAttrMessages parMessages) {
+			return parMessages.getSupannRefId();
+		}
+	};
 
 	private final Class<?> dataType;
 	private final boolean isIndexed;
@@ -86,4 +152,7 @@ public enum EnumGroupAttr implements IIndexable, IDecoder<Object, String> {
 	public final String decodeValue(@NotNull final Object parInput) {
 		return parInput.toString();
 	}
+
+	public abstract String getTitleMessage(final EnumGroupAttrMessages
+	    parMessages);
 }

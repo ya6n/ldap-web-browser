@@ -18,7 +18,9 @@
  */
 package fr.uparis10.miage.ldap.server.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
@@ -62,7 +64,7 @@ public class LoginServiceImplTest extends RemoteServiceServlet {
 	 */
 	@Test
 	public void testLoginUser() throws IllegalArgumentException, ServicePropertiesIOException {
-		assertTrue(_loginServiceImpl.loginUser("admin", "miage"));
+		assertNotNull(_loginServiceImpl.loginUser("admin", "miage"));
 		assertNotNull(_loginServiceImpl.getSession().getAttribute("CurrentLoggedPerson"));
 		assertTrue(_loginServiceImpl.getSession().getAttribute("CurrentLoggedPerson") instanceof Person);
 	}
@@ -77,7 +79,7 @@ public class LoginServiceImplTest extends RemoteServiceServlet {
 	 */
 	@Test
 	public void testBadLoginUser() throws IllegalArgumentException, ServicePropertiesIOException {
-		assertFalse(_loginServiceImpl.loginUser("bad-login", "bad-password"));
+		assertNull(_loginServiceImpl.loginUser("bad-login", "bad-password"));
 		assertNull(_loginServiceImpl.getSession().getAttribute("CurrentLoggedPerson"));
 	}
 

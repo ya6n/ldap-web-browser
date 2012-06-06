@@ -60,6 +60,11 @@ public class ApplicationContainer extends ContentPanel {
 				if (activeWidget instanceof PeopleSynthesisScreen) {
 					Person person = ((PeopleSynthesisScreen) activeWidget).getPerson();
 					ContentManager.getInstance().getLdapTreeScreen().loadPerson(person);
+				} else
+				if (activeWidget instanceof PeopleSearchScreen) {
+					Person person = ((PeopleSearchScreen) activeWidget).getSelectedPerson();
+					if (person != null)
+						ContentManager.getInstance().getLdapTreeScreen().loadPerson(person);
 				}
 
 			}

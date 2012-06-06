@@ -18,11 +18,11 @@
  */
 package fr.uparis10.miage.ldap.server.mng;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import javax.validation.constraints.NotNull;
 
@@ -40,13 +40,13 @@ public final class SearchTestUtils {
 	        @NotNull final I_TYPE parIndex) throws DataNotLoadedException {
 		final List<V_TYPE> locAllObjList = parMng.getAllObjList();
 		assertNotNull(locAllObjList);
-		assertTrue(!locAllObjList.isEmpty());
+		assertFalse(locAllObjList.isEmpty());
 
 		for (final V_TYPE locObject : locAllObjList) {
 			final String locKeyVal = locObject.get(parIndex);
 			final List<V_TYPE> locSearchList = parMng.dummySearch(locKeyVal, true, true);
 			assertNotNull(locSearchList);
-			assertTrue(!locSearchList.isEmpty());
+			assertFalse(locSearchList.isEmpty());
 			assertTrue(locSearchList.contains(locObject));
 		}
 	}
@@ -57,13 +57,13 @@ public final class SearchTestUtils {
 	        @NotNull final I_TYPE parIndex) throws DataNotLoadedException {
 		final List<V_TYPE> locAllObjList = parMng.getAllObjList();
 		assertNotNull(locAllObjList);
-		assertTrue(!locAllObjList.isEmpty());
+		assertFalse(locAllObjList.isEmpty());
 
 		for (final V_TYPE locObject : locAllObjList) {
 			final String locKeyValue = locObject.get(parIndex);
 			final List<V_TYPE> locSearchList = parMng.indexedSearch(parIndex, locKeyValue);
 			assertNotNull(locSearchList);
-			assertTrue(!locSearchList.isEmpty());
+			assertFalse(locSearchList.isEmpty());
 			assertTrue(locSearchList.contains(locObject));
 		}
 	}
@@ -74,14 +74,38 @@ public final class SearchTestUtils {
 	        @NotNull final I_TYPE parIndex) throws DataNotLoadedException {
 		final List<V_TYPE> locAllObjList = parMng.getAllObjList();
 		assertNotNull(locAllObjList);
-		assertTrue(!locAllObjList.isEmpty());
+		assertFalse(locAllObjList.isEmpty());
 
 		for (final V_TYPE locObject : locAllObjList) {
 			final String locKeyValue = locObject.get(parIndex);
 			final List<V_TYPE> locSearchList = parMng.indexedSearch(locKeyValue);
 			assertNotNull(locSearchList);
-			assertTrue(!locSearchList.isEmpty());
+			assertFalse(locSearchList.isEmpty());
 			assertTrue(locSearchList.contains(locObject));
+		}
+	}
+
+	public final static <I_TYPE extends IIndexable, V_TYPE extends Map<I_TYPE, String> & Comparable<V_TYPE>>
+	    void testIndexedSearchMulti(
+	        @NotNull final ACacheManager<I_TYPE, String, V_TYPE> parMng,
+	        @NotNull final I_TYPE parIndex) throws DataNotLoadedException {
+		final List<V_TYPE> locAllObjList = parMng.getAllObjList();
+		assertNotNull(locAllObjList);
+		assertFalse(locAllObjList.isEmpty());
+		final TreeSet<String> locKeyValSet = new TreeSet<String>();
+		for (final V_TYPE locObject : locAllObjList) {
+			final String locValue = locObject.get(parIndex);
+			if (null == locValue) {
+				continue;
+			}
+			locKeyValSet.add(locValue);
+		}
+		final List<V_TYPE> locSearchList = parMng.indexedSearch(parIndex, locKeyValSet);
+		assertNotNull(locSearchList);
+		assertTrue(locSearchList.isEmpty() == locKeyValSet.isEmpty());
+
+		for (final V_TYPE locObject : locSearchList) {
+			assertTrue(locAllObjList.contains(locObject));
 		}
 	}
 

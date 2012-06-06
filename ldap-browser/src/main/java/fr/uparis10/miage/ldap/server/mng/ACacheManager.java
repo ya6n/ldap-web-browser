@@ -19,19 +19,22 @@
 package fr.uparis10.miage.ldap.server.mng;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.validation.constraints.NotNull;
 
 import fr.uparis10.miage.ldap.server.itf.IWithCache;
-import fr.uparis10.miage.ldap.shared.utils.MapUtils;
 import fr.uparis10.miage.ldap.shared.exc.DataNotLoadedException;
 import fr.uparis10.miage.ldap.shared.itf.IIndexable;
+import fr.uparis10.miage.ldap.shared.utils.MapUtils;
 
 /**
  * @author Gicu GORODENCO <cyclopsihus@gmail.com>
@@ -81,6 +84,30 @@ public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE ex
 		} finally {
 			dataLock.readLock().unlock();
 		}
+	}
+
+	/**
+	 * Returns a list of objects for a list of possible key values.
+	 * @param parIndex
+	 * @param parKeyValList
+	 * @return
+	 * @throws DataNotLoadedException
+	 */
+	public final List<V_TYPE> indexedSearch(final I_TYPE parIndex, final Collection<K_TYPE> parKeyValList) throws DataNotLoadedException {
+		final ArrayList<V_TYPE> locAllValList = new ArrayList<V_TYPE>(parKeyValList.size());
+		// on utilise TreeSet pour garantir l'unicité et l'ordonance
+		final Collection<K_TYPE> locKeyValSet = parKeyValList instanceof Set ? parKeyValList : new TreeSet<K_TYPE>(parKeyValList);
+		for (final K_TYPE locKeyVal : locKeyValSet) {
+			final List<V_TYPE> locValList = indexedSearch(parIndex, locKeyVal);
+			if (null == locValList) {
+				continue;
+			}
+			locAllValList.addAll(locValList);
+		}
+		locAllValList.trimToSize();
+
+		return locAllValList;
+
 	}
 
 	public final List<V_TYPE> indexedSearch(final K_TYPE parKeyVal) throws DataNotLoadedException {

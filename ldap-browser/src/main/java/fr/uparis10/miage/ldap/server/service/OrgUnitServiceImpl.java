@@ -20,7 +20,10 @@ package fr.uparis10.miage.ldap.server.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -58,8 +61,7 @@ public class OrgUnitServiceImpl extends RemoteServiceServlet implements OrgUnitS
 	@Override
 	public List<OrgUnit> getPersonOrgUnits(String supannEntiteAffectation, String supannEntiteAffectationPrincipale) throws IllegalArgumentException,
 	    UserNotLoggedException, ServicePropertiesIOException, DataNotLoadedException {
-		List<OrgUnit> result = new ArrayList<OrgUnit>();
-		List<String> personOrgUnitList = new ArrayList<String>();
+		final Collection<String> personOrgUnitList = new TreeSet<String>();
 
 		if (supannEntiteAffectation == null)
 			supannEntiteAffectation = "";
@@ -75,34 +77,13 @@ public class OrgUnitServiceImpl extends RemoteServiceServlet implements OrgUnitS
 			personOrgUnitList.add(supannEntiteAffectationPrincipale);
 		}
 
-		if (personOrgUnitList.size() > 0) {
-			result = fillPersonsOrgUnitsList(personOrgUnitList);
+		final List<OrgUnit> result;
+		if (!personOrgUnitList.isEmpty()) {
+			result = OrgUnitManager.getInstance().indexedSearch(EnumOrgUnitAttr.supannCodeEntite, personOrgUnitList);
+		} else {
+			result = Collections.<OrgUnit> emptyList();
 		}
 
 		return result;
-	}
-
-	/**
-	 * @param listOrgUnit
-	 * @param result
-	 * @param personOrgUnitList
-	 * @return
-	 * @throws UserNotLoggedException
-	 * @throws ServicePropertiesIOException
-	 * @throws IllegalArgumentException
-	 * @throws DataNotLoadedException
-	 */
-	private List<OrgUnit> fillPersonsOrgUnitsList(List<String> personOrgUnitList) throws IllegalArgumentException, ServicePropertiesIOException,
-	    UserNotLoggedException, DataNotLoadedException {
-		// List<OrgUnit> listOrgUnit = getOrgUnitsAll();
-		final List<OrgUnit> locAllOrgUnitList = new ArrayList<OrgUnit>();
-		for (final String locOrgName : personOrgUnitList) {
-			final List<OrgUnit> locOrgUnitList = OrgUnitManager.getInstance().indexedSearch(EnumOrgUnitAttr.supannCodeEntite, locOrgName);
-			if (null == locOrgUnitList) {
-				continue;
-			}
-			locAllOrgUnitList.addAll(locOrgUnitList);
-		}
-		return locAllOrgUnitList;
 	}
 }

@@ -50,4 +50,8 @@ public final class GroupManagerTest {
 		SearchTestUtils.testIndexedSearchBlackBox(GroupManager.getInstance(), EnumGroupAttr.cn);
 	}
 
+	@Test(timeout = 10000L)
+	public final void testIndexedSearchMulti() throws DataNotLoadedException {
+		SearchTestUtils.testIndexedSearchMulti(GroupManager.getInstance(), EnumGroupAttr.cn);
+	}
 }

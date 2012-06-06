@@ -50,4 +50,13 @@ public final class OrganizationManagerTest {
 		SearchTestUtils.testIndexedSearchBlackBox(OrganizationManager.getInstance(), EnumOrganizationAttr.cn);
 	}
 
+	@Test(timeout = 10000L)
+	public final void testIndexedSearchMultiCn() throws DataNotLoadedException {
+		SearchTestUtils.testIndexedSearchMulti(OrganizationManager.getInstance(), EnumOrganizationAttr.cn);
+	}
+
+	@Test(timeout = 10000L)
+	public final void testIndexedSearchMultiSupAnn() throws DataNotLoadedException {
+		SearchTestUtils.testIndexedSearchMulti(OrganizationManager.getInstance(), EnumOrganizationAttr.supannEtablissement);
+	}
 }

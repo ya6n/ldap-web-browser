@@ -49,4 +49,14 @@ public final class PeopleManagerTest {
 	public final void testIndexedSearchBlackBox() throws DataNotLoadedException {
 		SearchTestUtils.testIndexedSearchBlackBox(PeopleManager.getInstance(), EnumPersonAttr.uid);
 	}
+
+	@Test(timeout = 10000L)
+	public final void testIndexedSearchMultiUID() throws DataNotLoadedException {
+		SearchTestUtils.testIndexedSearchMulti(PeopleManager.getInstance(), EnumPersonAttr.uid);
+	}
+
+	@Test(timeout = 10000L)
+	public final void testIndexedSearchMultiName() throws DataNotLoadedException {
+		SearchTestUtils.testIndexedSearchMulti(PeopleManager.getInstance(), EnumPersonAttr.displayName);
+	}
 }

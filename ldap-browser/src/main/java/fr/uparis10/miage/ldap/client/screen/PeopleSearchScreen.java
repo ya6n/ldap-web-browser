@@ -458,4 +458,8 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 		return IconsStore.INSTANCE.searchIcon();
 	}
 
+	public Person getSelectedPerson() {
+		return personGrid.getSelectionModel().getSelectedItem();
+	}
+
 }

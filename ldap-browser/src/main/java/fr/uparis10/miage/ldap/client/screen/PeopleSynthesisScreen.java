@@ -22,6 +22,9 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ImageResource;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.core.client.util.Margins;
+import com.sencha.gxt.widget.core.client.ContentPanel;
+import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer.HorizontalLayoutData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FieldSet;
@@ -69,7 +72,12 @@ public class PeopleSynthesisScreen extends VerticalLayoutContainer implements Sc
 
 		int countAdded = 0;
 
-		VerticalLayoutContainer form = new VerticalLayoutContainer();
+		VerticalLayoutContainer[] form = new VerticalLayoutContainer[2];
+		form[0] = new VerticalLayoutContainer();
+		form[1] = new VerticalLayoutContainer();
+
+		// l'index qui basqule entre 0 et 1
+		int p = 0;
 
 		// code example:
 		for (EnumPersonAttr property : EnumPersonAttr.getEnumsForFieldSetId(1)) {
@@ -80,14 +88,20 @@ public class PeopleSynthesisScreen extends VerticalLayoutContainer implements Sc
 				textField.setValue(locValue);
 				textField.setReadOnly(true);
 				final FieldLabel labTextField = new FieldLabel(textField, property.getTitleMessage(messages));
-				form.add(labTextField, new VerticalLayoutData(1, -1, new Margins(5, 0, 5, 0)));
+				form[p].add(labTextField, new VerticalLayoutData(1, -1, new Margins(5, 0, 5, 0)));
+				p = 1 - p;
 				countAdded++;
 			}
 		}
 		if (countAdded != 0) {
 			FieldSet general = new FieldSet();
 			general.setHeadingText("Person Peroperties");
-			general.add(form);
+			ContentPanel vcontainer = new ContentPanel();
+			HorizontalLayoutContainer container = new HorizontalLayoutContainer();
+			container.add(form[0], new HorizontalLayoutData(0.5, -1, new Margins(0)));
+			container.add(form[1], new HorizontalLayoutData(0.5, -1, new Margins(0)));
+			vcontainer.add(container);
+			general.add(vcontainer);
 			this.add(general, new VerticalLayoutData(1, -1, new Margins(10)));
 		}
 	}

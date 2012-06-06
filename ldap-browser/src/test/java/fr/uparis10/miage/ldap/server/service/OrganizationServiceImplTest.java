@@ -25,9 +25,11 @@ import static org.junit.Assert.assertNotNull;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import fr.uparis10.miage.ldap.server.mng.PeopleManager;
+import fr.uparis10.miage.ldap.server.run.CacheUpdateTask;
 import fr.uparis10.miage.ldap.shared.enums.EnumOrganizationAttr;
 import fr.uparis10.miage.ldap.shared.enums.EnumPersonAttr;
 import fr.uparis10.miage.ldap.shared.exc.DataNotLoadedException;
@@ -42,6 +44,11 @@ import fr.uparis10.miage.ldap.shared.obj.Person;
  */
 public final class OrganizationServiceImplTest {
 	private OrganizationServiceImpl theTestInst;
+	
+	@BeforeClass
+	public final static void setUpClass() {
+		(new CacheUpdateTask()).run();
+	}
 
 	
 	@Before
@@ -76,7 +83,7 @@ public final class OrganizationServiceImplTest {
 	 * @throws IllegalArgumentException
 	 * @throws DataNotLoadedException
 	 */
-  @Test(timeout = 10000L)
+  @Test
 	public final void testGetPersonOrganizations() throws IllegalArgumentException, ServicePropertiesIOException, UserNotLoggedException, DataNotLoadedException {
 		final List<Person> locAdminList = PeopleManager.getInstance().indexedSearch(EnumPersonAttr.uid, "admin");
 		assertNotNull(locAdminList);

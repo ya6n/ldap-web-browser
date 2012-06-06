@@ -67,7 +67,7 @@ public class OrganizationServiceImpl extends RemoteServiceServlet implements Org
 		final String locPersOrgStr = person.get(EnumPersonAttr.supannOrganisme);
 
 		if (locPersOrgStr != null &&
-		    locPersOrgStr.isEmpty()) {
+		    !locPersOrgStr.isEmpty()) {
 			final String[] personOrganismes = person.get(EnumPersonAttr.supannOrganisme).split(";");
 			assert (null != personOrganismes);
 			assert (personOrganismes.length > 0);
@@ -76,7 +76,7 @@ public class OrganizationServiceImpl extends RemoteServiceServlet implements Org
 
 		String personOrganization = person.get(EnumPersonAttr.o);
 		if (personOrganization != null &&
-		    !personOrganization.equals("")) {
+		    !personOrganization.isEmpty()) {
 			personOrganizationList.add(personOrganization);
 		}
 

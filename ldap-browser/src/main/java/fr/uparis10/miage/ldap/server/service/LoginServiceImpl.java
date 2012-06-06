@@ -18,6 +18,7 @@
  */
 package fr.uparis10.miage.ldap.server.service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -50,15 +51,18 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 	@Override
 	public Boolean loginUser(String login, String pass) throws IllegalArgumentException, ServicePropertiesIOException {
 		int sessionExpirationTime = ServicesPropertiesManager.getInstance().getSessionExpirationTime();
-		UserLoginManager userLoginManager = UserLoginManager.getInstance();
+		final UserLoginManager userLoginManager = UserLoginManager.getInstance();
+		assert (null != userLoginManager);
 		try {
-			Person person = userLoginManager.login(login, pass);
-			HttpSession session = this.getThreadLocalRequest().getSession();
+			final Person person = userLoginManager.login(login, pass);
+			final HttpServletRequest locRequest = this.getThreadLocalRequest();
+			assert (null != locRequest) : "locRequest shall not be NULL";
+			final HttpSession session = locRequest.getSession();
 			session.setAttribute("CurrentLoggedPerson", person);
 			session.setMaxInactiveInterval(sessionExpirationTime);
-		} catch (NoSuchUserException e) {
+		} catch (final NoSuchUserException e) {
 			return false;
-		} catch (InvalidPasswordException e) {
+		} catch (final InvalidPasswordException e) {
 			return false;
 		}
 		return true;

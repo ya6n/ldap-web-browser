@@ -26,7 +26,7 @@ import com.google.gwt.i18n.client.Messages;
  * 
  **/
 
-@DefaultLocale("en")
+@DefaultLocale("fr")
 public interface EnumOrgUnitAttrMessages extends Messages {
 
 	@Key("objectClass")

@@ -3,6 +3,7 @@
  */
 package fr.uparis10.miage.ldap.client.screen;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.Frame;
@@ -13,6 +14,7 @@ import com.sencha.gxt.widget.core.client.TabPanel;
 import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 
 import fr.uparis10.miage.ldap.client.ContentManager;
+import fr.uparis10.miage.ldap.client.messages.ApplicationMessages;
 import fr.uparis10.miage.ldap.shared.obj.Person;
 
 /**
@@ -22,6 +24,12 @@ import fr.uparis10.miage.ldap.shared.obj.Person;
 public class ApplicationContainer extends ContentPanel {
 
 	private TabPanel tabPanel;
+
+	public static final ApplicationMessages messages;
+
+	static {
+		messages = (ApplicationMessages) GWT.create(ApplicationMessages.class);
+	}
 
 	/**
 	 * 
@@ -69,7 +77,7 @@ public class ApplicationContainer extends ContentPanel {
 	}
 
 	private void addBienvenueTab() {
-		TabItemConfig item = new TabItemConfig("Bienvenue", false);
+		TabItemConfig item = new TabItemConfig(messages.getWelcomeScreen(), false);
 
 		SimpleContainer simpleContainer = new SimpleContainer();
 		simpleContainer.add(new Frame("Bienvenue.html"));

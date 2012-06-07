@@ -28,6 +28,7 @@ import com.sencha.gxt.widget.core.client.form.FieldSet;
 import com.sencha.gxt.widget.core.client.form.TextField;
 
 import fr.uparis10.miage.ldap.client.enums.EnumPersonAttrMessages;
+import fr.uparis10.miage.ldap.client.messages.ApplicationMessages;
 import fr.uparis10.miage.ldap.client.resources.icons.IconsStore;
 import fr.uparis10.miage.ldap.shared.enums.EnumPersonAttr;
 import fr.uparis10.miage.ldap.shared.obj.Person;
@@ -45,9 +46,11 @@ public class PeopleSynthesisScreen extends VerticalLayoutContainer implements Sc
 	private Person person;
 
 	public static final EnumPersonAttrMessages messages;
+	public static final ApplicationMessages appMessages;
 
 	static {
 		messages = (EnumPersonAttrMessages) GWT.create(EnumPersonAttrMessages.class);
+		appMessages = (ApplicationMessages) GWT.create(ApplicationMessages.class);
 	}
 
 	public PeopleSynthesisScreen(String title, Person person) {
@@ -86,7 +89,7 @@ public class PeopleSynthesisScreen extends VerticalLayoutContainer implements Sc
 		}
 		if (countAdded != 0) {
 			FieldSet general = new FieldSet();
-			general.setHeadingText("Person Properties");
+			general.setHeadingText(appMessages.getPropertiesPerson());
 			general.add(form);
 			this.add(general, new VerticalLayoutData(1, -1, new Margins(10)));
 		}
@@ -114,7 +117,7 @@ public class PeopleSynthesisScreen extends VerticalLayoutContainer implements Sc
 
 		if (countAdded != 0) {
 			FieldSet general = new FieldSet();
-			general.setHeadingText("Orgpers Properties");
+			general.setHeadingText(appMessages.getPropertiesOrgPers());
 			general.add(form);
 			this.add(general, new VerticalLayoutData(1, -1, new Margins(10)));
 		}
@@ -142,7 +145,7 @@ public class PeopleSynthesisScreen extends VerticalLayoutContainer implements Sc
 
 		if (countAdded != 0) {
 			FieldSet general = new FieldSet();
-			general.setHeadingText("Edupers Properties");
+			general.setHeadingText(appMessages.getPropertiesEduPers());
 			general.add(form);
 			this.add(general, new VerticalLayoutData(1, -1, new Margins(10)));
 		}
@@ -170,7 +173,7 @@ public class PeopleSynthesisScreen extends VerticalLayoutContainer implements Sc
 
 		if (countAdded != 0) {
 			FieldSet general = new FieldSet();
-			general.setHeadingText("Inetorg Properties");
+			general.setHeadingText(appMessages.getPropertiesInetOrg());
 			general.add(form);
 			this.add(general, new VerticalLayoutData(1, -1, new Margins(10)));
 		}
@@ -198,7 +201,7 @@ public class PeopleSynthesisScreen extends VerticalLayoutContainer implements Sc
 
 		if (countAdded != 0) {
 			FieldSet general = new FieldSet();
-			general.setHeadingText("Supann Properties");
+			general.setHeadingText(appMessages.getPropertiesSupann());
 			general.add(form);
 			this.add(general, new VerticalLayoutData(1, -1, new Margins(10)));
 		}

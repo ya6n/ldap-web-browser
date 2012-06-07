@@ -25,7 +25,7 @@ import com.google.gwt.i18n.client.Messages;
  * @author gorodenco
  * 
  */
-@DefaultLocale("en")
+@DefaultLocale("fr")
 public interface EnumPersonAttrMessages extends Messages {
 
 	@Key("audio")

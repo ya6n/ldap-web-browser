@@ -16,56 +16,43 @@
  *
  * Creation date: 27 mai 2012
  */
-package fr.uparis10.miage.ldap.client.enums;
+package fr.uparis10.miage.ldap.client.messages;
 
 import com.google.gwt.i18n.client.LocalizableResource.DefaultLocale;
 import com.google.gwt.i18n.client.Messages;
 
 /**
- * @author auprotois
+ * @author gorodenco
  * 
- **/
-
+ */
 @DefaultLocale("fr")
-public interface EnumGroupAttrMessages extends Messages {
+public interface ApplicationMessages extends Messages {
 
-	@Key("member")
-	String getMember();
+	@Key("header.menu.peopleSearch")
+	String getMenuPeopleSearch();
 
-	@Key("cn")
-	String getCn();
+	@Key("header.logout")
+	String getHeaderLogout();
 
-	@Key("businessCategory")
-	String getBusinessCategory();
+	@Key("properties.person")
+	String getPropertiesPerson();
 
-	@Key("seeAlso")
-	String getSeeAlso();
+	@Key("properties.orgpers")
+	String getPropertiesOrgPers();
 
-	@Key("owner")
-	String getOwner();
+	@Key("properties.edupers")
+	String getPropertiesEduPers();
 
-	@Key("ou")
-	String getOu();
+	@Key("properties.inetorg")
+	String getPropertiesInetOrg();
 
-	@Key("o")
-	String getO();
+	@Key("properties.supann")
+	String getPropertiesSupann();
 
-	@Key("description")
-	String getDescription();
+	@Key("properties.all")
+	String getPropertiesAll();
 
-	@Key("supannGroupeDateFin")
-	String getSupannGroupeDateFin();
-
-	@Key("supannGroupeAdminDN")
-	String getSupannGroupeAdminDN();
-
-	@Key("supannGroupeLecteurDN")
-	String getSupannGroupeLecteurDN();
-
-	@Key("supannRefId")
-	String getSupannRefId();
-
-	@Key("objectClass")
-	String getObjectClass();
+	@Key("screen.welcome")
+	String getWelcomeScreen();
 
 }

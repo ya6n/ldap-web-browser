@@ -30,6 +30,7 @@ import com.sencha.gxt.widget.core.client.form.FieldSet;
 import com.sencha.gxt.widget.core.client.form.TextField;
 
 import fr.uparis10.miage.ldap.client.enums.EnumGroupAttrMessages;
+import fr.uparis10.miage.ldap.client.messages.ApplicationMessages;
 import fr.uparis10.miage.ldap.client.resources.icons.IconsStore;
 import fr.uparis10.miage.ldap.shared.enums.EnumGroupAttr;
 import fr.uparis10.miage.ldap.shared.obj.Group;
@@ -47,9 +48,11 @@ public class GroupSynthesisScreen extends VerticalLayoutContainer implements Scr
 	private Group group;
 
 	public static final EnumGroupAttrMessages messages;
+	public static final ApplicationMessages appMessages;
 
 	static {
 		messages = (EnumGroupAttrMessages) GWT.create(EnumGroupAttrMessages.class);
+		appMessages = (ApplicationMessages) GWT.create(ApplicationMessages.class);
 	}
 
 	public GroupSynthesisScreen(String title, Group group) {
@@ -82,7 +85,7 @@ public class GroupSynthesisScreen extends VerticalLayoutContainer implements Scr
 		}
 		if (countAdded != 0) {
 			FieldSet general = new FieldSet();
-			general.setHeadingText("Properties");
+			general.setHeadingText(appMessages.getPropertiesAll());
 			general.add(form);
 			this.add(general, new VerticalLayoutData(1, -1, new Margins(10)));
 		}

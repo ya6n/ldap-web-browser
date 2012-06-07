@@ -40,10 +40,10 @@ h1 {
 .logout-button{
 	background-image: url(images/btn-logout.png) !important;
 	background-repeat: no-repeat !important;
-border-top-left-radius: 7px;
-	border-top-right-radius: 7px;
-	border-bottom-left-radius: 7px;
-	border-bottom-right-radius: 7px;
+border-top-left-radius: 24px;
+	border-top-right-radius: 24px;
+	border-bottom-left-radius: 24px;
+	border-bottom-right-radius: 24px;
 	text-align: center !important;
 	padding-top: 4px !important;
 	padding-left: 11px !important;
@@ -70,6 +70,80 @@ font-size:16px!important;
 color:white!important;
 }
 .logout-button td{
+background:transparent!important;
+}
+
+.fr-button{
+	background-image: url(images/langueFR48.png) !important;
+	background-repeat: no-repeat !important;
+	background-size:100%!important;
+border-top-left-radius: 24px;
+	border-top-right-radius: 24px;
+	border-bottom-left-radius: 24px;
+	border-bottom-right-radius: 24px;
+	text-align: center !important;
+	padding-top: 4px !important;
+	padding-left: 11px !important;
+	cursor:  pointer !important;
+	
+}
+
+
+
+.fr-button:HOVER{
+	opacity:0.90!important;
+}
+
+.fr-button:ACTIVE{
+	opacity:0.90!important;
+	-webkit-box-shadow: inset 0px -3px 1px rgba(255, 255, 255, 1), inset 0 0px 3px rgba(0, 0, 0, 0.9);
+   -moz-box-shadow: inset 0px -3px 1px rgba(255, 255, 255, 1), inset 0 0px 3px rgba(0, 0, 0, 0.9);
+   box-shadow: inset 0px -3px 1px rgba(255, 255, 255, 1), inset 0 0px 3px rgba(0, 0, 0, 0.9);
+	
+}
+
+.fr-button div{
+font-size:16px!important;
+color:white!important;
+}
+.fr-button td{
+background:transparent!important;
+}
+
+.en-button{
+	background-image: url(images/langueEN48.png) !important;
+	background-repeat: no-repeat !important;
+	background-size:100%!important;
+border-top-left-radius: 24px;
+	border-top-right-radius: 24px;
+	border-bottom-left-radius: 24px;
+	border-bottom-right-radius: 24px;
+	text-align: center !important;
+	padding-top: 4px !important;
+	padding-left: 11px !important;
+	cursor:  pointer !important;
+	
+}
+
+
+
+.en-button:HOVER{
+	opacity:0.90!important;
+}
+
+.en-button:ACTIVE{
+	opacity:0.90!important;
+	-webkit-box-shadow: inset 0px -3px 1px rgba(255, 255, 255, 1), inset 0 0px 3px rgba(0, 0, 0, 0.9);
+   -moz-box-shadow: inset 0px -3px 1px rgba(255, 255, 255, 1), inset 0 0px 3px rgba(0, 0, 0, 0.9);
+   box-shadow: inset 0px -3px 1px rgba(255, 255, 255, 1), inset 0 0px 3px rgba(0, 0, 0, 0.9);
+	
+}
+
+.en-button div{
+font-size:16px!important;
+color:white!important;
+}
+.en-button td{
 background:transparent!important;
 }
 

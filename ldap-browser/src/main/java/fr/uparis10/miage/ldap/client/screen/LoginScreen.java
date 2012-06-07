@@ -7,11 +7,16 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.FramedPanel;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
+import com.sencha.gxt.widget.core.client.button.IconButton;
 import com.sencha.gxt.widget.core.client.button.TextButton;
+import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer.HorizontalLayoutData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
@@ -106,10 +111,46 @@ public class LoginScreen extends ContentPanel {
 		});
 
 		loginForm.add(p);
-		add(loginForm);
+		// add(loginForm);
 
 		loginForm.addButton(btLogin);
 		loginForm.addButton(btReset);
+
+		IconButton fr = new IconButton("fr-button");
+		fr.setTitle("FR");
+		fr.addSelectHandler(new SelectHandler() {
+			@Override
+			public void onSelect(SelectEvent event) {
+				Window.open(Window.Location.getPath() + "?locale=fr", "_self", "");
+			}
+		});
+		fr.setWidth(32);
+		fr.setHeight(32);
+
+		IconButton en = new IconButton("en-button");
+		en.setTitle("EN");
+		en.addSelectHandler(new SelectHandler() {
+			@Override
+			public void onSelect(SelectEvent event) {
+				Window.open(Window.Location.getPath() + "?locale=en", "_self", "");
+			}
+		});
+		en.setWidth(32);
+		en.setHeight(32);
+
+		HorizontalLayoutContainer langContainer = new HorizontalLayoutContainer();
+
+		langContainer.add(fr, new HorizontalLayoutData(-1, -1, new Margins(1)));
+		langContainer.add(en, new HorizontalLayoutData(-1, -1, new Margins(1)));
+
+		// p.add(langContainer, new VerticalLayoutData(1, -1, new Margins(10)));
+
+		VerticalLayoutContainer lastContainer = new VerticalLayoutContainer();
+
+		lastContainer.add(loginForm);
+		lastContainer.add(langContainer);
+
+		add(lastContainer);
 
 	}
 

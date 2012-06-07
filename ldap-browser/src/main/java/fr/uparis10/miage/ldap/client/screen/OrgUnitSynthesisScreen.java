@@ -30,6 +30,7 @@ import com.sencha.gxt.widget.core.client.form.FieldSet;
 import com.sencha.gxt.widget.core.client.form.TextField;
 
 import fr.uparis10.miage.ldap.client.enums.EnumOrgUnitAttrMessages;
+import fr.uparis10.miage.ldap.client.messages.ApplicationMessages;
 import fr.uparis10.miage.ldap.client.resources.icons.IconsStore;
 import fr.uparis10.miage.ldap.shared.enums.EnumOrgUnitAttr;
 import fr.uparis10.miage.ldap.shared.obj.OrgUnit;
@@ -47,9 +48,11 @@ public class OrgUnitSynthesisScreen extends VerticalLayoutContainer implements S
 	private OrgUnit orgUnit;
 
 	public static final EnumOrgUnitAttrMessages messages;
+	public static final ApplicationMessages appMessages;
 
 	static {
 		messages = (EnumOrgUnitAttrMessages) GWT.create(EnumOrgUnitAttrMessages.class);
+		appMessages = (ApplicationMessages) GWT.create(ApplicationMessages.class);
 	}
 
 	public OrgUnitSynthesisScreen(String title, OrgUnit orgUnit) {
@@ -82,7 +85,7 @@ public class OrgUnitSynthesisScreen extends VerticalLayoutContainer implements S
 		}
 		if (countAdded != 0) {
 			FieldSet general = new FieldSet();
-			general.setHeadingText("Properties");
+			general.setHeadingText(appMessages.getPropertiesAll());
 			general.add(form);
 			this.add(general, new VerticalLayoutData(1, -1, new Margins(10)));
 		}

@@ -29,6 +29,7 @@ import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 import fr.uparis10.miage.ldap.client.ContentManager;
+import fr.uparis10.miage.ldap.client.messages.ApplicationMessages;
 import fr.uparis10.miage.ldap.client.resources.icons.IconsStore;
 import fr.uparis10.miage.ldap.client.service.LoginService;
 import fr.uparis10.miage.ldap.client.service.LoginServiceAsync;
@@ -48,6 +49,12 @@ public class ApplicationHeader extends BorderLayoutContainer {
 
 	private TextField userId;
 	private TextField userName;
+
+	public static final ApplicationMessages messages;
+
+	static {
+		messages = (ApplicationMessages) GWT.create(ApplicationMessages.class);
+	}
 
 	/**
 	 * 
@@ -70,7 +77,7 @@ public class ApplicationHeader extends BorderLayoutContainer {
 	private ToolBar getMenu() {
 		ToolBar toolBar = new ToolBar();
 
-		TextButton btn = new TextButton("Simple Search", IconsStore.INSTANCE.searchImg());
+		TextButton btn = new TextButton(messages.getMenuPeopleSearch(), IconsStore.INSTANCE.searchImg());
 		btn.setScale(ButtonScale.LARGE);
 		btn.setIconAlign(IconAlign.TOP);
 		btn.setArrowAlign(ButtonArrowAlign.BOTTOM);
@@ -138,7 +145,7 @@ public class ApplicationHeader extends BorderLayoutContainer {
 		container.add(userName, new VerticalLayoutData(1, -1, new Margins(2, 2, 0, 0)));
 		SimpleContainer simContainer = new SimpleContainer();
 		simContainer.addStyleName("logout-button");
-		Label lab = new Label("Logout");
+		Label lab = new Label(messages.getHeaderLogout());
 		lab.setHeight("32px");
 		simContainer.add(lab);
 		lab.addClickHandler(new ClickHandler() {
@@ -165,11 +172,39 @@ public class ApplicationHeader extends BorderLayoutContainer {
 			}
 		});
 
+		IconButton fr = new IconButton("fr-button");
+		fr.setTitle("FR");
+		fr.addSelectHandler(new SelectHandler() {
+			@Override
+			public void onSelect(SelectEvent event) {
+				Window.open(Window.Location.getPath() + "?locale=fr", "_self", "");
+			}
+		});
+		fr.setWidth(48);
+		fr.setHeight(48);
+
+		IconButton en = new IconButton("en-button");
+		en.setTitle("EN");
+		en.addSelectHandler(new SelectHandler() {
+			@Override
+			public void onSelect(SelectEvent event) {
+				Window.open(Window.Location.getPath() + "?locale=en", "_self", "");
+			}
+		});
+		en.setWidth(48);
+		en.setHeight(48);
+
 		container.add(simContainer, new VerticalLayoutData(1, -1, new Margins(2, 2, 0, 0)));
+
+		VerticalLayoutContainer langContainer = new VerticalLayoutContainer();
+
+		langContainer.add(fr, new VerticalLayoutData(-1, -1, new Margins(1)));
+		langContainer.add(en, new VerticalLayoutData(-1, -1, new Margins(1)));
 
 		container.setWidth(166);
 
 		tbContainer.add(container, new HorizontalLayoutData(-1, 1, new Margins(10)));
+		tbContainer.add(langContainer, new HorizontalLayoutData(-1, 1, new Margins(0)));
 
 		toolBar.add(tbContainer);
 

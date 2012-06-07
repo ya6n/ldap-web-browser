@@ -17,6 +17,7 @@
   <!-- Other module inherits                                      -->
   <inherits name='com.sencha.gxt.ui.GXT'/>
   <inherits name="com.google.gwt.i18n.I18N"/>
+  <extend-property name="locale" values="en, fr" />
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='fr.uparis10.miage.ldap.client.LDAPBrowser' />

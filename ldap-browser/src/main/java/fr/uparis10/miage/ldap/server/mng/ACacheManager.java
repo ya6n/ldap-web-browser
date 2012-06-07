@@ -172,10 +172,11 @@ public abstract class ACacheManager<I_TYPE extends IIndexable, K_TYPE, V_TYPE ex
 	}
 
 	/**
-	 * @return an unmodifiable list containing all the objects in the system
+	 * @return a list containing all the objects in the system
 	 */
 	public final List<V_TYPE> getAllObjList() {
-		return Collections.<V_TYPE> unmodifiableList(valList);
+		// We can't use unmodifiable lists here - GWT limitation, at least for the moment
+		return new ArrayList<V_TYPE>(valList);
 	}
 
 	/**

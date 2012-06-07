@@ -19,21 +19,35 @@
 package fr.uparis10.miage.ldap.server.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.Map;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.validation.constraints.NotNull;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import fr.uparis10.miage.ldap.client.service.PersonService;
+import fr.uparis10.miage.ldap.server.mng.GroupManager;
+import fr.uparis10.miage.ldap.server.mng.OrgUnitManager;
 import fr.uparis10.miage.ldap.server.mng.PeopleManager;
+import fr.uparis10.miage.ldap.shared.enums.EnumGroupAttr;
+import fr.uparis10.miage.ldap.shared.enums.EnumOrgUnitAttr;
 import fr.uparis10.miage.ldap.shared.enums.EnumPersonAttr;
 import fr.uparis10.miage.ldap.shared.exc.DataNotLoadedException;
 import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
 import fr.uparis10.miage.ldap.shared.exc.UserNotLoggedException;
+import fr.uparis10.miage.ldap.shared.obj.Group;
+import fr.uparis10.miage.ldap.shared.obj.OrgUnit;
 import fr.uparis10.miage.ldap.shared.obj.Person;
 import fr.uparis10.miage.ldap.shared.obj.SearchRequestModel;
+import fr.uparis10.miage.ldap.shared.utils.ListUtils;
 
 /**
  * @author OMAR
@@ -41,10 +55,6 @@ import fr.uparis10.miage.ldap.shared.obj.SearchRequestModel;
  */
 @SuppressWarnings("serial")
 public class PersonServiceImpl extends RemoteServiceServlet implements PersonService {
-
-	private List<Person> result;
-	private SearchRequestModel requestModel;
-	private PeopleManager peopleManager;
 
 	/*
 	 * (non-Javadoc)
@@ -54,12 +64,9 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	@Override
 	public List<Person> getPersonsAll() throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
 		UserLoginChecker.getInstance().check(this.getThreadLocalRequest());
-		result = new ArrayList<Person>();
-		List<Person> listPerson = PeopleManager.getInstance().getAllObjList();
-		if (listPerson != null) {
-			result.addAll(listPerson);
-		}
-		return result;
+		final List<Person> locResult = PeopleManager.getInstance().getAllObjList();
+		assert (locResult instanceof ArrayList);
+		return locResult;
 	}
 
 	/*
@@ -70,16 +77,25 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	 * lang.String)
 	 */
 	@Override
-	public List<Person> searchPersons(String request) throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
+	public final List<Person> searchPersons(final String parRequest) throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
 		UserLoginChecker.getInstance().check(this.getThreadLocalRequest());
-		result = new ArrayList<Person>();
+		List<Person> locResult = null;
 		try {
-			result.addAll(PeopleManager.getInstance().dummySearch(request));
-		} catch (DataNotLoadedException e) {
-			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "The LDAP tree wasn't charged. Not just yet.", e);
-			result = new ArrayList<Person>();
+			@SuppressWarnings("unchecked")
+			final List<List<Person>> locListOfList = Arrays.<List<Person>> asList(
+			    // Searching for Persons
+			    PeopleManager.getInstance().dummySearch(parRequest),
+			    // Searching in the OrgUnit fields:
+			    searchInOrgUnits(parRequest),
+			    // Searching in the Group fields:
+			    searchInGroups(parRequest));
+			final List<Person> locMergedList = ListUtils.<Person> mergeListOfList(locListOfList);
+			return locMergedList;
+		} catch (final DataNotLoadedException locExc) {
+			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "The LDAP tree wasn't charged. Not just yet.", locExc);
+			locResult = Collections.<Person> emptyList();
 		}
-		return result;
+		return locResult;
 	}
 
 	/*
@@ -90,95 +106,169 @@ public class PersonServiceImpl extends RemoteServiceServlet implements PersonSer
 	 * .miage.ldap.shared.obj.SearchRequestModel)
 	 */
 	@Override
-	public List<Person> searchPersons(SearchRequestModel requestModel) throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
+	public final List<Person> searchPersons(final SearchRequestModel parRequestModel) throws IllegalArgumentException, UserNotLoggedException,
+	    ServicePropertiesIOException {
 		UserLoginChecker.getInstance().check(this.getThreadLocalRequest());
-		peopleManager = PeopleManager.getInstance();
-
-		List<Person> listPerson = new ArrayList<Person>();
-		listPerson.addAll(peopleManager.getAllObjList());
-
-		result = new ArrayList<Person>();
-		this.requestModel = requestModel;
-
-		boolean indicateur;
-
-		for (Person person : listPerson) {
-			indicateur = true;
-
-			indicateur = searByPerson(person);
-
-			if (indicateur) {
-				indicateur = searchByGroup(person);
+		final String locRequest = parRequestModel.getRequest();
+		assert (null != locRequest);
+		List<Person> locResult = null;
+		try {
+			final List<List<Person>> locListOfList = new ArrayList<List<Person>>();
+			if (parRequestModel.getLookUpPerson()) {
+				final List<Person> locList = PeopleManager.getInstance().dummySearch(locRequest);
+				assert (null != locList);
+				locListOfList.add(locList);
 			}
-			if (indicateur) {
-				indicateur = searchByOrgUnit(person);
+			if (parRequestModel.getLookUpOrgUnit()) {
+				final List<Person> locList = searchInOrgUnits(locRequest);
+				assert (null != locList);
+				locListOfList.add(locList);
+			}
+			if (parRequestModel.getLookUpGroup()) {
+				final List<Person> locList = searchInGroups(locRequest);
+				assert (null != locList);
+				locListOfList.add(locList);
 			}
 
-			if (indicateur) {
-				result.add(person);
+			// FIXME: optimize this
+			final List<Person> locMergedList = ListUtils.<Person> mergeListOfList(locListOfList);
+			final Map<String, Boolean> locOrgFilter = parRequestModel.getOrgUnitOptions();
+			final List<Person> locOrgFiltList;
+			if (locOrgFilter != null) {
+				locOrgFiltList = filterByOrgUnitOptions(locMergedList, locOrgFilter);
+			} else {
+				locOrgFiltList = locMergedList;
 			}
+			assert (null != locOrgFiltList);
+			final Map<String, Boolean> locGroupFilter = parRequestModel.getGroupOptions();
+			final List<Person> locGroupFiltList;
+			if (locGroupFilter != null) {
+				locGroupFiltList = filterByGroupOptions(locOrgFiltList, locGroupFilter);
+			} else {
+				locGroupFiltList = locOrgFiltList;
+			}
+			assert (null != locGroupFiltList);
+
+			return new ArrayList<Person>(new HashSet<Person>(locGroupFiltList));
+		} catch (final DataNotLoadedException locExc) {
+			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "The LDAP tree wasn't charged. Not just yet.", locExc);
+			locResult = Collections.<Person> emptyList();
 		}
-
-		return result;
+		return locResult;
 	}
 
 	/**
-	 * @param person
-	 * @return
+	 * This method does a dummy search over all the OrgUnit, and then finds the
+	 * Persons associated to these OrgUnits
+	 * 
+	 * @param parRequest
+	 *          a string to search for
+	 * @return a List of persons, or an empty list
+	 * @throws DataNotLoadedException
 	 */
-	private boolean searchByOrgUnit(Person person) {
-		boolean indicateur = true;
-		if (requestModel.getLookUpOrgUnit() &&
-		    requestModel.getOrgUnitOptions().size() > 0) {
-			indicateur = false;
-			for (Entry<String, Boolean> currentEntry : requestModel.getOrgUnitOptions().entrySet()) {
-				if (currentEntry.getValue()) {
-					String key = currentEntry.getKey();
-					if (person.get(EnumPersonAttr.ou).equals(key)) {
-						indicateur = true;
-					}
+	private final List<Person> searchInOrgUnits(@NotNull final String parRequest) throws DataNotLoadedException {
+		final List<OrgUnit> locOrgUnitList = OrgUnitManager.getInstance().dummySearch(parRequest);
+		assert (null != locOrgUnitList);
+		if (locOrgUnitList.isEmpty()) {
+			return Collections.<Person> emptyList();
+		}
+		// found some OrgUnits
+		final Collection<String> locOrgUnitCodes = new TreeSet<String>();
+		for (final OrgUnit locUnit : locOrgUnitList) {
+			final String locUnitCode = locUnit.get(EnumOrgUnitAttr.supannCodeEntite);
+			if (null != locUnitCode) {
+				locOrgUnitCodes.add(locUnitCode);
+			}
+		}
+		if (locOrgUnitCodes.isEmpty()) {
+			return Collections.<Person> emptyList();
+		}
+		// there are some non-empty unit codes
+		@SuppressWarnings("unchecked")
+		final List<List<Person>> locListOfList = Arrays.<List<Person>> asList(
+		    // FIXME: will it work for the cases "orgUnit1;orgUnit2;orgUnit3"?
+		    PeopleManager.getInstance().indexedSearch(EnumPersonAttr.supannEntiteAffectation, locOrgUnitCodes),
+		    PeopleManager.getInstance().indexedSearch(EnumPersonAttr.supannEntiteAffectationPrincipale, locOrgUnitCodes));
+		final List<Person> locMergedList = ListUtils.<Person> mergeListOfList(locListOfList);
+		return locMergedList;
+	}
+
+	/**
+	 * This method does a dummy search over all the OrgUnit, and then finds the
+	 * Persons associated to these OrgUnits
+	 * 
+	 * @param parRequest
+	 *          a string to search for
+	 * @return a List of persons, or an empty list
+	 * @throws DataNotLoadedException
+	 */
+	private final List<Person> searchInGroups(@NotNull final String parRequest) throws DataNotLoadedException {
+		final List<Group> locGroupList = GroupManager.getInstance().dummySearch(parRequest);
+		assert (null != locGroupList);
+		if (locGroupList.isEmpty()) {
+			return Collections.<Person> emptyList();
+		}
+		// found some Groups
+		final Collection<String> locUIDList = new TreeSet<String>();
+		for (final Group locGroup : locGroupList) {
+			// nasty... very...
+			final String locUIDStr = locGroup.get(EnumGroupAttr.member);
+			if (null == locUIDStr || locUIDStr.isEmpty()) {
+				continue;
+			}
+			final String[] locUIDVect = locUIDStr.split(";");
+			assert (locUIDVect.length > 0);
+			locUIDList.addAll(Arrays.<String> asList(locUIDVect));
+		}
+		if (locUIDList.isEmpty()) {
+			return Collections.<Person> emptyList();
+		}
+		// there are some non-empty unit codes
+		final List<Person> locFinalList = PeopleManager.getInstance().indexedSearch(EnumPersonAttr.uid, locUIDList);
+		return locFinalList;
+	}
+
+	private final List<Person> filterByOrgUnitOptions(@NotNull final List<Person> parInList, @NotNull final Map<String, Boolean> parOrgUnitOUFilter)
+	    throws IllegalArgumentException, ServicePropertiesIOException, UserNotLoggedException, DataNotLoadedException {
+		if (parInList.isEmpty()) {
+			return parInList;
+		}
+		final ArrayList<Person> locResultList = new ArrayList<Person>(parInList.size());
+		for (final Person locPerson : parInList) {
+			final List<OrgUnit> locOrgUnitList = OrgUnitServiceImpl.getOrgUnitsForPerson(locPerson);
+			for (final OrgUnit locOrgUnit : locOrgUnitList) {
+				final String locOU = locOrgUnit.get(EnumOrgUnitAttr.ou);
+				assert (null != locOU);
+				final Boolean locIsCheck = parOrgUnitOUFilter.get(locOU);
+				if (locIsCheck) {
+					locResultList.add(locPerson);
+					break;
 				}
 			}
 		}
-		return indicateur;
+		return locResultList;
 	}
 
-	/**
-	 * @param person
-	 * @return
-	 */
-	private boolean searchByGroup(Person person) {
-		boolean indicateur = true;
-		if (requestModel.getLookUpGroup() &&
-		    requestModel.getGroupOptions().size() > 0) {
-			indicateur = false;
-			for (Entry<String, Boolean> currentEntry : requestModel.getGroupOptions().entrySet()) {
-				if (currentEntry.getValue()) {
-					String key = currentEntry.getKey();
-					if (person.get(EnumPersonAttr.supannRole).equals(key)) {
-						indicateur = true;
-					}
+	private final List<Person> filterByGroupOptions(@NotNull final List<Person> parInList, @NotNull final Map<String, Boolean> parGroupCNFilter)
+	    throws IllegalArgumentException, ServicePropertiesIOException, UserNotLoggedException {
+		if (parInList.isEmpty()) {
+			return parInList;
+		}
+		final ArrayList<Person> locResultList = new ArrayList<Person>(parInList.size());
+		for (final Person locPerson : parInList) {
+			final String locUID = locPerson.get(EnumPersonAttr.uid);
+			final List<Group> locGroupList = GroupServiceImpl.getGroupsForPersUID(locUID);
+			for (final Group locGroup : locGroupList) {
+				final String locCN = locGroup.get(EnumGroupAttr.cn);
+				assert (null != locCN);
+				final Boolean locIsCheck = parGroupCNFilter.get(locCN);
+				if (locIsCheck) {
+					locResultList.add(locPerson);
+					break;
 				}
 			}
 		}
-		return indicateur;
+		return locResultList;
 	}
 
-	/**
-	 * @param person
-	 * @return
-	 */
-	private boolean searByPerson(Person person) {
-		boolean indicateur = true;
-		if (requestModel != null &&
-				requestModel.getLookUpPerson()  &&
-		    !requestModel.getRequest().equals("")) {
-			try {
-				indicateur = peopleManager.dummySearch(requestModel.getRequest()).contains(person);
-			} catch (DataNotLoadedException e) {
-				Logger.getLogger(getClass().getName()).log(Level.SEVERE, "The LDAP tree wasn't charged. Not just yet.", e);
-			}
-		}
-		return indicateur;
-	}
 }

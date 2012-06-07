@@ -171,7 +171,7 @@ public class PeopleSearchScreen extends VerticalLayoutContainer implements Scree
 					for (OrgUnit orgUnit : orgUnitGrid.getStore().getAll()) {
 						orgUniOptions.put(orgUnit.get(EnumOrgUnitAttr.ou), orgUnitGrid.getSelectionModel().isSelected(orgUnit));
 					}
-					requestModel.setGroupOptions(orgUniOptions);
+					requestModel.setOrgUnitOptions(orgUniOptions);
 
 					personService.searchPersons(requestModel, new AsyncCallback<List<Person>>() {
 

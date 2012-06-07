@@ -60,7 +60,7 @@ public class OrgUnitServiceImplTest {
 	 */
 	@Test
 	public void testGetOrgUnitsAll() throws IllegalArgumentException, ServicePropertiesIOException, UserNotLoggedException {
-		List<OrgUnit> listOrgUnit = _orgUnitServiceImpl.getOrgUnitsAll();
+		final List<OrgUnit> listOrgUnit = _orgUnitServiceImpl.getOrgUnitsAll();
 		assertNotNull(listOrgUnit);
 	}
 

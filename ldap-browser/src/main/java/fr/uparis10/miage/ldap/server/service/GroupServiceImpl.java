@@ -46,12 +46,9 @@ public class GroupServiceImpl extends RemoteServiceServlet implements GroupServi
 	public List<Group> getGroupsAll() throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
 		UserLoginChecker.getInstance().check(this.getThreadLocalRequest());
 
-		List<Group> listGroup = GroupManager.getInstance().getAllObjList();
-		ArrayList<Group> result = new ArrayList<Group>();
-		if (listGroup != null) {
-			result.addAll(listGroup);
-		}
-		return result;
+		final List<Group> locResult = GroupManager.getInstance().getAllObjList();
+
+		return locResult;
 	}
 
 	/**
@@ -59,13 +56,19 @@ public class GroupServiceImpl extends RemoteServiceServlet implements GroupServi
 	 * @return
 	 */
 	public List<Group> getPersonGroups(String uid) throws IllegalArgumentException, UserNotLoggedException, ServicePropertiesIOException {
-		List<Group> listGroup = getGroupsAll();
-		List<Group> result = new ArrayList<Group>();
+		UserLoginChecker.getInstance().check(this.getThreadLocalRequest());
+		return getGroupsForPersUID(uid);
+	}
 
-		for (Group group : listGroup) {
-			if (group.get(EnumGroupAttr.member).
-			    indexOf(uid) != -1) {
-				result.add(group);
+	public final static List<Group> getGroupsForPersUID(final String locUid) throws IllegalArgumentException, UserNotLoggedException,
+	    ServicePropertiesIOException {
+		final List<Group> locGroupList = GroupManager.getInstance().getAllObjList();
+		final List<Group> result = new ArrayList<Group>();
+
+		for (final Group locGroup : locGroupList) {
+			if (locGroup.get(EnumGroupAttr.member).
+			    indexOf(locUid) != -1) {
+				result.add(locGroup);
 			}
 		}
 

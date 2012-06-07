@@ -18,7 +18,8 @@
  */
 package fr.uparis10.miage.ldap.server.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +29,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import fr.uparis10.miage.ldap.shared.enums.EnumGroupAttr;
+import fr.uparis10.miage.ldap.server.run.CacheUpdateTask;
 import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
 import fr.uparis10.miage.ldap.shared.exc.UserNotLoggedException;
 import fr.uparis10.miage.ldap.shared.obj.Person;
@@ -36,7 +37,7 @@ import fr.uparis10.miage.ldap.shared.obj.SearchRequestModel;
 
 /**
  * @author OMAR
- *
+ * 
  */
 public class PersonServiceImplTest {
 
@@ -46,6 +47,7 @@ public class PersonServiceImplTest {
 	public final void beforeTest() throws ServicePropertiesIOException {
 		TestingServicesPropertiesManager.initTestInstance();
 		_personServiceImpl = new PersonServiceImpl();
+		(new CacheUpdateTask()).run();
 	}
 
 	@After
@@ -54,10 +56,13 @@ public class PersonServiceImplTest {
 	}
 
 	/**
-	 * Test method for {@link fr.uparis10.miage.ldap.server.service.PersonServiceImpl#getPersonsAll()}.
-	 * @throws UserNotLoggedException 
-	 * @throws ServicePropertiesIOException 
-	 * @throws IllegalArgumentException 
+	 * Test method for
+	 * {@link fr.uparis10.miage.ldap.server.service.PersonServiceImpl#getPersonsAll()}
+	 * .
+	 * 
+	 * @throws UserNotLoggedException
+	 * @throws ServicePropertiesIOException
+	 * @throws IllegalArgumentException
 	 */
 	@Test
 	public void testGetPersonsAll() throws IllegalArgumentException, ServicePropertiesIOException, UserNotLoggedException {
@@ -66,10 +71,13 @@ public class PersonServiceImplTest {
 	}
 
 	/**
-	 * Test method for {@link fr.uparis10.miage.ldap.server.service.PersonServiceImpl#searchPersons(java.lang.String)}.
-	 * @throws UserNotLoggedException 
-	 * @throws ServicePropertiesIOException 
-	 * @throws IllegalArgumentException 
+	 * Test method for
+	 * {@link fr.uparis10.miage.ldap.server.service.PersonServiceImpl#searchPersons(java.lang.String)}
+	 * .
+	 * 
+	 * @throws UserNotLoggedException
+	 * @throws ServicePropertiesIOException
+	 * @throws IllegalArgumentException
 	 */
 	@Test
 	public void testSearchPersonsString() throws IllegalArgumentException, ServicePropertiesIOException, UserNotLoggedException {
@@ -78,10 +86,13 @@ public class PersonServiceImplTest {
 	}
 
 	/**
-	 * Test method for {@link fr.uparis10.miage.ldap.server.service.PersonServiceImpl#searchPersons(fr.uparis10.miage.ldap.shared.obj.SearchRequestModel)}.
-	 * @throws UserNotLoggedException 
-	 * @throws ServicePropertiesIOException 
-	 * @throws IllegalArgumentException 
+	 * Test method for
+	 * {@link fr.uparis10.miage.ldap.server.service.PersonServiceImpl#searchPersons(fr.uparis10.miage.ldap.shared.obj.SearchRequestModel)}
+	 * .
+	 * 
+	 * @throws UserNotLoggedException
+	 * @throws ServicePropertiesIOException
+	 * @throws IllegalArgumentException
 	 */
 	@Test
 	public void testSearchPersonsSearchRequestModel() throws IllegalArgumentException, ServicePropertiesIOException, UserNotLoggedException {
@@ -89,17 +100,17 @@ public class PersonServiceImplTest {
 		searchRequestModel.setLookUpGroup(true);
 		searchRequestModel.setLookUpOrgUnit(true);
 		searchRequestModel.setLookUpPerson(true);
-		
+
 		Map<String, Boolean> groupOptions = new HashMap<String, Boolean>();
 		groupOptions.put("etudiants", true);
-		
+
 		Map<String, Boolean> orgUnitOptions = new HashMap<String, Boolean>();
-		groupOptions.put("segmi", true);
-		
+		orgUnitOptions.put("segmi", true);
+
 		searchRequestModel.setGroupOptions(groupOptions);
 		searchRequestModel.setRequest("boomar");
 		searchRequestModel.setOrgUnitOptions(orgUnitOptions);
-		
+
 		List<Person> personsList = _personServiceImpl.searchPersons(searchRequestModel);
 		assertNotNull(personsList);
 		assertTrue(personsList.size() > 0);

@@ -25,15 +25,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
 
+import javax.validation.constraints.NotNull;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import fr.uparis10.miage.ldap.client.service.OrgUnitService;
 import fr.uparis10.miage.ldap.server.mng.OrgUnitManager;
 import fr.uparis10.miage.ldap.shared.enums.EnumOrgUnitAttr;
+import fr.uparis10.miage.ldap.shared.enums.EnumPersonAttr;
 import fr.uparis10.miage.ldap.shared.exc.DataNotLoadedException;
 import fr.uparis10.miage.ldap.shared.exc.ServicePropertiesIOException;
 import fr.uparis10.miage.ldap.shared.exc.UserNotLoggedException;
 import fr.uparis10.miage.ldap.shared.obj.OrgUnit;
+import fr.uparis10.miage.ldap.shared.obj.Person;
 
 /**
  * @author OMAR
@@ -59,7 +63,13 @@ public class OrgUnitServiceImpl extends RemoteServiceServlet implements OrgUnitS
 	}
 
 	@Override
-	public List<OrgUnit> getPersonOrgUnits(String supannEntiteAffectation, String supannEntiteAffectationPrincipale) throws IllegalArgumentException,
+	public final List<OrgUnit> getPersonOrgUnits(String supannEntiteAffectation, String supannEntiteAffectationPrincipale) throws IllegalArgumentException,
+	    UserNotLoggedException, ServicePropertiesIOException, DataNotLoadedException {
+		return getOrgUnitsForEntite(supannEntiteAffectation, supannEntiteAffectationPrincipale);
+	}
+
+	public final static List<OrgUnit> getOrgUnitsForEntite(String supannEntiteAffectation, String supannEntiteAffectationPrincipale)
+	    throws IllegalArgumentException,
 	    UserNotLoggedException, ServicePropertiesIOException, DataNotLoadedException {
 		final Collection<String> personOrgUnitList = new TreeSet<String>();
 
@@ -85,5 +95,11 @@ public class OrgUnitServiceImpl extends RemoteServiceServlet implements OrgUnitS
 		}
 
 		return result;
+	}
+
+	public final static List<OrgUnit> getOrgUnitsForPerson(@NotNull final Person parPerson) throws IllegalArgumentException, ServicePropertiesIOException, UserNotLoggedException, DataNotLoadedException {
+		final String locEntite  = parPerson.get(EnumPersonAttr.supannEntiteAffectation);
+		final String locEntitePrincipale = parPerson.get(EnumPersonAttr.supannEntiteAffectationPrincipale);
+		return getOrgUnitsForEntite(locEntite, locEntitePrincipale);
 	}
 }

@@ -33,7 +33,7 @@ public final class PropertyParseUtilTest {
 	/**
 	 * Test method for {@link fr.uparis10.miage.ldap.server.utils.PropertyParseUtil#getIntOrDefault(java.util.Properties, java.lang.String, int)}.
 	 */
-	@Test (timeout=1000L)
+	@Test (timeout=5000L)
 	public final void testGetIntOrDefaultOK() {
 		final Properties locProps = new Properties();
 		final String locKey = "theKey";
@@ -46,7 +46,7 @@ public final class PropertyParseUtilTest {
 	/**
 	 * Test method for {@link fr.uparis10.miage.ldap.server.utils.PropertyParseUtil#getIntOrDefault(java.util.Properties, java.lang.String, int)}.
 	 */
-	@Test (timeout=1000L)
+	@Test (timeout=5000L)
 	public final void testGetIntOrDefaultKO1() {
 		final Properties locProps = new Properties();
 		final String locKey = "theKey";
@@ -57,7 +57,7 @@ public final class PropertyParseUtilTest {
 	/**
 	 * Test method for {@link fr.uparis10.miage.ldap.server.utils.PropertyParseUtil#getIntOrDefault(java.util.Properties, java.lang.String, int)}.
 	 */
-	@Test (timeout=1000L)
+	@Test (timeout=5000L)
 	public final void testGetIntOrDefaultKO2() {
 		final Properties locProps = new Properties();
 		final String locKey = "theKey";

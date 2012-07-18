@@ -38,21 +38,18 @@ import fr.uparis10.miage.ldap.shared.obj.Person;
  */
 public final class PeopleManager extends ACacheManager<EnumPersonAttr, String, Person> {
 
-	private static final String PREFIX = "ou=people,";
-	private static final String FILTER = "objectClass=person";
-
-	private static PeopleManager theInst = null;
+	private final static class StaticProps {
+		private static final String PREFIX = "ou=people,";
+		private static final String FILTER = "objectClass=person";
+		private static final PeopleManager theInst = new PeopleManager();
+	}
 
 	private PeopleManager() {
 		super();
 	}
 
 	public final static PeopleManager getInstance() {
-		if (null == theInst) {
-			theInst = new PeopleManager();
-		}
-
-		return theInst;
+		return StaticProps.theInst;
 	}
 
 	/*
@@ -62,7 +59,7 @@ public final class PeopleManager extends ACacheManager<EnumPersonAttr, String, P
 	 */
 	@Override
 	protected final String getDNPrefix() {
-		return PREFIX;
+		return StaticProps.PREFIX;
 	}
 
 	/*
@@ -72,7 +69,7 @@ public final class PeopleManager extends ACacheManager<EnumPersonAttr, String, P
 	 */
 	@Override
 	protected final String getGenericFilter() {
-		return FILTER;
+		return StaticProps.FILTER;
 	}
 
 	/*

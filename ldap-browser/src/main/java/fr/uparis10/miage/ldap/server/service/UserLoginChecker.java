@@ -29,14 +29,13 @@ import fr.uparis10.miage.ldap.shared.exc.UserNotLoggedException;
  * 
  */
 public class UserLoginChecker {
-	private static UserLoginChecker theInst;
+	
+	private final static class StaticProps {
+		private static final UserLoginChecker theInst = new UserLoginChecker();
+	}
 
 	public final static UserLoginChecker getInstance() {
-		if (null == theInst) {
-			theInst = new UserLoginChecker();
-		}
-
-		return theInst;
+		return StaticProps.theInst;
 	}
 
 	public final void check(final HttpServletRequest parServlet) throws UserNotLoggedException, ServicePropertiesIOException {

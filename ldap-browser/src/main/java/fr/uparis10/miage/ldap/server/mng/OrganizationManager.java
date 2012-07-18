@@ -38,21 +38,18 @@ import fr.uparis10.miage.ldap.shared.obj.Organization;
  */
 public final class OrganizationManager extends ACacheManager<EnumOrganizationAttr, String, Organization> {
 
-	private static final String PREFIX = "ou=structures,";
-	private static final String FILTER = "objectClass=organization";
-
-	private static OrganizationManager theInst = null;
+	private final static class StaticProps {
+		private static final String PREFIX = "ou=structures,";
+		private static final String FILTER = "objectClass=organization";
+		private static final OrganizationManager theInst = new OrganizationManager();
+	}
 
 	private OrganizationManager() {
 		super();
 	}
 
 	public final static OrganizationManager getInstance() {
-		if (null == theInst) {
-			theInst = new OrganizationManager();
-		}
-
-		return theInst;
+		return StaticProps.theInst;
 	}
 
 	/*
@@ -62,7 +59,7 @@ public final class OrganizationManager extends ACacheManager<EnumOrganizationAtt
 	 */
 	@Override
 	protected final String getDNPrefix() {
-		return PREFIX;
+		return StaticProps.PREFIX;
 	}
 
 	/*
@@ -72,7 +69,7 @@ public final class OrganizationManager extends ACacheManager<EnumOrganizationAtt
 	 */
 	@Override
 	protected final String getGenericFilter() {
-		return FILTER;
+		return StaticProps.FILTER;
 	}
 
 	/*

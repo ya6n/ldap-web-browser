@@ -46,7 +46,7 @@ public abstract class ALdapCtxManager {
 	 * @throws FileNotFoundException
 	 * @throws NamingException
 	 */
-	protected ALdapCtxManager() throws FileNotFoundException, IOException, NamingException {
+	protected ALdapCtxManager() {
 		try {
 			props = new Properties();
 			props.load(new FileInputStream(new File(getConfigFile())));
@@ -75,7 +75,11 @@ public abstract class ALdapCtxManager {
 			ctx = new InitialDirContext(locEnvProps);
 		} catch (final FileNotFoundException locExc) {
 			Logger.getLogger(getClass().getName()).severe("Looking in : " + System.getProperty("user.dir"));
-			throw locExc;
+			throw new RuntimeException(locExc);
+		} catch (final IOException locExc) {
+			throw new RuntimeException(locExc);
+		} catch (final NamingException locExc) {
+			throw new RuntimeException(locExc);
 		}
 	}
 

@@ -42,14 +42,12 @@ import fr.uparis10.miage.ldap.shared.obj.Person;
  * 
  */
 public final class UserLoginManager extends ABasicLdapManager<EnumPersonAttr, String, Person> {
-	private static UserLoginManager theInst;
-
+	private final static class StaticProps {
+		private static final UserLoginManager theInst = new UserLoginManager();
+	}
+	
 	public final static UserLoginManager getInstance() {
-		if (null == theInst) {
-			theInst = new UserLoginManager();
-		}
-
-		return theInst;
+		return StaticProps.theInst;
 	}
 
 	public final Person login(@NotNull final String parLogin, @NotNull final String parPass) throws NoSuchUserException, InvalidPasswordException {

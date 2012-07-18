@@ -18,6 +18,7 @@
  */
 package fr.uparis10.miage.ldap.server.mng;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -28,23 +29,24 @@ import javax.naming.NamingException;
  * 
  */
 public final class DataLdapCtxManager extends ALdapCtxManager {
-	private static DataLdapCtxManager theInst = null;
+	private final static class StaticProps {
+		private final static String configFilePath = System.getProperty("user.home")
+				+ File.separatorChar + ".ldap-browser"
+				+ File.separatorChar + "ldap_server.properties";
+		private static final DataLdapCtxManager theInst = new DataLdapCtxManager();
+	}
 
 	/**
    * @throws FileNotFoundException
    * @throws IOException
    * @throws NamingException
    */
-  private DataLdapCtxManager() throws FileNotFoundException, IOException, NamingException {
+  private DataLdapCtxManager() {
 	  super();
   }
 
 	public final static DataLdapCtxManager getInstance() throws FileNotFoundException, IOException, NamingException {
-		if (null == theInst) {
-			theInst = new DataLdapCtxManager();
-		}
-
-		return theInst;
+		return StaticProps.theInst;
 	}
 
 	/* (non-Javadoc)
@@ -52,7 +54,7 @@ public final class DataLdapCtxManager extends ALdapCtxManager {
    */
   @Override
   public final String getConfigFile() {
-  	return "ldap_server.properties";
+  	return StaticProps.configFilePath;
   }
 
 }
